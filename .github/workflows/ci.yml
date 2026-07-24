@@ -1,0 +1,43 @@
+name: MARK checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r file; do
+            node --check "$file"
+          done < <(find n8n/code lib scripts -type f \( -name '*.js' -o -name '*.mjs' \) | sort)
+
+      - name: Regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test_file in tests/*.test.js; do
+            node "$test_file"
+          done
+
+      - name: Compose contract
+        shell: bash
+        run: |
+          docker compose \
+            --env-file deploy/mark/.env.example \
+            -f deploy/mark/compose.yaml \
+            config --quiet

@@ -1,0 +1,15 @@
+{
+  "schema_version": "mark.model_config.v1",
+  "id": "gemma-4-31b-it",
+  "provider": "nvidia",
+  "transport": "openai_chat_completions",
+  "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "model": "google/gemma-4-31b-it",
+  "modalities": { "input": ["text"], "output": ["text"] },
+  "catalog_evidence": ["reasoning", "coding", "agentic workflows", "instruction tuned"],
+  "mark_roles": ["vacancy classification", "candidate fit scoring", "JSON-prompted output"],
+  "request_defaults": { "temperature": 0.1, "top_p": 1, "max_tokens": 700, "stream": false, "timeout_ms": 120000 },
+  "benchmark": { "timeout_ms": 60000, "enabled": true },
+  "status": "candidate",
+  "notes": ["One live request returned HTTP 200 in 1119 ms but did not satisfy the strict raw JSON contract."]
+}

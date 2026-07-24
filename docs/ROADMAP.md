@@ -1,6 +1,6 @@
 # MARK — Roadmap MVP
 
-Актуализировано: 16 июля 2026 года по фактическому live workflow и репозиторным исходникам.
+Актуализировано: 23 июля 2026 года по HeadHunter integration и server cutover checkpoint.
 
 Обозначения:
 
@@ -18,7 +18,7 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Telegram выбран каналом доставки.
 - [x] MVP ограничен одним пользователем.
 - [x] Зарплата исключена из hard filtering.
-- [x] Full remote проходит format policy независимо от офиса; международные ограничения доступности из Грузии проверяются отдельно.
+- [x] Full remote проходит format policy из любой точки мира; ограничения вакансии по стране не являются фильтром.
 - [x] Hybrid и office разрешены только в Тбилиси, Грузия.
 - [x] Docker, RAG, multi-agent, UI и автоотклики исключены из MVP.
 
@@ -37,7 +37,7 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Credential настроен в n8n.
 - [x] Получен Chat ID.
 - [x] Тестовое сообщение успешно доставлено.
-- [ ] Финальная карточка вакансии — JH-10.
+- [x] Финальная карточка вакансии — JH-10.
 
 ## JH-3 — Source Collector `[x]`
 
@@ -50,7 +50,13 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Item linking между RSS и полной страницей сохранён.
 - [ ] Межзапусковый durable dedupe — JH-9.
 - [ ] Удалить временный `Dev Limit` перед активацией расписания — JH-11.
-- DEFERRED: HeadHunter API отложен из-за `403` до одобрения приложения.
+- [x] HeadHunter приложение одобрено; реализованы OAuth search, execution dedupe, pre-filter и full-vacancy fetch/normalizer.
+- [x] HH search разделён на `REMOTE` и Tbilisi (`area=2758`), без salary-параметров; query `1.1.0` отсекает только `moreThan6`.
+- [x] Выполнить OAuth recall calibration (`228`): не включать lossy `professional_role`/title-only filters, сохранить `between3And6` для downstream проверки.
+- [x] Для HH подтверждённый `work_format=REMOTE` проходит geography gate независимо от страны; contract хранит `remote_geo_eligibility=not_required`.
+- [x] Создать OAuth2 credential только в n8n store и подтвердить выдачу application token.
+- [x] Выполнить isolated live HH smoke (`144`), сохранить durable state, затем импортировать и опубликовать 53-node main workflow.
+- [x] Подтвердить два последовательных multi-source schedule executions и HH durable dedupe (`147`, `149`).
 
 ## JH-4 — Normalizer `[x]`
 
@@ -67,20 +73,20 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Ошибка одного item не валит весь batch.
 - [x] Реальный запуск подтвердил `normalization_ok = true`.
 
-Исходник: `n8n/code/habr-vacancy-normalizer.js`.
+Исходники: `n8n/code/habr-vacancy-normalizer.js`, `n8n/code/hh-vacancy-normalizer.js`.
 
 ## JH-5 — Hard Filter `[x]`
 
 - [x] Проверяется целостность нормализованной вакансии.
 - [x] Архивные и скрытые вакансии отклоняются.
-- [x] Full remote допускается независимо от офиса; для будущих международных источников требуется отдельная проверка eligibility из Грузии.
+- [x] Full remote допускается из любой точки мира и не требует отдельного country eligibility gate.
 - [x] Hybrid/office допускается только в Тбилиси, Грузия.
 - [x] Unknown/conflict получает `REVIEW` и не проходит дальше.
 - [x] Нерелевантные профессии отклоняются.
 - [x] Проверяется наличие substantive AI engineering evidence.
 - [x] Зарплата не участвует в решении.
 - [x] `Keep Hard Filter PASS` пропускает только `PASS`.
-- [x] Проходят 17 локальных сценариев.
+- [x] Проходят 20 локальных сценариев.
 - [x] Live-вакансия правильно распознана как Target AI / Tier A.
 
 Исходник: `n8n/code/habr-hard-filter.js`.
@@ -104,65 +110,132 @@ Roadmap зафиксирован. Идём по порядку, исправля
 
 Исходник: `n8n/code/habr-level-filter.js`.
 
-## JH-7 — Candidate Profile `[ ]`
+## JH-7 — Candidate Profile `[x]`
 
-- [ ] Создать структурированный правдивый профиль кандидата.
-- [ ] Зафиксировать Python, LLM API, NVIDIA API и prompt engineering.
-- [ ] Зафиксировать архитектурный опыт EDITH.
-- [ ] Зафиксировать context/memory/provider abstraction и STT/TTS.
-- [ ] Честно указать отсутствие коммерческого AI-опыта.
-- [ ] Зафиксировать пробелы Docker, production RAG, LangGraph, asyncio и CI/CD.
-- [ ] Не приписывать production experience.
+- [x] Создать структурированный версионируемый профиль кандидата.
+- [x] Зафиксировать Python, LLM API, NVIDIA API и prompt engineering как user-reported project evidence.
+- [x] Зафиксировать архитектурный опыт EDITH как personal project.
+- [x] Зафиксировать context/memory/provider abstraction и STT/TTS.
+- [x] Честно указать отсутствие коммерческого AI-опыта.
+- [x] Зафиксировать пробелы Docker, production RAG, LangGraph, asyncio и CI/CD.
+- [x] Не приписывать production experience.
+- [x] Добавить proficiency/evidence policy и реалистичные current/stretch/future target roles.
+- [x] Добавить восемь repository-verified навыков MARK.
+- [x] Создать компактный `candidate_profile_for_scorer` отдельно от полного audit-профиля.
+- [x] Убрать score thresholds из Candidate Profile и не приписывать MARK prompt engineering до JH-8.
+- [x] Добавить 34 локальные проверки контракта, remote policy, truth policy, размера snapshot и отсутствия очевидных секретов.
+- [x] Проверить направление и содержание профиля с пользователем.
+- [x] Добавить и проверить live node `Candidate Profile` после `Keep Level PASS + STRETCH`.
+- [x] Подтвердить live output Candidate Profile `1.1.0`, затем опубликовать policy revision `1.2.0` с exact repository source и локальной regression matrix.
+- [x] Удалить тестовые pinned/mock data и сохранить чистый актуальный workflow export.
+- [x] Проверить пустой `pinData`, отсутствие literal secrets и совпадение пяти embedded Code node sources с репозиторными файлами.
+- [x] Исключить из стабильного export три отсоединённых legacy smoke/HH nodes с локальными данными.
 
-## JH-8 — NVIDIA Scorer `[ ]`
+## JH-8 — NVIDIA Scorer `[x]`
 
-- [ ] Настроить NVIDIA credential.
-- [ ] Выполнить connectivity test.
-- [ ] Собрать candidate + vacancy prompt.
-- [ ] Получать строгий JSON со score, level, decision, reasons, gaps и summary.
-- [ ] Использовать решения `APPLY / REVIEW / SKIP`.
-- [ ] Добавить broken JSON recovery и один ограниченный retry.
-- [ ] Ориентировочный Telegram threshold: `score >= 65`.
+- [x] Синхронизировать публичный NVIDIA Build Catalog и классифицировать все 138 карточек.
+- [x] Создать безопасную модульную model-config library с общей JSON Schema и MARK-profile.
+- [x] Проверить новый API key прямым вызовом `GET /v1/models`: доступны 118 hosted model IDs, секрет не сохранён.
+- [x] Выполнить одинаковый connectivity benchmark shortlist и выбрать primary/fallback.
+- [x] Утвердить `nvidia/nemotron-3-super-120b-a12b` как primary, `nvidia/nemotron-3-nano-30b-a3b` как fast fallback и `deepseek-ai/deepseek-v4-flash` как reasoning fallback для scorer calibration.
+- [x] Настроить NVIDIA credential без сохранения ключа в workflow или Git.
+- [x] Выполнить live n8n connectivity test на утверждённом primary и получить точный JSON при `reasoning_content: null`.
+- [x] Спроектировать reusable `active_passive` fallback contract для двух NVIDIA credentials без секретов в Git.
+- [x] Реализовать и локально проверить error classifier, bounded attempt budget, credential failover, model fallback и circuit breaker decisions.
+- [x] Собрать versioned candidate + vacancy prompt без salary fields.
+- [x] Передавать в NVAPI только `candidate_profile_for_scorer`, а не полный audit-профиль.
+- [x] Сохранять `candidate_profile_version`, `scorer_prompt_version`, `scorer_version` и parser version.
+- [x] Получать и валидировать строгий JSON со score, level, decision, reasons, gaps и summary.
+- [x] Использовать решения `APPLY / REVIEW / SKIP` с deterministic thresholds.
+- [x] Добавить bounded JSON repair и model fallback для broken contract.
+- [x] Подключить явные Super/Nano HTTP Request nodes для primary/secondary credentials.
+- [x] Ограничить вход 10 vacancies: worst case 30 provider calls на execution, ниже safety target 35.
+- [x] Зафиксировать Telegram threshold `score >= 65`.
+- [x] Подтвердить positive live n8n path: HTTP 200, score 85, APPLY, salary excluded.
 
-## JH-9 — Durable State / Duplicate Guard `[ ]`
+## JH-9 — Durable State / Duplicate Guard `[x]`
 
-- [ ] Хранить `vacancy_key` между executions.
-- [ ] Не анализировать одну вакансию повторно.
-- [ ] Хранить AI score и решение.
-- [ ] Хранить `telegram_sent` отдельно от `seen`.
-- [ ] Повторять незавершённую доставку после ошибки Telegram.
-- [ ] Не терять вакансию после ошибки NVAPI.
+- [x] Хранить source key и `vacancy_key` в bounded workflow state.
+- [x] Не загружать и не анализировать обработанный source item повторно.
+- [x] Хранить compact AI score и решение.
+- [x] Хранить `telegram_sent` отдельно от source seen/scored.
+- [x] Переоткрывать source item для незавершённой Telegram delivery.
+- [x] Переоткрывать source item после due NVAPI error или stale pending.
+- [x] Добавить bounded retention и 23 state-transition regression checks.
+- [x] Подтвердить persistence на production Schedule executions: 49 duplicate items skipped, 1 new processed.
 
-## JH-10 — Telegram Vacancy Card `[ ]`
+## JH-10 — Telegram Vacancy Card `[x]`
 
-- [ ] Добавить название, компанию, формат и локацию.
-- [ ] Показывать зарплату или «не указана».
-- [ ] Не выдавать predicted salary за вилку работодателя.
-- [ ] Показывать AI score, причины и gaps.
-- [ ] Добавить ссылку и безопасное escaping сообщения.
+- [x] Добавить название, компанию, формат и локацию.
+- [x] Показывать employer salary или «не указана».
+- [x] Показывать Habr prediction отдельно с пометкой «не оффер».
+- [x] Показывать AI score, причины, gaps и summary.
+- [x] Добавить ссылку, HTML escaping и bounded message length.
+- [x] Добавить bounded Telegram retry и durable delivery result.
+- [x] Обновить Telegram credential без секрета в workflow/Git и подтвердить встроенный connection test.
+- [x] Подтвердить live delivery новой vacancy card в fresh-process n8n execution; тестовая карточка доставлена и вернула `message_id`.
 
-## JH-11 — Schedule `[ ]`
+## JH-11 — Schedule `[x]`
 
-- [ ] Заменить Manual Trigger на Schedule Trigger.
-- [ ] Запускать RSS polling каждые 30 минут.
-- [ ] Считать количество вакансий, реально переданных в NVIDIA Scorer за execution.
-- [ ] Если `ai_candidates_count = 0`, выполнить один ускоренный повтор RSS через 5 минут.
-- [ ] Если ускоренный повтор тоже пустой, вернуться к обычному интервалу 30 минут.
-- [ ] Обрабатывать при повторе только новые `guid` через durable state JH-9.
-- [ ] Запретить немедленный tight loop и несколько одновременных fast retry.
-- [ ] Удалить/отключить `Dev Limit`.
-- [ ] Исключить перекрывающиеся executions.
-- [ ] Активировать workflow.
+- [x] Заменить Manual Trigger на Schedule Trigger.
+- [x] Запускать RSS polling единым Schedule Trigger каждые 10 минут.
+- [x] Считать количество vacancies, реально переданных в NVIDIA Scorer.
+- [x] Удалить дополнительный 5/30-minute gate и fast retry state.
+- [x] Первый production execution после запуска получать только от Schedule Trigger; ручной Execute не блокировать внутренним таймером.
+- [x] Обрабатывать только new/due source items через JH-9 state.
+- [x] Не создавать tight loop: cadence принадлежит одному 10-minute Schedule Trigger.
+- [x] Удалить Manual Trigger и `Dev Limit`.
+- [x] Опубликовать workflow в базе и сохранить timezone/Chat ID environment.
+- [x] Перезапустить n8n и подтвердить четыре successful Schedule Trigger executions.
+- [x] Перезапустить process после multi-item/metrics/tolerance patch и повторить live verification (`103`, `110`, `111`).
+- [x] Опубликовать fixed 10-minute schedule и подтвердить automatic `116`/`118` (599.962 s) и неблокируемый manual `117`.
 
 ## JH-12 — Reliability Pass `[ ]`
 
-- [ ] Добавить ограниченные retry для Habr, NVIDIA и Telegram.
-- [ ] Обработать broken HTML и broken JSON.
-- [ ] Добавить error logging.
-- [ ] Добавить run summary: RSS items, new GUIDs, pre-filter PASS/REVIEW, Hard PASS, Level PASS/STRETCH, AI candidates, Telegram sent.
-- [ ] Добавить `empty_run_streak`, `last_fast_retry_at` и защиту от бесконечного refresh.
-- [ ] Проверить несколько последовательных запусков без дублей.
+- [x] Добавить ограниченные retry для Habr, NVIDIA и Telegram.
+- [x] Добавить durable provider-health state для aliases `nvidia_primary` / `nvidia_secondary`.
+- [x] Проверить live credential fallback на контролируемых `401`, `429`, timeout и `5xx` без ping-pong (`155`, 4/4 PASS).
+- [ ] Подтвердить фактический quota scope двух NVIDIA keys; не предполагать автоматически, что лимит удвоился.
+- [x] Обработать broken HTML и broken JSON с bounded recovery.
+- [x] Добавить bounded compact error logging.
+- [x] Добавить run summary: RSS, new/skipped GUIDs, filters, AI, provider errors, Telegram.
+- [x] Добавить compact fixed-interval scheduler state без второго time gate.
+- [x] Проверить несколько последовательных запусков без дублей (`149`, `150`, `151`, `154`, post-restart `156`).
 - [ ] Выполнить продолжительный soak test.
+
+## JH-13 — Server Cutover `[x]`
+
+- [x] Подготовить выделенный loopback-only n8n `2.29.10` под `systemd`.
+- [x] Ограничить production concurrency одним execution и сохранить timezone `Europe/Moscow`.
+- [x] Создать root-only database backup перед импортом.
+- [x] Включить ежедневный `backup-mark.timer` и выполнить успешный post-cutover backup.
+- [x] Перенести актуальный 54-node workflow с накопленным bounded state.
+- [x] Импортировать HH OAuth2, NVIDIA primary/secondary и Telegram credentials только в зашифрованный n8n store.
+- [x] Выполнить реальный server HH/NVIDIA source smoke: OAuth `200/200`, 21 full details, 4 valid NVIDIA assessments.
+- [x] Выполнить controlled qualifying-vacancy test через production filters/scorer/Telegram; карточка получена пользователем.
+- [x] Выключить test workflows и опубликовать только основной workflow `RO4i4YmNzEzC2TEV`.
+- [x] Включить `n8n-mark.service` в автозапуск и подтвердить health-check.
+- [x] Подтвердить три automatic 10-minute ticks (`175`–`177`) без active overlap, source/provider errors и Telegram duplicates.
+- [x] Удалить неиспользованные Tor/WARP packages после failed egress probes и вернуть disk usage к 69%.
+- [x] Запустить временный loopback-only reverse SSH bridge для Telegram, не раскрывая bot token.
+
+Operational limitation: Telegram delivery на текущем VPS пока требует включённый Windows-компьютер с bridge. HH, filters, NVIDIA и durable retry работают независимо. Новый container target имеет прямой Telegram egress, но limitation снимается только после фактического cutover.
+
+## JH-14 — Autonomous Container Deployment `[~]`
+
+- [x] Зафиксировать verified n8n image `2.29.10` и PostgreSQL 16.
+- [x] Добавить loopback-only Compose, persistent volumes, health checks и restart policies.
+- [x] Сохранить production concurrency `1`, timezone `Europe/Moscow` и execution pruning.
+- [x] Добавить безопасный `.env.example`; запретить runtime/env/entity/backup files в Git и Docker context.
+- [x] Добавить SQLite → PostgreSQL migration через encrypted `export:entities` / `import:entities`.
+- [x] После restore принудительно unpublish все workflows и публиковать только `RO4i4YmNzEzC2TEV`.
+- [x] Добавить daily PostgreSQL + n8n-data backup и bounded retention.
+- [x] Добавить prepare/env/restore/start/verify/publish scripts и rollback contract.
+- [x] Добавить CI и container/security regression contract.
+- [x] Выполнить disposable SQLite → PostgreSQL entity migration smoke, проверить unpublished workflow/static state, health и backup artifacts.
+- [ ] Развернуть package после завершения server provisioning.
+- [ ] Подтвердить HH, NVIDIA и controlled Telegram smoke на target.
+- [ ] Подтвердить два automatic ticks, bridge-off delivery и reboot recovery.
 
 ## Filtering checkpoint после JH-6
 
@@ -171,23 +244,18 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Убедиться, что в экспорте нет literal secrets; Telegram credential хранится только как штатная ссылка n8n.
 - [x] Запустить оба локальных test-файла.
 - [x] Просмотреть Git diff.
-- [ ] Сделать крупный Git checkpoint ingestion + filtering.
+- [x] Сделать крупный Git checkpoint ingestion + filtering и отправить его в приватный GitHub-репозиторий.
 
 ## После MVP
 
-- HeadHunter после одобрения приложения.
+- HeadHunter historical backfill после стабильного live polling.
 - Дополнительные источники и исторический backfill.
 - Backfill нужен отдельно: повторное чтение RSS не возвращает старые активные вакансии, уже выпавшие из текущего окна.
 - Telegram feedback-кнопки.
-- Серверный deployment.
+- Trusted always-on Telegram egress без зависимости от Windows-компьютера.
+- Миграция bounded workflow static data в Data Table или отдельные PostgreSQL tables.
 - Генерация персонализированного отклика.
 
 ## Один текущий шаг
 
-Реализовать JH-7 Candidate Profile:
-
-```text
-структурированный правдивый профиль
-→ версионируемый контракт
-→ вход для NVIDIA Scorer
-```
+После завершения server provisioning выполнить entity restore и controlled cutover по `docs/DEPLOYMENT.md`; quota scope и продолжительный soak остаются отдельными проверками.

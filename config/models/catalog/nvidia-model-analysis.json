@@ -1,0 +1,3770 @@
+{
+  "schema_version": "mark.nvidia_catalog_analysis.v1",
+  "source_snapshot": "config/models/catalog/nvidia-build-catalog.json",
+  "generated_at": "2026-07-16T16:38:19.581Z",
+  "analyzed_models": 138,
+  "methodology": [
+    "Every catalog card is assigned exactly one primary family using transparent keyword rules.",
+    "catalog_capability_score ranks catalog claims and availability; it is not an independent quality benchmark.",
+    "MARK runtime approval requires a successful live benchmark and a scorer-specific evaluation set."
+  ],
+  "family_counts": {
+    "video_media": 11,
+    "biology_drug_discovery": 14,
+    "other_specialized": 9,
+    "physical_ai_robotics": 1,
+    "embedding": 6,
+    "speech_recognition": 14,
+    "speech_synthesis": 3,
+    "language_reasoning": 32,
+    "image_generation_editing": 9,
+    "safety_detection": 9,
+    "multimodal_language": 13,
+    "document_vision": 14,
+    "reranking": 3
+  },
+  "strongest_catalog_candidates": [
+    {
+      "slug": "nemotron-3-ultra-550b-a55b",
+      "publisher": "nvidia",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 69,
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-ultra-550b-a55b"
+      ]
+    },
+    {
+      "slug": "glm-5.2",
+      "publisher": "z-ai",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 65,
+      "hosted_api_model_ids": [
+        "z-ai/glm-5.2"
+      ]
+    },
+    {
+      "slug": "gemma-4-31b-it",
+      "publisher": "google",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 59,
+      "hosted_api_model_ids": [
+        "google/gemma-4-31b-it"
+      ]
+    },
+    {
+      "slug": "step-3.5-flash",
+      "publisher": "stepfun-ai",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 59,
+      "hosted_api_model_ids": [
+        "stepfun-ai/step-3.5-flash"
+      ]
+    },
+    {
+      "slug": "nemotron-3-super-120b-a12b",
+      "publisher": "nvidia",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 57,
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-super-120b-a12b"
+      ]
+    },
+    {
+      "slug": "llama-3.2-1b-instruct",
+      "publisher": "meta",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 53,
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-1b-instruct"
+      ]
+    },
+    {
+      "slug": "llama-3.2-3b-instruct",
+      "publisher": "meta",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 53,
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-3b-instruct"
+      ]
+    },
+    {
+      "slug": "nemotron-3-nano-30b-a3b",
+      "publisher": "nvidia",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 47,
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-nano-30b-a3b"
+      ]
+    },
+    {
+      "slug": "mistral-large-3-675b-instruct-2512",
+      "publisher": "mistralai",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 46,
+      "hosted_api_model_ids": [
+        "mistralai/mistral-large-3-675b-instruct-2512"
+      ]
+    },
+    {
+      "slug": "laguna-xs-2.1",
+      "publisher": "poolside",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 45,
+      "hosted_api_model_ids": [
+        "poolside/laguna-xs-2.1"
+      ]
+    },
+    {
+      "slug": "llama-3_1-8b-instruct",
+      "publisher": "meta",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 45,
+      "hosted_api_model_ids": []
+    },
+    {
+      "slug": "qwen3.5-122b-a10b",
+      "publisher": "qwen",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 45,
+      "hosted_api_model_ids": [
+        "qwen/qwen3.5-122b-a10b"
+      ]
+    },
+    {
+      "slug": "deepseek-v4-pro",
+      "publisher": "deepseek-ai",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 43,
+      "hosted_api_model_ids": [
+        "deepseek-ai/deepseek-v4-pro"
+      ]
+    },
+    {
+      "slug": "seed-oss-36b-instruct",
+      "publisher": "bytedance",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 43,
+      "hosted_api_model_ids": [
+        "bytedance/seed-oss-36b-instruct"
+      ]
+    },
+    {
+      "slug": "mistral-medium-3.5-128b",
+      "publisher": "mistralai",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 39,
+      "hosted_api_model_ids": [
+        "mistralai/mistral-medium-3.5-128b"
+      ]
+    },
+    {
+      "slug": "step-3.7-flash",
+      "publisher": "stepfun-ai",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 39,
+      "hosted_api_model_ids": [
+        "stepfun-ai/step-3.7-flash"
+      ]
+    },
+    {
+      "slug": "mistral-small-4-119b-2603",
+      "publisher": "mistralai",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 37,
+      "hosted_api_model_ids": [
+        "mistralai/mistral-small-4-119b-2603"
+      ]
+    },
+    {
+      "slug": "llama-3_1-nemotron-nano-8b-v1",
+      "publisher": "nvidia",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 35,
+      "hosted_api_model_ids": []
+    },
+    {
+      "slug": "mistral-nemotron",
+      "publisher": "mistralai",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 35,
+      "hosted_api_model_ids": [
+        "mistralai/mistral-nemotron"
+      ]
+    },
+    {
+      "slug": "nvidia-nemotron-nano-9b-v2",
+      "publisher": "nvidia",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 35,
+      "hosted_api_model_ids": [
+        "nvidia/nvidia-nemotron-nano-9b-v2"
+      ]
+    },
+    {
+      "slug": "qwen3-next-80b-a3b-instruct",
+      "publisher": "qwen",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 35,
+      "hosted_api_model_ids": [
+        "qwen/qwen3-next-80b-a3b-instruct"
+      ]
+    },
+    {
+      "slug": "llama-3.2-11b-vision-instruct",
+      "publisher": "meta",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 33,
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-11b-vision-instruct"
+      ]
+    },
+    {
+      "slug": "llama-3.2-90b-vision-instruct",
+      "publisher": "meta",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 33,
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-90b-vision-instruct"
+      ]
+    },
+    {
+      "slug": "deepseek-v4-flash",
+      "publisher": "deepseek-ai",
+      "model_family": "language_reasoning",
+      "catalog_capability_score": 31,
+      "hosted_api_model_ids": [
+        "deepseek-ai/deepseek-v4-flash"
+      ]
+    },
+    {
+      "slug": "inkling",
+      "publisher": "thinkingmachines",
+      "model_family": "multimodal_language",
+      "catalog_capability_score": 31,
+      "hosted_api_model_ids": [
+        "thinkingmachines/inkling"
+      ]
+    }
+  ],
+  "models": [
+    {
+      "catalog_resource_id": "qc69jvmznzxy/active-speaker-detection",
+      "slug": "active-speaker-detection",
+      "display_name": "Active Speaker Detection",
+      "publisher": "nvidia",
+      "description": "Detect and track speaker identities across video frames.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "broadcast",
+        "broadcast-logging",
+        "dubbing",
+        "localization",
+        "nvidia ai for media",
+        "nvidia holoscan for media",
+        "smpte",
+        "speaker detection"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/alphafold2",
+      "slug": "alphafold2",
+      "display_name": "alphafold2",
+      "publisher": "deepmind",
+      "description": "Predicts the 3D structure of a protein from its amino acid sequence.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Biology",
+        "Bionemo",
+        "nim",
+        "protein folding"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/alphafold2-multimer",
+      "slug": "alphafold2-multimer",
+      "display_name": "alphafold2-multimer",
+      "publisher": "deepmind",
+      "description": "Predicts the 3D structure of a protein from its amino acid sequence.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Biology",
+        "Bionemo",
+        "nim",
+        "protein folding"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/bnr",
+      "slug": "bnr",
+      "display_name": "Background Noise Removal",
+      "publisher": "nvidia",
+      "description": "Removes unwanted noises from audio improving speech intelligibility.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "communications",
+        "denoising",
+        "nvidia ai for media",
+        "speech enhancement"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/bevformer",
+      "slug": "bevformer",
+      "display_name": "bevformer",
+      "publisher": "nvidia",
+      "description": "Advanced transformer for multi-frame bird's-eye-view 3D perception in autonomous driving.",
+      "model_family": "physical_ai_robotics",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "automotive",
+        "autonomous vehicles",
+        "bev",
+        "perception"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/bge-m3",
+      "slug": "bge-m3",
+      "display_name": "bge-m3",
+      "publisher": "baai",
+      "description": "Embedding model for text retrieval tasks, excelling in dense, multi-vector, and sparse retrieval.",
+      "model_family": "embedding",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 8,
+      "categories": [
+        "Embeddings",
+        "Retrieval Augmented Generation"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "baai/bge-m3"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/boltz2",
+      "slug": "boltz2",
+      "display_name": "Boltz-2",
+      "publisher": "mit",
+      "description": "Predict complex structures using Boltz-2.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Biology",
+        "Bionemo",
+        "Protein Folding",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/canary-1b-asr",
+      "slug": "canary-1b-asr",
+      "display_name": "canary-1b-asr",
+      "publisher": "nvidia",
+      "description": "Multi-lingual model supporting speech-to-text recognition and translation.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Automatic Speech Recognition",
+        "Automatic Speech Translation",
+        "NVIDIA NIM",
+        "NVIDIA Riva"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/chatterbox-multilingual-tts",
+      "slug": "chatterbox-multilingual-tts",
+      "display_name": "chatterbox-multilingual-tts",
+      "publisher": "resembleai",
+      "description": "Natural and expressive voices in 23 languages. For voice agents and brand ambassadors.",
+      "model_family": "speech_synthesis",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Chatterbox",
+        "Speech Generation",
+        "TTS",
+        "multilingual"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/conformer-ctc-asr",
+      "slug": "conformer-ctc-asr",
+      "display_name": "conformer-ctc-asr",
+      "publisher": "nvidia",
+      "description": "Automatic speech recognition model that transcribes speech in lower case Spanish with record-setting accuracy and performance",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "NVIDIA NIM",
+        "NVIDIA Riva",
+        "Spanish",
+        "streaming"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/cosmos-reason2-8b",
+      "slug": "cosmos-reason2-8b",
+      "display_name": "cosmos-reason2-8b",
+      "publisher": "nvidia",
+      "description": "Vision language model that excels in understanding the physical world using structured reasoning on videos or images.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 20,
+      "categories": [
+        "Physical AI",
+        "autonomous vehicles",
+        "industrial",
+        "reasoning",
+        "robotics",
+        "smart cities",
+        "video understanding",
+        "vision language model"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/cosmos-reason2-8b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/cosmos-transfer1-7b",
+      "slug": "cosmos-transfer1-7b",
+      "display_name": "cosmos-transfer1-7b",
+      "publisher": "nvidia",
+      "description": "Generates physics-aware video world states for physical AI development using text prompts and multiple spatial control inputs derived from real-world data or simulation.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "Autonomous Vehicles",
+        "Physical AI",
+        "robotics",
+        "video-to-world"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/cosmos-transfer2_5-2b",
+      "slug": "cosmos-transfer2_5-2b",
+      "display_name": "cosmos-transfer2.5-2b",
+      "publisher": "nvidia",
+      "description": "Generates physics-aware video world states for physical AI development using text prompts and multiple spatial control inputs derived from real-world data or simulation.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "Autonomous Vehicles",
+        "Physical AI",
+        "robotics",
+        "video-to-world"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/cosmos3-nano",
+      "slug": "cosmos3-nano",
+      "display_name": "cosmos3-nano",
+      "publisher": "nvidia",
+      "description": "Generates physics-aware videos from text prompts or an image prompt for physical AI development.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "Physical AI",
+        "autonomous vehicles",
+        "image-to-world",
+        "robotics",
+        "text-to-world"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/cosmos3-nano-reasoner",
+      "slug": "cosmos3-nano-reasoner",
+      "display_name": "cosmos3-nano-reasoner",
+      "publisher": "nvidia",
+      "description": "Vision language model that excels in understanding the physical world using structured reasoning on videos or images.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 17,
+      "categories": [
+        "Physical AI",
+        "autonomous vehicles",
+        "industrial",
+        "reasoning",
+        "robotics",
+        "smart cities",
+        "video understanding",
+        "vision language model"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nvidia-cuopt",
+      "slug": "nvidia-cuopt",
+      "display_name": "cuopt",
+      "publisher": "nvidia",
+      "description": "World-record accuracy and performance for complex route optimization.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/deepseek-v4-flash",
+      "slug": "deepseek-v4-flash",
+      "display_name": "deepseek-v4-flash",
+      "publisher": "deepseek-ai",
+      "description": "DeepSeek V4 Flash is a 284B MoE model with 1M-token context optimized for fast coding and agents.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 31,
+      "categories": [
+        "MoE",
+        "agentic",
+        "coding",
+        "fast"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "deepseek-ai/deepseek-v4-flash"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/deepseek-v4-pro",
+      "slug": "deepseek-v4-pro",
+      "display_name": "deepseek-v4-pro",
+      "publisher": "deepseek-ai",
+      "description": "DeepSeek V4 scales to 1M-token context windows with efficient MoE architecture for coding tasks.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 43,
+      "categories": [
+        "Moe",
+        "agentic",
+        "coding",
+        "reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "deepseek-ai/deepseek-v4-pro"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/diffdock",
+      "slug": "diffdock",
+      "display_name": "diffdock",
+      "publisher": "mit",
+      "description": "Predicts the 3D structure of how a molecule interacts with a protein.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "BioNemo",
+        "Chemistry",
+        "Docking",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/diffusiongemma-26b-a4b-it",
+      "slug": "diffusiongemma-26b-a4b-it",
+      "display_name": "diffusiongemma-26b-a4b-it",
+      "publisher": "google",
+      "description": "Diffusion-based 26B parameter LLM enabling parallel token generation for real-time text apps",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 25,
+      "categories": [
+        "diffusion-llm",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "google/diffusiongemma-26b-a4b-it"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/dracarys-llama-3_1-70b-instruct",
+      "slug": "dracarys-llama-3_1-70b-instruct",
+      "display_name": "dracarys-llama-3.1-70b-instruct",
+      "publisher": "abacusai",
+      "description": "Fine-tuned Llama 3.1 70B model for code generation, summarization, and multi-language tasks.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Code Generation",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/esm2-650m",
+      "slug": "esm2-650m",
+      "display_name": "esm2-650m",
+      "publisher": "meta",
+      "description": "Generates embeddings of proteins from their amino acid sequences.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "BioNemo",
+        "Biology",
+        "Protein Embedding",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": null,
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/esmfold",
+      "slug": "esmfold",
+      "display_name": "esmfold",
+      "publisher": "meta",
+      "description": "Predicts the 3D structure of a protein from its amino acid sequence.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "Bionemo",
+        "Drug Discovery",
+        "biology",
+        "nim",
+        "protein folding"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": null,
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/evo2-40b",
+      "slug": "evo2-40b",
+      "display_name": "evo2-40b",
+      "publisher": "arc",
+      "description": "Evo 2 is a biological foundation model that is able to integrate information over long genomic sequences while retaining sensitivity to single-nucleotide changes.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Bionemo",
+        "DNA Generation",
+        "biology",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/eyecontact",
+      "slug": "eyecontact",
+      "display_name": "eyecontact",
+      "publisher": "nvidia",
+      "description": "Estimate gaze angles of a person in a video and redirect to make it frontal.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Digital Human",
+        "Nvidia Maxine",
+        "telepresence"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/flux_1-dev",
+      "slug": "flux_1-dev",
+      "display_name": "FLUX.1-dev",
+      "publisher": "black-forest-labs",
+      "description": "FLUX.1 is a state-of-the-art suite of image generation models",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 20,
+      "categories": [
+        "Run-on-RTX"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/flux_1-kontext-dev",
+      "slug": "flux_1-kontext-dev",
+      "display_name": "FLUX.1-Kontext-dev",
+      "publisher": "black-forest-labs",
+      "description": "FLUX.1 Kontext is a multimodal model that enables in-context image generation and editing.",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Run-on-RTX"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/flux_1-schnell",
+      "slug": "flux_1-schnell",
+      "display_name": "FLUX.1-schnell",
+      "publisher": "black-forest-labs",
+      "description": "FLUX.1-schnell is a distilled image generation model, producing high quality images at fast speeds",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Run-on-RTX"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/flux_2-klein-4b",
+      "slug": "flux_2-klein-4b",
+      "display_name": "flux.2-klein-4b",
+      "publisher": "black-forest-labs",
+      "description": "FLUX.2-klein-4B is a distilled image generation and editing model, producing outputs at lighting speed",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Run-on-RTX",
+        "image editing"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/fourcastnet",
+      "slug": "fourcastnet",
+      "display_name": "fourcastnet",
+      "publisher": "nvidia",
+      "description": "FourCastNet predicts global atmospheric dynamics of various weather / climate variables.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "AI Weather Prediction",
+        "Earth-2",
+        "climate science"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gemma-2-2b-it",
+      "slug": "gemma-2-2b-it",
+      "display_name": "gemma-2-2b-it",
+      "publisher": "google",
+      "description": "Advanced small language generative AI model for edge applications",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Chat",
+        "Language Generation",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": null,
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "google/gemma-2-2b-it"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gemma-3n-e2b-it",
+      "slug": "gemma-3n-e2b-it",
+      "display_name": "gemma-3n-e2b-it",
+      "publisher": "google",
+      "description": "An edge computing AI model which accepts text, audio and image input, ideal for resource-constrained environments",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Visual QA",
+        "chat",
+        "language generation",
+        "speech recognition"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "google/gemma-3n-e2b-it"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gemma-3n-e4b-it",
+      "slug": "gemma-3n-e4b-it",
+      "display_name": "gemma-3n-e4b-it",
+      "publisher": "google",
+      "description": "An edge computing AI model which accepts text, audio and image input, ideal for resource-constrained environments",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Visual QA",
+        "chat",
+        "language generation",
+        "speech recognition"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "google/gemma-3n-e4b-it"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gemma-4-31b-it",
+      "slug": "gemma-4-31b-it",
+      "display_name": "gemma-4-31b-it",
+      "publisher": "google",
+      "description": "Dense 31B model delivering frontier reasoning for coding, agentic workflows, and fine-tuning.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 59,
+      "categories": [
+        "agentic",
+        "coding",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "google/gemma-4-31b-it"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/genmol-generate",
+      "slug": "genmol-generate",
+      "display_name": "genmol",
+      "publisher": "nvidia",
+      "description": "Fragment-Based Molecular Generation by Discrete Diffusion.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "BioNemo",
+        "Chemistry",
+        "Molecule Generation",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gliner-pii",
+      "slug": "gliner-pii",
+      "display_name": "gliner-pii",
+      "publisher": "nvidia",
+      "description": "GLiNER PII detects Personally Identifiable Information in text.",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 13,
+      "categories": [
+        "NVIDIA NIM",
+        "PII Detection"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/gliner-pii"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/glm-5.2",
+      "slug": "glm-5.2",
+      "display_name": "glm-5.2",
+      "publisher": "z-ai",
+      "description": "GLM-5.2 is a flagship LLM for agentic workflows, coding, and long-horizon reasoning tasks.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 65,
+      "categories": [
+        "Agentic AI",
+        "Coding",
+        "Reasoning",
+        "Tool Use"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "z-ai/glm-5.2"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gpt-oss-120b",
+      "slug": "gpt-oss-120b",
+      "display_name": "gpt-oss-120b",
+      "publisher": "openai",
+      "description": "Mixture of Experts (MoE) reasoning LLM (text-only) designed to fit within 80GB GPU.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 25,
+      "categories": [
+        "chat",
+        "math",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "openai/gpt-oss-120b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/gpt-oss-20b",
+      "slug": "gpt-oss-20b",
+      "display_name": "gpt-oss-20b",
+      "publisher": "openai",
+      "description": "Smaller Mixture of Experts (MoE) text-only LLM for efficient AI reasoning and math",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 25,
+      "categories": [
+        "chat",
+        "math",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "openai/gpt-oss-20b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/inkling",
+      "slug": "inkling",
+      "display_name": "inkling",
+      "publisher": "thinkingmachines",
+      "description": "Inkling is a multimodal (text + image) reasoning model from Thinking Machines — a Mamba-hybrid, 256-expert Mixture-of-Experts architecture with tool use and switchable reasoning.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 31,
+      "categories": [
+        "image-to-text",
+        "multimodal",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "thinkingmachines/inkling"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/ising-calibration-1-35b-a3b",
+      "slug": "ising-calibration-1-35b-a3b",
+      "display_name": "ising-calibration-1-35b-a3b",
+      "publisher": "nvidia",
+      "description": "Open VLM for quantum computer calibration chart understanding across a range of qubit modalities.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 25,
+      "categories": [
+        "Quantum",
+        "Vision Language Model",
+        "calibration",
+        "reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/ising-calibration-1-35b-a3b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/kimi-k2.6",
+      "slug": "kimi-k2.6",
+      "display_name": "kimi-k2.6",
+      "publisher": "moonshotai",
+      "description": "1T multimodal MoE for long-horizon coding, agentic tool use, and image/video understanding.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 45,
+      "categories": [
+        "Mixture-of-Experts",
+        "Multimodal",
+        "Reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "moonshotai/kimi-k2.6"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/laguna-xs-2.1",
+      "slug": "laguna-xs-2.1",
+      "display_name": "laguna-xs-2.1",
+      "publisher": "poolside",
+      "description": "Efficient 33B MoE for local, long-horizon agentic coding and terminal tasks",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 45,
+      "categories": [
+        "Agentic AI",
+        "Coding",
+        "Reasoning",
+        "Tool Use"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "poolside/laguna-xs-2.1"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/lipsync",
+      "slug": "lipsync",
+      "display_name": "LipSync",
+      "publisher": "nvidia",
+      "description": "Generative lip dubbing that syncs lips in a video to input audio.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "broadcast",
+        "dubbing",
+        "lipsync",
+        "localization",
+        "news",
+        "nvidia ai for media",
+        "nvidia holoscan for media",
+        "smpte",
+        "sports",
+        "translation"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_1-70b-instruct",
+      "slug": "llama-3_1-70b-instruct",
+      "display_name": "llama-3.1-70b-instruct",
+      "publisher": "meta",
+      "description": "Powers complex conversations with superior contextual understanding, reasoning and text generation.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 25,
+      "categories": [
+        "Chat",
+        "Language Generation",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_1-8b-instruct",
+      "slug": "llama-3_1-8b-instruct",
+      "display_name": "llama-3.1-8b-instruct",
+      "publisher": "meta",
+      "description": "Advanced state-of-the-art model with language understanding, superior reasoning, and text generation.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 45,
+      "categories": [
+        "Chat",
+        "Language Generation",
+        "Run-on-RTX",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_1-nemoguard-8b-content-safety",
+      "slug": "llama-3_1-nemoguard-8b-content-safety",
+      "display_name": "llama-3.1-nemoguard-8b-content-safety",
+      "publisher": "nvidia",
+      "description": "Leading content safety model for enhancing the safety and moderation capabilities of LLMs",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 0,
+      "categories": [
+        "LLM safety",
+        "Safety and moderation",
+        "dialogue safety",
+        "nemo guardrails",
+        "nemotron"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_1-nemoguard-8b-topic-control",
+      "slug": "llama-3_1-nemoguard-8b-topic-control",
+      "display_name": "llama-3.1-nemoguard-8b-topic-control",
+      "publisher": "nvidia",
+      "description": "Topic control model to keep conversations focused on approved topics, avoiding inappropriate content.",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 0,
+      "categories": [
+        "LLM safety",
+        "Safety and moderation",
+        "dialogue safety",
+        "nemo guardrails",
+        "nemotron"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_1-nemotron-nano-8b-v1",
+      "slug": "llama-3_1-nemotron-nano-8b-v1",
+      "display_name": "llama-3.1-nemotron-nano-8b-v1",
+      "publisher": "nvidia",
+      "description": "Leading reasoning and agentic AI accuracy model for PC and edge.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 35,
+      "categories": [
+        "advanced reasoning",
+        "function calling",
+        "instruction following",
+        "math"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3.1-nemotron-nano-vl-8b-v1",
+      "slug": "llama-3.1-nemotron-nano-vl-8b-v1",
+      "display_name": "llama-3.1-nemotron-nano-vl-8b-v1",
+      "publisher": "nvidia",
+      "description": "Multi-modal vision-language model that understands text/img and creates informative responses",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 13,
+      "categories": [
+        "OCR",
+        "doc intelligence",
+        "multiple image understanding"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/llama-3.1-nemotron-nano-vl-8b-v1"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_1-nemotron-safety-guard-8b-v3",
+      "slug": "llama-3_1-nemotron-safety-guard-8b-v3",
+      "display_name": "llama-3.1-nemotron-safety-guard-8b-v3",
+      "publisher": "nvidia",
+      "description": "Leading multilingual content safety model for enhancing the safety and moderation capabilities of LLMs",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 5,
+      "categories": [
+        "content moderation",
+        "llm safety",
+        "multilingual content safety",
+        "multilingual guard model",
+        "nemoguard"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3.2-11b-vision-instruct",
+      "slug": "llama-3.2-11b-vision-instruct",
+      "display_name": "llama-3.2-11b-vision-instruct",
+      "publisher": "meta",
+      "description": "Cutting-edge vision-language model exceling in high-quality reasoning from images.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 33,
+      "categories": [
+        "Image Captioning",
+        "Image-Text Retrieval",
+        "Visual Grounding",
+        "Visual QA"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-11b-vision-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3.2-1b-instruct",
+      "slug": "llama-3.2-1b-instruct",
+      "display_name": "llama-3.2-1b-instruct",
+      "publisher": "meta",
+      "description": "Advanced state-of-the-art small language model with language understanding, superior reasoning, and text generation.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 53,
+      "categories": [
+        "Language Generation",
+        "Text-to-Text",
+        "chat"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-1b-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3.2-3b-instruct",
+      "slug": "llama-3.2-3b-instruct",
+      "display_name": "llama-3.2-3b-instruct",
+      "publisher": "meta",
+      "description": "Advanced state-of-the-art small language model with language understanding, superior reasoning, and text generation.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 53,
+      "categories": [
+        "Chat",
+        "Language Generation",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-3b-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3.2-90b-vision-instruct",
+      "slug": "llama-3.2-90b-vision-instruct",
+      "display_name": "llama-3.2-90b-vision-instruct",
+      "publisher": "meta",
+      "description": "Cutting-edge vision-Language model exceling in high-quality reasoning from images.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 33,
+      "categories": [
+        "Image-Text Retrieval",
+        "Visual Grounding",
+        "Visual QA",
+        "image captioning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "meta/llama-3.2-90b-vision-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_3-70b-instruct",
+      "slug": "llama-3_3-70b-instruct",
+      "display_name": "llama-3.3-70b-instruct",
+      "publisher": "meta",
+      "description": "Advanced LLM for reasoning, math, general knowledge, and function calling",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 25,
+      "categories": [
+        "Instruction following",
+        "Math",
+        "Reasoning",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_3-nemotron-super-49b-v1",
+      "slug": "llama-3_3-nemotron-super-49b-v1",
+      "display_name": "llama-3.3-nemotron-super-49b-v1",
+      "publisher": "nvidia",
+      "description": "High efficiency model with leading accuracy for reasoning, tool calling, chat, and instruction following.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 31,
+      "categories": [
+        "advanced reasoning",
+        "function calling",
+        "instruction following",
+        "math"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-3_3-nemotron-super-49b-v1_5",
+      "slug": "llama-3_3-nemotron-super-49b-v1_5",
+      "display_name": "llama-3.3-nemotron-super-49b-v1.5",
+      "publisher": "nvidia",
+      "description": "High efficiency model with leading accuracy for reasoning, tool calling, chat, and instruction following.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 31,
+      "categories": [
+        "advanced reasoning",
+        "function calling",
+        "instruction following",
+        "math"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-4-maverick-17b-128e-instruct",
+      "slug": "llama-4-maverick-17b-128e-instruct",
+      "display_name": "llama-4-maverick-17b-128e-instruct",
+      "publisher": "meta",
+      "description": "A general purpose multimodal, multilingual 128 MoE model with 17B parameters.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 21,
+      "categories": [
+        "language generation",
+        "vision assistant",
+        "visual question answering"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "meta/llama-4-maverick-17b-128e-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-guard-4-12b",
+      "slug": "llama-guard-4-12b",
+      "display_name": "llama-guard-4-12b",
+      "publisher": "meta",
+      "description": "Multi-modal model to classify safety for input prompts as well output responses.",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Content Moderator",
+        "Content Safety",
+        "Guardrail",
+        "LLM Multimodal Safety"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "meta/llama-guard-4-12b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-nemotron-embed-1b-v2",
+      "slug": "llama-nemotron-embed-1b-v2",
+      "display_name": "llama-nemotron-embed-1b-v2",
+      "publisher": "nvidia",
+      "description": "Multilingual, cross-lingual embedding model for long-document QA retrieval, supporting 26 languages.",
+      "model_family": "embedding",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 8,
+      "categories": [
+        "NeMo Retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/llama-nemotron-embed-1b-v2"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-nemotron-embed-vl-1b-v2",
+      "slug": "llama-nemotron-embed-vl-1b-v2",
+      "display_name": "llama-nemotron-embed-vl-1b-v2",
+      "publisher": "nvidia",
+      "description": "Multimodal question-answer retrieval representing user queries as text and documents as images.",
+      "model_family": "embedding",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 8,
+      "categories": [
+        "embedding",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/llama-nemotron-embed-vl-1b-v2"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-nemotron-rerank-1b-v2",
+      "slug": "llama-nemotron-rerank-1b-v2",
+      "display_name": "llama-nemotron-rerank-1b-v2",
+      "publisher": "nvidia",
+      "description": "GPU-accelerated model optimized for providing a probability score that a given passage contains the information to answer a question.",
+      "model_family": "reranking",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 0,
+      "categories": [
+        "nemo retriever",
+        "reranking"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/llama-nemotron-rerank-vl-1b-v2",
+      "slug": "llama-nemotron-rerank-vl-1b-v2",
+      "display_name": "llama-nemotron-rerank-vl-1b-v2",
+      "publisher": "nvidia",
+      "description": "GPU-accelerated model optimized for providing a probability score that a given passage contains the information to answer a question.",
+      "model_family": "reranking",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 0,
+      "categories": [
+        "nemo retriever",
+        "reranking"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/magpie-tts-multilingual",
+      "slug": "magpie-tts-multilingual",
+      "display_name": "magpie-tts-multilingual",
+      "publisher": "nvidia",
+      "description": "Natural and expressive voices in multiple languages. For voice agents and brand ambassadors.",
+      "model_family": "speech_synthesis",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "NVIDIA NIM",
+        "NVIDIA Riva",
+        "TTS",
+        "multilingual"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/magpie-tts-zeroshot",
+      "slug": "magpie-tts-zeroshot",
+      "display_name": "magpie-tts-zeroshot",
+      "publisher": "nvidia",
+      "description": "Expressive and engaging text-to-speech, generated from a short audio sample.",
+      "model_family": "speech_synthesis",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "NVIDIA NIM",
+        "NVIDIA Riva",
+        "TTS"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/megatron-1b-nmt",
+      "slug": "megatron-1b-nmt",
+      "display_name": "megatron-1b-nmt",
+      "publisher": "nvidia",
+      "description": "Enable smooth global interactions in 36 languages.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "NVIDIA NIM",
+        "Neural machine translation"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/minimax-m2.7",
+      "slug": "minimax-m2.7",
+      "display_name": "minimax-m2.7",
+      "publisher": "minimaxai",
+      "description": "MiniMax M2.7 is a 230B-parameter text-to-text AI model excelling in coding, reasoning, and office tasks.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 29,
+      "categories": [
+        "coding",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "minimaxai/minimax-m2.7"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/minimax-m3",
+      "slug": "minimax-m3",
+      "display_name": "minimax-m3",
+      "publisher": "minimaxai",
+      "description": "MiniMax M3 Preview is a multimodal MoE vision-language model with strong reasoning, coding, and tool-calling capabilities.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 29,
+      "categories": [
+        "coding",
+        "reasoning",
+        "text-to-text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "minimaxai/minimax-m3"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/ministral-14b-instruct-2512",
+      "slug": "ministral-14b-instruct-2512",
+      "display_name": "ministral-14b-instruct-2512",
+      "publisher": "mistralai",
+      "description": "A general purpose VLM ideal for chat and instruction based use cases",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 21,
+      "categories": [
+        "SLM",
+        "language generation",
+        "multimodal"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "mistralai/ministral-14b-instruct-2512"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/mistral-large-3-675b-instruct-2512",
+      "slug": "mistral-large-3-675b-instruct-2512",
+      "display_name": "mistral-large-3-675b-instruct-2512",
+      "publisher": "mistralai",
+      "description": "A state-of-the-art general purpose MoE VLM ideal for chat, agentic and instruction based use cases.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 46,
+      "categories": [
+        "agentic",
+        "language generation",
+        "multimodal"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "mistralai/mistral-large-3-675b-instruct-2512"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/mistral-medium-3.5-128b",
+      "slug": "mistral-medium-3.5-128b",
+      "display_name": "mistral-medium-3.5-128b",
+      "publisher": "mistralai",
+      "description": "A high performing model for text generation, coding and agentic use cases",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 39,
+      "categories": [
+        "agentic",
+        "coding",
+        "reasoning",
+        "text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "mistralai/mistral-medium-3.5-128b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/mistral-nemotron",
+      "slug": "mistral-nemotron",
+      "display_name": "mistral-nemotron",
+      "publisher": "mistralai",
+      "description": "Built for agentic workflows, this model excels in coding, instruction following, and function calling",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 35,
+      "categories": [
+        "function calling",
+        "instruction following",
+        "language generation"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "mistralai/mistral-nemotron"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/mistral-small-4-119b-2603",
+      "slug": "mistral-small-4-119b-2603",
+      "display_name": "mistral-small-4-119b-2603",
+      "publisher": "mistralai",
+      "description": "Hybrid MoE model unifying instruct, reasoning, and coding with multimodal input and 256k context",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 37,
+      "categories": [
+        "code generation",
+        "image-to-text",
+        "reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "mistralai/mistral-small-4-119b-2603"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/mixtral-8x7b-instruct",
+      "slug": "mixtral-8x7b-instruct",
+      "display_name": "mixtral-8x7b-instruct-v0.1",
+      "publisher": "mistralai",
+      "description": "An MOE LLM that follows instructions, completes requests, and generates creative text.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 25,
+      "categories": [
+        "Advanced Reasoning",
+        "Chat",
+        "Large Language Models",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/molmim-generate",
+      "slug": "molmim-generate",
+      "display_name": "molmim",
+      "publisher": "nvidia",
+      "description": "MolMIM performs controlled generation, finding molecules with the right properties.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "BioNemo",
+        "Chemistry",
+        "Molecule Generation",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/msa-search",
+      "slug": "msa-search",
+      "display_name": "msa-search",
+      "publisher": "colabfold",
+      "description": "Generates a multiple sequence alignment from a query sequence and a protein sequence database search.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Biology",
+        "Bionemo",
+        "Protein Folding",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemoguard-jailbreak-detect",
+      "slug": "nemoguard-jailbreak-detect",
+      "display_name": "nemoguard-jailbreak-detect",
+      "publisher": "nvidia",
+      "description": "Industry leading jailbreak classification model for protection from adversarial attempts",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 0,
+      "categories": [
+        "LLM Safety",
+        "NIM",
+        "Prompt Injection",
+        "Safety and Moderation",
+        "llm security",
+        "nemo guardrails",
+        "nemotron"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemoretriever-ocr",
+      "slug": "nemoretriever-ocr",
+      "display_name": "nemoretriever-ocr",
+      "publisher": "nvidia",
+      "description": "Powerful OCR model for fast, accurate real-world image text extraction, layout, and structure analysis.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Table Extraction",
+        "data ingestion",
+        "extraction",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemoretriever-page-elements-v2",
+      "slug": "nemoretriever-page-elements-v2",
+      "display_name": "nemoretriever-page-elements-v2",
+      "publisher": "nvidia",
+      "description": "Model for object detection, fine-tuned to detect charts, tables, and titles in documents.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Chart Detection",
+        "Object Detection",
+        "Table Detection",
+        "data ingestion",
+        "nemo retriever",
+        "run-on-rtx"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemoretriever-parse",
+      "slug": "nemoretriever-parse",
+      "display_name": "nemoretriever-parse",
+      "publisher": "nvidia",
+      "description": "Cutting-edge vision-language model exceling in retrieving text and metadata from images.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 8,
+      "categories": [
+        "data ingestion",
+        "nemo retriever",
+        "optical character recognition",
+        "supported language - english",
+        "table extraction"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemoretriever-parse"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-3-nano-30b-a3b",
+      "slug": "nemotron-3-nano-30b-a3b",
+      "display_name": "nemotron-3-nano-30b-a3b",
+      "publisher": "nvidia",
+      "description": "Open, efficient MoE model with 1M context, excelling in coding, reasoning, instruction following, tool calling, and more",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 47,
+      "categories": [
+        "Instruction Following",
+        "Long Context",
+        "MoE",
+        "Reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-nano-30b-a3b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "slug": "nemotron-3-nano-omni-30b-a3b-reasoning",
+      "display_name": "nemotron-3-nano-omni-30b-a3b-reasoning",
+      "publisher": "nvidia",
+      "description": "Nemotron 3 Nano Omni is an omni-modal reasoning model that understands images, video, speech, text.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 25,
+      "categories": [
+        "OCR",
+        "Omni",
+        "VLM",
+        "Video"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-3-super-120b-a12b",
+      "slug": "nemotron-3-super-120b-a12b",
+      "display_name": "nemotron-3-super-120b-a12b",
+      "publisher": "nvidia",
+      "description": "Open, efficient hybrid Mamba-Transformer MoE with 1M context, excelling in agentic reasoning, coding, planning, tool calling, and more",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 57,
+      "categories": [
+        "Chat",
+        "Instruction Following",
+        "Long Context",
+        "MoE",
+        "Reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-super-120b-a12b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-3-ultra-550b-a55b",
+      "slug": "nemotron-3-ultra-550b-a55b",
+      "display_name": "nemotron-3-ultra-550b-a55b",
+      "publisher": "nvidia",
+      "description": "Open, efficient hybrid Mamba-Transformer MoE with 1M context, excelling in agentic reasoning, coding, planning, tool calling, and more",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 69,
+      "categories": [
+        "Agent",
+        "Frontier",
+        "Long Context",
+        "MoE",
+        "Reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3-ultra-550b-a55b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-3.5-content-safety",
+      "slug": "nemotron-3.5-content-safety",
+      "display_name": "nemotron-3.5-content-safety",
+      "publisher": "nvidia",
+      "description": "Multilingual, multimodal model for detecting unsafe and toxic content.",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 13,
+      "categories": [
+        "ai safety nemo guardrails",
+        "llm safety",
+        "multilingual content safety",
+        "safety and moderation"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-3.5-content-safety"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-asr-streaming",
+      "slug": "nemotron-asr-streaming",
+      "display_name": "nemotron-asr-streaming",
+      "publisher": "nvidia",
+      "description": "Real-time speech recognition for English",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Automatic Speech Recognition",
+        "NVIDIA NIM",
+        "NVIDIA Riva"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-graphic-elements-v1",
+      "slug": "nemotron-graphic-elements-v1",
+      "display_name": "nemotron-graphic-elements-v1",
+      "publisher": "nvidia",
+      "description": "Model for object detection, fine-tuned to detect charts, tables, and titles in documents.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Chart Detection",
+        "Object Detection",
+        "Table Detection",
+        "data ingestion",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-mini-4b-instruct",
+      "slug": "nemotron-mini-4b-instruct",
+      "display_name": "nemotron-mini-4b-instruct",
+      "publisher": "nvidia",
+      "description": "Optimized SLM for on-device inference and fine-tuned for roleplay, RAG and function calling",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 21,
+      "categories": [
+        "Chat",
+        "Language Generation",
+        "Text-to-Text"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": null,
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-mini-4b-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-nano-12b-v2-vl",
+      "slug": "nemotron-nano-12b-v2-vl",
+      "display_name": "nemotron-nano-12b-v2-vl",
+      "publisher": "nvidia",
+      "description": "Nemotron Nano 12B v2 VL enables multi-image and video understanding, along with visual Q&A and summarization capabilities.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 13,
+      "categories": [
+        "language generation",
+        "vision assistant",
+        "visual question answering"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-nano-12b-v2-vl"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-ocr-v1",
+      "slug": "nemotron-ocr-v1",
+      "display_name": "nemotron-ocr-v1",
+      "publisher": "nvidia",
+      "description": "Powerful OCR model for fast, accurate real-world image text extraction, layout, and structure analysis.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Table Extraction",
+        "data ingestion",
+        "extraction",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-ocr-v2",
+      "slug": "nemotron-ocr-v2",
+      "display_name": "nemotron-ocr-v2",
+      "publisher": "nvidia",
+      "description": "Nemotron OCR v2 is a state-of-the-art multilingual text recognition model designed for robust end-to-end optical character recognition (OCR) on complex real-world images.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 20,
+      "categories": [
+        "Table Extraction",
+        "data ingestion",
+        "extraction",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-page-elements-v3",
+      "slug": "nemotron-page-elements-v3",
+      "display_name": "nemotron-page-elements-v3",
+      "publisher": "nvidia",
+      "description": "Model for object detection, fine-tuned to detect charts, tables, and titles in documents.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Chart Detection",
+        "Object Detection",
+        "Table Detection",
+        "data ingestion"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-parse",
+      "slug": "nemotron-parse",
+      "display_name": "nemotron-parse",
+      "publisher": "nvidia",
+      "description": "Cutting-edge vision-language model exceling in retrieving text and metadata from images.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 8,
+      "categories": [
+        "document parsing",
+        "supported language - english",
+        "text and table extraction"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nemotron-parse"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-table-structure-v1",
+      "slug": "nemotron-table-structure-v1",
+      "display_name": "nemotron-table-structure-v1",
+      "publisher": "nvidia",
+      "description": "Model for object detection, fine-tuned to detect charts, tables, and titles in documents.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Chart Detection",
+        "Object Detection",
+        "Table Detection",
+        "data ingestion",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nemotron-voicechat",
+      "slug": "nemotron-voicechat",
+      "display_name": "nemotron-voicechat",
+      "publisher": "nvidia",
+      "description": "Nemotron 3 Voicechat",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 5,
+      "categories": [
+        "English",
+        "NVIDIA NIM",
+        "voice chat"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nv-embed-v1",
+      "slug": "nv-embed-v1",
+      "display_name": "nv-embed-v1",
+      "publisher": "nvidia",
+      "description": "Generates high-quality numerical embeddings from text inputs.",
+      "model_family": "embedding",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Non-Commercial Use Only"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nv-embed-v1"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nv-embedcode-7b-v1",
+      "slug": "nv-embedcode-7b-v1",
+      "display_name": "nv-embedcode-7b-v1",
+      "publisher": "nvidia",
+      "description": "The NV-EmbedCode model is a 7B Mistral-based embedding model optimized for code retrieval, supporting text, code, and hybrid queries.",
+      "model_family": "embedding",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 13,
+      "categories": [
+        "Embedding",
+        "nemo retriever"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nv-embedcode-7b-v1"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nv-embedqa-e5-v5",
+      "slug": "nv-embedqa-e5-v5",
+      "display_name": "nv-embedqa-e5-v5",
+      "publisher": "nvidia",
+      "description": "English text embedding model for question-answering retrieval.",
+      "model_family": "embedding",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 8,
+      "categories": [
+        "Embedding",
+        "Nemo retriever",
+        "run-on-rtx"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nv-embedqa-e5-v5"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nv-yolox-page-elements-v1",
+      "slug": "nv-yolox-page-elements-v1",
+      "display_name": "nv-yolox-page-elements-v1",
+      "publisher": "nvidia",
+      "description": "Model for object detection, fine-tuned to detect charts, tables, and titles in documents.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Chart Detection",
+        "Data ingestion",
+        "Object Detection",
+        "Table Detection",
+        "extraction",
+        "nemo retriever",
+        "run-on-rtx"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/nvidia-nemotron-nano-9b-v2",
+      "slug": "nvidia-nemotron-nano-9b-v2",
+      "display_name": "nvidia-nemotron-nano-9b-v2",
+      "publisher": "nvidia",
+      "description": "High‑efficiency LLM with hybrid Transformer‑Mamba design, excelling in reasoning and agentic tasks.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 35,
+      "categories": [
+        "reasoning",
+        "thinking budget"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "nvidia/nvidia-nemotron-nano-9b-v2"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/openfold2",
+      "slug": "openfold2",
+      "display_name": "openfold2",
+      "publisher": "openfold",
+      "description": "Predicts the 3D structure of a protein from its amino acid sequence, multiple sequence alignments, and templates.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Biology",
+        "Bionemo",
+        "Protein Folding",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/openfold3",
+      "slug": "openfold3",
+      "display_name": "openfold3",
+      "publisher": "openfold",
+      "description": "OpenFold3 is a third-generation biomolecular foundation model that predicts the three-dimensional structures of molecular complexes (proteins, DNA, RNA, ligands)",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Biology",
+        "Protein Folding"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/paddleocr",
+      "slug": "paddleocr",
+      "display_name": "paddleocr",
+      "publisher": "baidu",
+      "description": "Model for table extraction that receives an image as input, runs OCR on the image, and returns the text within the image and its bounding boxes.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Optical Character Detection",
+        "Optical Character Recognition",
+        "Table Extraction",
+        "data ingestion",
+        "extraction",
+        "nemo retriever",
+        "run-on-rtx"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/google-paligemma",
+      "slug": "google-paligemma",
+      "display_name": "paligemma",
+      "publisher": "google",
+      "description": "Vision language model adept at comprehending text and visual inputs to produce informative responses",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 5,
+      "categories": [
+        "Language Generation",
+        "Vision Assistant",
+        "Visual Question Answering",
+        "computer vision",
+        "cv",
+        "image",
+        "video",
+        "vlm"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": null,
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-1_1b-rnnt-multilingual-asr",
+      "slug": "parakeet-1_1b-rnnt-multilingual-asr",
+      "display_name": "parakeet-1.1b-rnnt-multilingual-asr",
+      "publisher": "nvidia",
+      "description": "High accuracy and optimized performance for transcription in 25 languages",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Automatic Speech Recognition",
+        "NVIDIA NIM",
+        "NVIDIA Riva"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-ctc-0_6b-asr",
+      "slug": "parakeet-ctc-0_6b-asr",
+      "display_name": "parakeet-ctc-0.6b-asr",
+      "publisher": "nvidia",
+      "description": "State-of-the-art accuracy and speed for English transcriptions.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 20,
+      "categories": [
+        "ASR",
+        "Batch",
+        "English",
+        "Fast",
+        "NVIDIA NIM",
+        "Run-on-RTX",
+        "Streaming"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-ctc-0_6b-es",
+      "slug": "parakeet-ctc-0_6b-es",
+      "display_name": "parakeet-ctc-0.6b-es",
+      "publisher": "nvidia",
+      "description": "Accurate and optimized Spanish English transcriptions with punctuation and word timestamps.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "NVIDIA NIM",
+        "Spanish",
+        "Streaming"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-ctc-0_6b-vi",
+      "slug": "parakeet-ctc-0_6b-vi",
+      "display_name": "parakeet-ctc-0.6b-vi",
+      "publisher": "nvidia",
+      "description": "Accurate and optimized Vietnamese-English transcriptions with punctuation and word timestamps.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "NVIDIA NIM",
+        "Streaming",
+        "Vietnamese"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-ctc-0_6b-zh-cn",
+      "slug": "parakeet-ctc-0_6b-zh-cn",
+      "display_name": "parakeet-ctc-0.6b-zh-cn",
+      "publisher": "nvidia",
+      "description": "Record-setting accuracy and performance for Mandarin English transcriptions.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "Mandarin",
+        "NVIDIA NIM",
+        "Streaming"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-ctc-0_6b-zh-tw",
+      "slug": "parakeet-ctc-0_6b-zh-tw",
+      "display_name": "parakeet-ctc-0.6b-zh-tw",
+      "publisher": "nvidia",
+      "description": "Record-setting accuracy and performance for Mandarin Taiwanese English transcriptions.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "NVIDIA NIM",
+        "Streaming",
+        "Taiwanese"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-ctc-1_1b-asr",
+      "slug": "parakeet-ctc-1_1b-asr",
+      "display_name": "parakeet-ctc-1.1b-asr",
+      "publisher": "nvidia",
+      "description": "Record-setting accuracy and performance for English transcription.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "English",
+        "NVIDIA NIM",
+        "Streaming",
+        "batch"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/parakeet-tdt-0_6b-v2",
+      "slug": "parakeet-tdt-0_6b-v2",
+      "display_name": "parakeet-tdt-0.6b-v2",
+      "publisher": "nvidia",
+      "description": "Accurate and optimized English transcriptions with punctuation and word timestamps",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "English",
+        "NVIDIA NIM",
+        "NVIDIA Riva",
+        "speech-to-text"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/proteinmpnn",
+      "slug": "proteinmpnn",
+      "display_name": "proteinmpnn",
+      "publisher": "ipd",
+      "description": "ProteinMPNN is a deep learning model for predicting amino acid sequences for protein backbones.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "BioNemo",
+        "Protein Generation",
+        "biology",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/qwen-image",
+      "slug": "qwen-image",
+      "display_name": "qwen-image",
+      "publisher": "qwen",
+      "description": "Qwen-Image is a text-to-image foundation model with advanced multilingual text rendering.",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/qwen-image-edit",
+      "slug": "qwen-image-edit",
+      "display_name": "qwen-image-edit",
+      "publisher": "qwen",
+      "description": "Qwen-Image-Edit is an image editing model with multilingual text editing and strong subject consistency.",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/qwen-image-edit-nvpcb-ovsl2sl",
+      "slug": "qwen-image-edit-nvpcb-ovsl2sl",
+      "display_name": "qwen-image-edit-nvpcb-ovsl2sl",
+      "publisher": "nvidia",
+      "description": "An image edit model specialized for Omniverse synthetic to photographic solder-light style captured at NVIDIA PCB inspection stations",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Physical AI"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/qwen3-next-80b-a3b-instruct",
+      "slug": "qwen3-next-80b-a3b-instruct",
+      "display_name": "qwen3-next-80b-a3b-instruct",
+      "publisher": "qwen",
+      "description": "Qwen3-Next Instruct blends hybrid attention, sparse MoE, and stability boosts for ultra-long context AI.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 35,
+      "categories": [
+        "agentic",
+        "text-generation"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "qwen/qwen3-next-80b-a3b-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/qwen3.5-122b-a10b",
+      "slug": "qwen3.5-122b-a10b",
+      "display_name": "qwen3.5-122b-a10b",
+      "publisher": "qwen",
+      "description": "122B MoE LLM (10B active) for coding, reasoning, multimodal chat. Agent-ready.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 45,
+      "categories": [
+        "image-to-text",
+        "reasoning",
+        "text-to-text",
+        "tool calling"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "qwen/qwen3.5-122b-a10b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/qwen3.5-397b-a17b",
+      "slug": "qwen3.5-397b-a17b",
+      "display_name": "qwen3.5-397b-a17b",
+      "publisher": "qwen",
+      "description": "Next-gen Qwen 3.5 VLM (400B MoE) brings advanced vision, chat, RAG, and agentic capabilities.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 23,
+      "categories": [
+        "MoE",
+        "VLM",
+        "agentic",
+        "image-to-image"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "qwen/qwen3.5-397b-a17b"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/relighting",
+      "slug": "relighting",
+      "display_name": "Relighting",
+      "publisher": "nvidia",
+      "description": "Re-illuminate people in video to match target lighting from a 360 HDRI environment map.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "HDRI",
+        "lighting",
+        "nvidia ai for media",
+        "remote contribution"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/rerank-qa-mistral-4b",
+      "slug": "rerank-qa-mistral-4b",
+      "display_name": "rerank-qa-mistral-4b",
+      "publisher": "nvidia",
+      "description": "GPU-accelerated model optimized for providing a probability score that a given passage contains the information to answer a question.",
+      "model_family": "reranking",
+      "mark_relevance": "post_mvp_retrieval_only",
+      "catalog_capability_score": 5,
+      "categories": [
+        "Ranking",
+        "Retrieval Augmented Generation"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/rfdiffusion",
+      "slug": "rfdiffusion",
+      "display_name": "rfdiffusion",
+      "publisher": "ipd",
+      "description": "A generative model of protein backbones for protein binder design.",
+      "model_family": "biology_drug_discovery",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "BioNemo",
+        "Protein Generation",
+        "biology",
+        "nim"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/riva-translate-1_6b",
+      "slug": "riva-translate-1_6b",
+      "display_name": "riva-translate-1.6b",
+      "publisher": "nvidia",
+      "description": "Enable smooth global interactions in 36 languages.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "NVIDIA NIM",
+        "Neural machine translation"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/riva-translate-4b-instruct-v1_1",
+      "slug": "riva-translate-4b-instruct-v1_1",
+      "display_name": "riva-translate-4b-instruct-v1_1",
+      "publisher": "nvidia",
+      "description": "Translation model in 12 languages with few-shots example prompts capability.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 13,
+      "categories": [
+        "neural machine translation",
+        "nvidia nim"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/sarvam-m",
+      "slug": "sarvam-m",
+      "display_name": "sarvam-m",
+      "publisher": "sarvamai",
+      "description": "Multilingual, hybrid-reasoning model optimized for Indian language tasks, programming, mathematical reasoning capabilities.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 29,
+      "categories": [
+        "coding",
+        "hybrid",
+        "indic languages",
+        "math",
+        "multilingual",
+        "reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "sarvamai/sarvam-m"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/seed-oss-36b-instruct",
+      "slug": "seed-oss-36b-instruct",
+      "display_name": "seed-oss-36b-instruct",
+      "publisher": "bytedance",
+      "description": "ByteDance open-source LLM with long-context, reasoning, and agentic intelligence.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 43,
+      "categories": [
+        "reasoning",
+        "text-generation",
+        "thinking budget"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "bytedance/seed-oss-36b-instruct"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/solar-10_7b-instruct",
+      "slug": "solar-10_7b-instruct",
+      "display_name": "solar-10.7b-instruct",
+      "publisher": "upstage",
+      "description": "Excels in NLP tasks, particularly in instruction-following, reasoning, and mathematics.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 25,
+      "categories": [
+        "Language Generation",
+        "Large Language Models",
+        "Non-Commercial Use Only",
+        "Text-to-Text",
+        "chat"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": null,
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/sparsedrive",
+      "slug": "sparsedrive",
+      "display_name": "sparsedrive",
+      "publisher": "nvidia",
+      "description": "End-to-end autonomous driving stack integrating perception, prediction, and planning with sparse scene representations for efficiency and safety.",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 5,
+      "categories": [
+        "automotive",
+        "autonomous vehicles",
+        "av stack",
+        "bev"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/stable-diffusion-3_5-large",
+      "slug": "stable-diffusion-3_5-large",
+      "display_name": "stable-diffusion-3.5-large",
+      "publisher": "stabilityai",
+      "description": "Stable Diffusion 3.5 is a popular text-to-image generation model",
+      "model_family": "image_generation_editing",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/step-3.5-flash",
+      "slug": "step-3.5-flash",
+      "display_name": "step-3.5-flash",
+      "publisher": "stepfun-ai",
+      "description": "200B open-source reasoning engine with sparse MoE powering frontier agentic AI.",
+      "model_family": "language_reasoning",
+      "mark_relevance": "current_mark_scorer",
+      "catalog_capability_score": 59,
+      "categories": [
+        "Agentic",
+        "Coding",
+        "Reasoning"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "stepfun-ai/step-3.5-flash"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/step-3.7-flash",
+      "slug": "step-3.7-flash",
+      "display_name": "step-3.7-flash",
+      "publisher": "stepfun-ai",
+      "description": "A sparse MoE multimodal reasoning model good for enterprise, agentic and coding tasks.",
+      "model_family": "multimodal_language",
+      "mark_relevance": "future_multimodal_extension",
+      "catalog_capability_score": 39,
+      "categories": [
+        "Agents",
+        "Coding",
+        "Vision"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": [
+        "stepfun-ai/step-3.7-flash"
+      ]
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/streampetr",
+      "slug": "streampetr",
+      "display_name": "streampetr",
+      "publisher": "nvidia",
+      "description": "StreamPETR offers efficient 3D object detection for autonomous driving by propagating sparse object queries temporally.",
+      "model_family": "document_vision",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "AV Stack",
+        "automotive",
+        "autonomous vehicles",
+        "bev"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": false,
+        "catalog_available_flag": "false",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/studiovoice",
+      "slug": "studiovoice",
+      "display_name": "Studio Voice",
+      "publisher": "nvidia",
+      "description": "Enhance input speech recorded with low-quality microphones in noisy or reverberant environments, producing studio-quality speech.",
+      "model_family": "video_media",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 5,
+      "categories": [
+        "broadcast",
+        "communications",
+        "mic quality",
+        "nvidia ai for media",
+        "nvidia holoscan for media",
+        "smpte",
+        "speech enhancement"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/synthetic-video-detector",
+      "slug": "synthetic-video-detector",
+      "display_name": "synthetic-video-detector",
+      "publisher": "nvidia",
+      "description": "NVIDIA Synthetic Video Detector is an AI-powered micro-service for detecting AI‑generated (synthetic) videos.",
+      "model_family": "safety_detection",
+      "mark_relevance": "optional_future_guardrail",
+      "catalog_capability_score": 5,
+      "categories": [
+        "broadcast",
+        "diffusion models",
+        "forensics",
+        "media2",
+        "nvidia ai for media"
+      ],
+      "availability": {
+        "free_endpoint": true,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": true,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/trellis",
+      "slug": "trellis",
+      "display_name": "TRELLIS",
+      "publisher": "microsoft",
+      "description": "MSFT TRELLIS is a 3D AI model that generates high-quality 3D assets from text or image inputs.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Run-on-RTX",
+        "image-to-3d",
+        "text-to-3d"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/vista-3d",
+      "slug": "vista-3d",
+      "display_name": "vista-3d",
+      "publisher": "nvidia",
+      "description": "VISTA-3D is a specialized interactive foundation model for segmenting and anotating human anatomies.",
+      "model_family": "other_specialized",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "Image Segmentation",
+        "Interactive Annotation",
+        "Non-Commercial Use Only"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": false,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    },
+    {
+      "catalog_resource_id": "qc69jvmznzxy/whisper-large-v3",
+      "slug": "whisper-large-v3",
+      "display_name": "whisper-large-v3",
+      "publisher": "openai",
+      "description": "Robust Speech Recognition via Large-Scale Weak Supervision.",
+      "model_family": "speech_recognition",
+      "mark_relevance": "not_required_for_mark_mvp",
+      "catalog_capability_score": 0,
+      "categories": [
+        "ASR",
+        "AST",
+        "Multilingual",
+        "NVIDIA NIM",
+        "NVIDIA Riva",
+        "OpenAI",
+        "batch",
+        "whisper"
+      ],
+      "availability": {
+        "free_endpoint": false,
+        "partner_endpoint": true,
+        "download_available": true,
+        "catalog_available_flag": "true",
+        "preview": false,
+        "deprecation_date": null
+      },
+      "hosted_api_model_ids": []
+    }
+  ]
+}

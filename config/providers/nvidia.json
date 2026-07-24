@@ -1,0 +1,77 @@
+{
+  "schema_version": "provider.fallback_policy.v1",
+  "provider": "nvidia",
+  "strategy": "active_passive",
+  "credentials": [
+    {
+      "alias": "nvidia_primary",
+      "priority": 1,
+      "credential_name_hint": "NVIDIA API — Primary"
+    },
+    {
+      "alias": "nvidia_secondary",
+      "priority": 2,
+      "credential_name_hint": "NVIDIA API — Secondary"
+    }
+  ],
+  "limits": {
+    "max_total_attempts": 3,
+    "max_same_credential_retries": 1,
+    "max_credential_failovers": 1,
+    "max_response_repairs": 1,
+    "max_model_fallbacks": 1
+  },
+  "backoff": {
+    "base_ms": 2000,
+    "max_ms": 15000,
+    "jitter_ratio": 0.2,
+    "respect_retry_after": true
+  },
+  "circuit_breaker": {
+    "transient_failure_threshold": 2,
+    "transient_cooldown_ms": 60000,
+    "rate_limit_cooldown_ms": 60000,
+    "auth_requires_manual_reset": true
+  },
+  "error_policy": {
+    "credential_failover": [
+      "authentication_error",
+      "permission_error",
+      "rate_limit",
+      "network_transient_after_retry",
+      "provider_transient_after_retry"
+    ],
+    "same_credential_retry": [
+      "network_transient",
+      "request_timeout",
+      "request_conflict",
+      "provider_transient"
+    ],
+    "model_fallback": [
+      "model_unavailable",
+      "contract_failure_after_repair"
+    ],
+    "response_repair": [
+      "contract_failure"
+    ],
+    "stop_without_failover": [
+      "bad_request",
+      "unprocessable_request",
+      "safety_refusal",
+      "unknown_non_retriable"
+    ]
+  },
+  "security_rules": [
+    "Store credential values only in the orchestrator credential store.",
+    "Persist and export credential aliases only, never secret values or local key paths.",
+    "Do not log Authorization headers or raw credential objects.",
+    "Do not copy credentials into model blocks, fixtures, workflow JSON, or Git."
+  ],
+  "operational_notes": [
+    "The secondary credential is passive and is used only for eligible failover.",
+    "A malformed payload or invalid model is not fixed by changing credentials.",
+    "A malformed model response uses repair or model fallback, not credential fallback.",
+    "Two keys can share an account-level or project-level quota; independent quota is not assumed.",
+    "Never fail back to a credential already used by the same request."
+  ]
+}

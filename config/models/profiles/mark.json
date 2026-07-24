@@ -1,0 +1,49 @@
+{
+  "schema_version": "mark.model_profile.v1",
+  "id": "mark-vacancy-scorer-candidates",
+  "purpose": "Shortlist for deterministic JSON vacancy-to-candidate scoring",
+  "models": [
+    {
+      "id": "nemotron-3-super-120b-a12b",
+      "config": "../nvidia/nemotron-3-super-120b-a12b.json",
+      "role": "primary_scorer",
+      "priority": 1
+    },
+    {
+      "id": "nemotron-3-nano-30b-a3b",
+      "config": "../nvidia/nemotron-3-nano-30b-a3b.json",
+      "role": "fast_fallback",
+      "priority": 2
+    },
+    {
+      "id": "qwen3.5-122b-a10b",
+      "config": "../nvidia/qwen3.5-122b-a10b.json",
+      "role": "quality_candidate_unstable",
+      "priority": 4
+    },
+    {
+      "id": "gemma-4-31b-it",
+      "config": "../nvidia/gemma-4-31b-it.json",
+      "role": "json_repair_candidate",
+      "priority": 5
+    },
+    {
+      "id": "mistral-small-4-119b-2603",
+      "config": "../nvidia/mistral-small-4-119b-2603.json",
+      "role": "json_repair_candidate",
+      "priority": 6
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "config": "../nvidia/deepseek-v4-flash.json",
+      "role": "reasoning_fallback",
+      "priority": 3
+    },
+    {
+      "id": "ministral-14b-instruct-2512",
+      "config": "../nvidia/ministral-14b-instruct-2512.json",
+      "role": "timeout_control",
+      "priority": 7
+    }
+  ]
+}

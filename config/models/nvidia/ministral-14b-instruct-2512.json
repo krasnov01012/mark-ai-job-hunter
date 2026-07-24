@@ -1,0 +1,15 @@
+{
+  "schema_version": "mark.model_config.v1",
+  "id": "ministral-14b-instruct-2512",
+  "provider": "nvidia",
+  "transport": "openai_chat_completions",
+  "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "model": "mistralai/ministral-14b-instruct-2512",
+  "modalities": { "input": ["text"], "output": ["text"] },
+  "catalog_evidence": ["instruction following", "language generation"],
+  "mark_roles": ["connectivity control", "vacancy classification"],
+  "request_defaults": { "temperature": 0.1, "top_p": 1, "max_tokens": 700, "stream": false, "timeout_ms": 120000 },
+  "benchmark": { "timeout_ms": 45000, "enabled": true },
+  "status": "disabled",
+  "notes": ["Two n8n requests exceeded 30s and 120s on 2026-07-16; retained as a regression control, not a primary model."]
+}

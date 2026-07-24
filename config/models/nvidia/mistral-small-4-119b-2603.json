@@ -1,0 +1,15 @@
+{
+  "schema_version": "mark.model_config.v1",
+  "id": "mistral-small-4-119b-2603",
+  "provider": "nvidia",
+  "transport": "openai_chat_completions",
+  "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "model": "mistralai/mistral-small-4-119b-2603",
+  "modalities": { "input": ["text", "image"], "output": ["text"] },
+  "catalog_evidence": ["instruction following", "reasoning", "coding", "multimodal input", "256k context"],
+  "mark_roles": ["vacancy classification", "candidate fit scoring", "gap explanation", "JSON-prompted output"],
+  "request_defaults": { "temperature": 0.1, "top_p": 1, "max_tokens": 700, "stream": false, "timeout_ms": 120000 },
+  "benchmark": { "timeout_ms": 60000, "enabled": true },
+  "status": "candidate",
+  "notes": ["One live request returned HTTP 200 in 595 ms but did not satisfy the strict raw JSON contract."]
+}

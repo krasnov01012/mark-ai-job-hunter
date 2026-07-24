@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mark.model_config.v1",
+  "title": "MARK provider model block",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "provider",
+    "transport",
+    "endpoint",
+    "model",
+    "modalities",
+    "request_defaults",
+    "benchmark",
+    "status"
+  ],
+  "properties": {
+    "schema_version": { "const": "mark.model_config.v1" },
+    "id": { "type": "string", "minLength": 3 },
+    "provider": { "type": "string", "minLength": 2 },
+    "transport": {
+      "enum": [
+        "openai_chat_completions",
+        "openai_embeddings",
+        "nvidia_rerank",
+        "nvidia_specialized"
+      ]
+    },
+    "endpoint": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "model": { "type": "string", "minLength": 3 },
+    "modalities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input", "output"],
+      "properties": {
+        "input": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "output": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "catalog_evidence": { "type": "array", "items": { "type": "string" } },
+    "mark_roles": { "type": "array", "items": { "type": "string" } },
+    "request_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["temperature", "top_p", "max_tokens", "stream", "timeout_ms"],
+      "properties": {
+        "temperature": { "type": "number", "minimum": 0, "maximum": 2 },
+        "top_p": { "type": "number", "minimum": 0, "maximum": 1 },
+        "max_tokens": { "type": "integer", "minimum": 1 },
+        "stream": { "type": "boolean" },
+        "timeout_ms": { "type": "integer", "minimum": 1000 },
+        "reasoning_effort": { "enum": ["none", "low", "high"] },
+        "chat_template_kwargs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enable_thinking": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeout_ms", "enabled"],
+      "properties": {
+        "timeout_ms": { "type": "integer", "minimum": 1000 },
+        "enabled": { "type": "boolean" }
+      }
+    },
+    "status": { "enum": ["candidate", "approved", "fallback", "disabled"] },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "mark.model_config.v1",
+  "id": "nemotron-3-super-120b-a12b",
+  "provider": "nvidia",
+  "transport": "openai_chat_completions",
+  "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "modalities": { "input": ["text"], "output": ["text"] },
+  "catalog_evidence": ["instruction following", "agentic reasoning", "long context", "coding", "tool calling", "120B total / 12B active"],
+  "mark_roles": ["vacancy classification", "candidate fit scoring", "strict JSON output", "ambiguous requirement analysis"],
+  "request_defaults": {
+    "temperature": 1,
+    "top_p": 0.95,
+    "max_tokens": 700,
+    "stream": false,
+    "timeout_ms": 120000,
+    "reasoning_effort": "none"
+  },
+  "benchmark": { "timeout_ms": 120000, "enabled": true },
+  "status": "approved",
+  "notes": [
+    "User-selected primary model for MARK.",
+    "Live benchmark 2026-07-16 with reasoning_effort=none: 3/3 HTTP success, 3/3 strict contract, median 1154 ms, p95 8408 ms.",
+    "Latency has a wider tail than Nano; keep Nano as a fast operational fallback."
+  ]
+}

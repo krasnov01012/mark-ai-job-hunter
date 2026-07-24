@@ -1,0 +1,19 @@
+{
+  "schema_version": "mark.model_registry.v1",
+  "provider_defaults": {
+    "nvidia": {
+      "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+      "credential": "n8n Header Auth credential",
+      "credential_header": "Authorization",
+      "credential_value_shape": "Bearer <secret>",
+      "fallback_policy": "../providers/nvidia.json"
+    }
+  },
+  "default_profile": "profiles/mark.json",
+  "rules": [
+    "No credential values are stored in this library.",
+    "A model block is not approved until a live benchmark succeeds.",
+    "Different transports must not be treated as interchangeable chat models.",
+    "Credential fallback and model fallback are separate decisions."
+  ]
+}

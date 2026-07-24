@@ -1,0 +1,26 @@
+{
+  "schema_version": "mark.model_config.v1",
+  "id": "nemotron-3-nano-30b-a3b",
+  "provider": "nvidia",
+  "transport": "openai_chat_completions",
+  "endpoint": "https://integrate.api.nvidia.com/v1/chat/completions",
+  "model": "nvidia/nemotron-3-nano-30b-a3b",
+  "modalities": { "input": ["text"], "output": ["text"] },
+  "catalog_evidence": ["instruction following", "reasoning", "coding", "tool calling", "1M context"],
+  "mark_roles": ["vacancy classification", "candidate fit scoring", "JSON-prompted output"],
+  "request_defaults": {
+    "temperature": 0.1,
+    "top_p": 1,
+    "max_tokens": 700,
+    "stream": false,
+    "timeout_ms": 90000,
+    "chat_template_kwargs": { "enable_thinking": false }
+  },
+  "benchmark": { "timeout_ms": 45000, "enabled": true },
+  "status": "fallback",
+  "notes": [
+    "3B active parameters make it the leading latency/cost candidate.",
+    "Live benchmark 2026-07-16: 3/3 HTTP success, 3/3 strict contract, median 1088 ms, p95 1153 ms.",
+    "Hosted API validation: chat_template_kwargs.enable_thinking=false prevents reasoning_content from consuming the JSON output budget."
+  ]
+}

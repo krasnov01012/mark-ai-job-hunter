@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "provider.fallback_policy.v1",
+  "title": "Reusable provider credential fallback policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "provider",
+    "strategy",
+    "credentials",
+    "limits",
+    "backoff",
+    "circuit_breaker",
+    "error_policy",
+    "security_rules"
+  ],
+  "properties": {
+    "schema_version": { "const": "provider.fallback_policy.v1" },
+    "provider": { "type": "string", "minLength": 2 },
+    "strategy": { "const": "active_passive" },
+    "credentials": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["alias", "priority", "credential_name_hint"],
+        "properties": {
+          "alias": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "priority": { "type": "integer", "minimum": 1, "maximum": 2 },
+          "credential_name_hint": { "type": "string", "minLength": 3 }
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_total_attempts",
+        "max_same_credential_retries",
+        "max_credential_failovers",
+        "max_response_repairs",
+        "max_model_fallbacks"
+      ],
+      "properties": {
+        "max_total_attempts": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "max_same_credential_retries": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "max_credential_failovers": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "max_response_repairs": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "max_model_fallbacks": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "backoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_ms", "max_ms", "jitter_ratio", "respect_retry_after"],
+      "properties": {
+        "base_ms": { "type": "integer", "minimum": 100 },
+        "max_ms": { "type": "integer", "minimum": 1000 },
+        "jitter_ratio": { "type": "number", "minimum": 0, "maximum": 0.5 },
+        "respect_retry_after": { "type": "boolean" }
+      }
+    },
+    "circuit_breaker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transient_failure_threshold", "transient_cooldown_ms", "rate_limit_cooldown_ms", "auth_requires_manual_reset"],
+      "properties": {
+        "transient_failure_threshold": { "type": "integer", "minimum": 1 },
+        "transient_cooldown_ms": { "type": "integer", "minimum": 1000 },
+        "rate_limit_cooldown_ms": { "type": "integer", "minimum": 1000 },
+        "auth_requires_manual_reset": { "type": "boolean" }
+      }
+    },
+    "error_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credential_failover", "same_credential_retry", "model_fallback", "response_repair", "stop_without_failover"],
+      "properties": {
+        "credential_failover": { "$ref": "#/$defs/stringList" },
+        "same_credential_retry": { "$ref": "#/$defs/stringList" },
+        "model_fallback": { "$ref": "#/$defs/stringList" },
+        "response_repair": { "$ref": "#/$defs/stringList" },
+        "stop_without_failover": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "security_rules": { "$ref": "#/$defs/stringList" },
+    "operational_notes": { "$ref": "#/$defs/stringList" }
+  },
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,6 +1,6 @@
 /**
  * MARK — Full Vacancy Hard Filter
- * Version: 1.0.0
+ * Version: 1.2.0
  *
  * n8n Code node mode: Run Once for Each Item
  *
@@ -16,7 +16,7 @@
  *   - REVIEW is kept for audit but does not continue automatically.
  */
 
-const HARD_FILTER_VERSION = '1.0.0';
+const HARD_FILTER_VERSION = '1.2.0';
 
 function isPresent(value) {
   return value !== null &&
@@ -211,7 +211,7 @@ function geoWorkGate(vacancy) {
       ...gate(
         'PASS',
         'allow_full_remote',
-        ['Confirmed full remote work is allowed from any location'],
+        ['Confirmed full remote work is allowed regardless of location restrictions'],
       ),
       geography,
     };

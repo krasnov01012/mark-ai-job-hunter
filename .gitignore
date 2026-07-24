@@ -1,6 +1,43 @@
+# Local environment files may contain HH OAuth, NVIDIA and Telegram secrets.
 .env
+.env.*
+!.env.example
 config/.env
+config/.env.*
+!config/.env.example
+
+# Never commit credential exports, private keys or a copied n8n credential DB.
+.n8n/
+n8n/credentials/
+credentials/
+secrets/
+*credential*.json
+*.secret
+*.secrets
+*.token
+*.pem
+*.key
+*.p12
+*.pfx
+database.sqlite
+database.sqlite-shm
+database.sqlite-wal
+
 node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Local diagnostic responses and workflow snapshots.
+reports/nvidia/*.json
+reports/hh/*.json
+.codex-*.json
+
+# Container runtime state and migration packages.
+deploy/mark/.env
+deploy/mark/runtime/
+deploy/mark/backups/
+deploy/mark/migration/
+*.n8n-backup
+*.n8n-entities
+entities-export/
