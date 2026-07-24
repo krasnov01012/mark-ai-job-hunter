@@ -226,7 +226,26 @@ Unexpected findings that block publication:
 - pinned/mock data;
 - hidden unbounded retry or unreachable node.
 
+## Legacy VPS decommission — 25 July 2026
+
+- `n8n-mark.service`, backup timer и Telegram relay были stopped/disabled до удаления;
+- финальный SQLite backup прошёл `PRAGMA integrity_check=ok` и содержал 3 workflows + 4 encrypted credentials;
+- database/environment backup и entity archive скачаны в ACL-protected local storage вне Git/OneDrive, source/local SHA-256 совпали;
+- legacy MARK units, environment, state, project/backups, Unix user/group и dedicated global n8n runtime удалены;
+- независимое SSH-подключение подтвердило `LoadState=not-found`, отсутствие listener `5678`, command `n8n`, MARK paths, cron и systemd references;
+- новый нидерландский server был проверен read-only и не изменялся.
+
+## Main Server M1 Release Freeze — 25 July 2026
+
+- повторно пройдены 27 JavaScript syntax checks;
+- все 15 test files завершились успешно: 967 checks;
+- 7 deployment shell scripts прошли `bash -n`;
+- `docker compose --env-file deploy/mark/.env.example -f deploy/mark/compose.yaml config --quiet` завершился успешно;
+- workflow export подтверждён как `RO4i4YmNzEzC2TEV`, 54 nodes, 53 connection roots, `active: false`, пустой `pinData`;
+- repository secret contracts подтвердили отсутствие literal OAuth/Bearer/NVIDIA secrets, Telegram bot token/Chat ID, private keys и local user paths;
+- `git diff --check`, conflict-marker scan и локальные ссылки изменённой документации прошли.
+
 ## Remaining production tests
 
-- replace the temporary Windows reverse SSH Telegram bridge with trusted always-on egress;
+- deploy target container and verify direct Telegram egress without a Windows bridge;
 - long-running soak test and state-size observation.

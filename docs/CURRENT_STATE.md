@@ -1,6 +1,6 @@
 # MARK — Current State
 
-Актуализировано: 25 июля 2026 года по autonomous container deployment package; target server cutover ещё не выполнен.
+Актуализировано: 25 июля 2026 года после verified decommission legacy VPS; target server cutover ещё не выполнен.
 
 ## Результат текущего checkpoint
 
@@ -11,23 +11,26 @@ JH-10: DONE + LIVE TELEGRAM DELIVERY VERIFIED
 JH-11: DONE + PRODUCTION VERIFIED
 JH-12: CONTROLLED FAILOVER VERIFIED; QUOTA SCOPE + SOAK REMAIN
 HH API: OAUTH + PRODUCTION POLLING + DURABLE DEDUPE VERIFIED
-SERVER CUTOVER: ACTIVE; ALWAYS-ON TELEGRAM EGRESS REMAINS
+SERVER STATUS: LEGACY VPS REMOVED; MARK OFFLINE UNTIL TARGET CUTOVER
 CONTAINER DEPLOYMENT: IMPLEMENTED + DISPOSABLE DOCKER MIGRATION VERIFIED; TARGET CUTOVER PENDING
+TARGET PREFLIGHT: INFRASTRUCTURE + DIRECT EGRESS PASSED; DEPLOYMENT CONTRACT ALIGNMENT PENDING
+RELEASE FREEZE M1: PASSED; 27 JS + 15 TEST FILES / 967 CHECKS + 7 SH + COMPOSE
 ```
 
 Для нового Ubuntu 24.04 VPS в Нидерландах подготовлен `deploy/mark/`:
 официальный n8n `2.29.10`, PostgreSQL 16, persistent volumes, loopback-only
 `5678`, health checks, restart policies, execution pruning, daily database +
 n8n-data backups и безопасный entity migration. Target server имеет прямой
-Telegram/NVIDIA egress, но его infrastructure сейчас готовится отдельно и
-container package туда в этом checkpoint не развёртывался.
+Telegram/NVIDIA/HH egress и достаточные ресурсы; read-only infrastructure audit
+пройден. Container package туда ещё не развёртывался, а target paths, private
+HTTPS, backup и monitoring contracts согласуются в Main Server M2–M3.
 
 Migration сохраняет users, encrypted credentials, workflow ownership и
 накопленный static state через `export:entities` / `import:entities`. Exact
 source `N8N_ENCRYPTION_KEY` передаётся только в ignored server `.env`.
 Restore оставляет все workflows unpublished; отдельный script публикует только
-`RO4i4YmNzEzC2TEV` после controlled smoke. Поэтому новый MARK не может случайно
-начать Schedule Trigger параллельно со старым.
+`RO4i4YmNzEzC2TEV` после controlled smoke. До publication никакой Schedule
+Trigger не работает.
 
 Disposable local Docker smoke поднял source SQLite и чистый target PostgreSQL,
 экспортировал и импортировал 85 n8n entities, затем подтвердил workflow
@@ -37,23 +40,38 @@ Backup service создал читаемые PostgreSQL custom dump и n8n-data 
 После проверки только disposable containers, networks, volumes и ignored
 runtime artifacts были удалены; другие Docker projects не изменялись.
 
-Основной workflow `RO4i4YmNzEzC2TEV` перенесён на VPS и опубликован как единственный active workflow. Выделенный `n8n-mark.service` включён в автозапуск, слушает только `127.0.0.1:5678`, имеет production concurrency `1`, timezone `Europe/Moscow`, execution pruning и системные memory limits. Перед cutover создана backup в root-only directory; main workflow сохранил накопленный bounded static state. Ежедневный `backup-mark.timer` включён, а post-cutover backup завершился с `Result=success`. Четыре credentials импортированы в зашифрованный n8n store, а environment/DB имеют permissions `640 root:mark` и `600 mark:mark`. Literal secrets во workflow/export/docs не добавлялись.
+25 июля legacy MARK был остановлен и disabled. После остановки создан финальный
+SQLite + environment backup и entity export; SQLite вернула
+`PRAGMA integrity_check=ok`, в database подтверждены 3 workflows и 4 encrypted
+credentials. Оба переносимых archive скачаны в ACL-protected local directory
+вне repository и OneDrive, их SHA-256 совпали с source.
+
+После сохранения recovery artifacts на legacy VPS удалены `n8n-mark.service`,
+`backup-mark.timer/service`, Telegram relay, MARK environment, state, backups,
+Unix user/group и выделенный global n8n runtime. Независимая SSH-проверка
+вернула `LoadState=not-found`, отсутствие command `n8n`, listener `5678`,
+MARK paths, cron и systemd references. Новый нидерландский server проверен
+read-only и не изменялся.
+
+## Historical production evidence — legacy VPS
+
+Основной workflow `RO4i4YmNzEzC2TEV` был опубликован на legacy VPS как единственный active workflow. Выделенный `n8n-mark.service` имел автозапуск, слушал только `127.0.0.1:5678`, использовал production concurrency `1`, timezone `Europe/Moscow`, execution pruning и системные memory limits. Перед cutover создавались root-only backups. Четыре credentials хранились только в зашифрованном n8n store. Literal secrets во workflow/export/docs не добавлялись.
 
 Server source smoke прошёл реальный HH/NVIDIA path: два OAuth searches вернули `200/200`, 43 items прошли parse, 27 были new/due, 21 получила full-detail HTTP `200`; Hard Filter дал 4 `PASS`, 1 `REJECT`, 16 `REVIEW`. Четыре кандидата получили валидные primary NVIDIA responses со scores `58`, `25`, `42`, `38`; все корректно завершились `SKIP`, Telegram не вызывался.
 
 Отдельная synthetic vacancy `Junior AI Engineer — MARK CUTOVER TEST`, явно помеченная как несуществующая тестовая вакансия, прошла production Hard Filter, Level Filter, Candidate Profile, NVIDIA и Telegram nodes. Пользователь визуально подтвердил получение карточки в нужном Telegram-чате. Повторная отправка не выполнялась; временные source/controlled smoke workflows оставлены inactive.
 
-Прямой HTTPS-доступ VPS к Telegram API блокируется сетью провайдера. Для cutover используется временный Windows reverse SSH bridge: server endpoint доступен только на `127.0.0.1:5680`, bot token остаётся в n8n credential, relay его не логирует. Telegram delivery работает, пока Windows-компьютер и bridge включены; при недоступности Telegram production state оставляет delivery retryable. Tor и Cloudflare WARP не смогли установить внешний transport в этой сети и были полностью удалены, после cleanup root disk usage снизился с 78% до 69%.
+Прямой HTTPS-доступ legacy VPS к Telegram API блокировался сетью провайдера. Для cutover использовался временный Windows reverse SSH bridge: server endpoint был доступен только на `127.0.0.1:5680`, bot token оставался в n8n credential, relay его не логировал. Tor и Cloudflare WARP не смогли установить внешний transport в этой сети и были полностью удалены, после cleanup root disk usage снизился с 78% до 69%.
 
 После публикации подтверждены три automatic server ticks. Run `175` стартовал `15:00:33.528Z`: 93 source items, 47 new, 46 skipped, 47 processed, 0 source/provider errors, 4 Hard PASS и 4 валидных NVIDIA scores; все были ниже Telegram threshold. Run `176` стартовал через 599.568 секунды: 93 items, 1 new, 92 skipped, 1 processed, 0 errors, 0 NVIDIA/Telegram. Run `177` стартовал ещё через 599.999 секунды: 96 items, 3 new, 93 skipped, 3 processed, 1 valid NVIDIA score, 0 errors и 0 Telegram. State после третьего tick: 381 bounded source records, 19 vacancy records, 50 run summaries, 244,869 serialized bytes.
 
 На сервере `EXECUTIONS_DATA_SAVE_ON_SUCCESS=none`: успешный execution сразу получает `deletedAt`, а устаревшее поле `status=running` может оставаться в soft-deleted строке до фоновой очистки. Проверка только строк с `deletedAt IS NULL` после третьего run вернула 0 active executions; фактического overlap нет.
 
-Workflow `RO4i4YmNzEzC2TEV` расширен и опубликован в live n8n с 54 nodes: Habr и HeadHunter имеют отдельные collection/pre-filter/normalizer paths и сходятся перед common Hard Filter. Credential `MARK HeadHunter OAuth2` хранится только в n8n; isolated execution `144` подтвердил application OAuth и HH `/vacancies` с HTTP `200`. Published nodes/connections точно совпадают с репозиторным export, а накопленный durable state сохранён. Export имеет пустой `pinData` и не содержит literal credentials, OAuth tokens или Chat ID.
+На legacy VPS workflow `RO4i4YmNzEzC2TEV` был расширен и опубликован с 54 nodes: Habr и HeadHunter имели отдельные collection/pre-filter/normalizer paths и сходились перед common Hard Filter. Credential `MARK HeadHunter OAuth2` хранился только в n8n; isolated execution `144` подтвердил application OAuth и HH `/vacancies` с HTTP `200`. Published nodes/connections точно совпадали с репозиторным export, а накопленный durable state был сохранён. Текущий repository export имеет пустой `pinData`, `active: false` и не содержит literal credentials, OAuth tokens или Chat ID.
 
 Первый scheduled run `145` выявил несовместимость `URLSearchParams` с sandbox Code node. Query builder переведён на `encodeURIComponent`, покрыт отдельным sandbox test и повторно опубликован. Manual `146` прошёл полный multi-source path, production execution `147` успешно обработал 25 уникальных HH vacancies без source errors, а manual `148` подтвердил межзапусковый HH dedupe: все 25 items остановлены durable gate до повторного detail fetch.
 
-Automatic executions `149`, `150`, `151` и `154` прошли без ошибок и повторного detail fetch. В `149` было 25 HH + 50 Habr source items, `new_guid_count=0`, `source_skipped_count=75`, `source_error_count=0`; per-source metrics показали HH `0 new / 25 skipped` и Habr `0 / 50`. Live workflow активен, published current version содержит 54 nodes / 53 connection roots и Durable Source Gate `1.2.0`.
+Automatic legacy executions `149`, `150`, `151` и `154` прошли без ошибок и повторного detail fetch. В `149` было 25 HH + 50 Habr source items, `new_guid_count=0`, `source_skipped_count=75`, `source_error_count=0`; per-source metrics показали HH `0 new / 25 skipped` и Habr `0 / 50`. На момент проверки published legacy version содержала 54 nodes / 53 connection roots и Durable Source Gate `1.2.0`.
 
 Isolated execution `155` проверил полный credential-failover path без Telegram: controlled `401`, `429` с `Retry-After: 7`, 400 ms timeout и `503` были классифицированы отдельно, каждый request перешёл с `nvidia_primary` на `nvidia_secondary` и завершился валидным score за две попытки. Финальный результат сохранил исходную причину, оба credential aliases и отсутствие ping-pong. Первые два diagnostic runs также выявили stochastic broken/length JSON у Super; scorer получил NVIDIA `guided_json`, а production graph оставляет bounded contract fallback на Nano.
 
@@ -206,11 +224,13 @@ n8n documents static data as experimental, small-state only, production-trigger 
 ## Telegram
 
 - Telegram bot token remains only in the n8n credential store; credential `Mark Jobhunter` passed the built-in connection test on 17 July 2026.
-- Chat ID is stored in environment as `MARK_TELEGRAM_CHAT_ID`; on VPS environment file принадлежит `root:mark`, имеет mode `640`, а его значение не печатается и не коммитится.
+- Chat ID is stored in environment as `MARK_TELEGRAM_CHAT_ID`; на legacy VPS environment file принадлежал `root:mark`, имел mode `640`, а его значение не печаталось и не коммитилось.
 - n8n 2.x environment access is enabled only for this trusted dedicated MARK instance through `N8N_BLOCK_ENV_ACCESS_IN_NODE=false`; otherwise the Telegram node cannot resolve the Chat ID expression.
 - A fresh-process n8n smoke execution sent the exact repository card implementation with the marker `(тестовая вакансия)`; exit code was `0` and Telegram returned `message_id`.
 - Server cutover smoke повторно подтвердил полный production Telegram path; получение synthetic vacancy в целевом чате подтверждено пользователем.
-- До появления trusted always-on egress Telegram credential на VPS использует loopback-only reverse SSH bridge; это operational dependency, а не часть vacancy/filter contract.
+- Legacy VPS использовал loopback-only reverse SSH bridge из-за provider block.
+  Новый target имеет direct Telegram egress, но отсутствие Windows dependency
+  должно быть подтверждено controlled target smoke и reboot recovery.
 - HTML is escaped; message length is bounded below Telegram's limit.
 - employer salary and Habr prediction are labeled separately.
 - delivery becomes `telegram_sent: true` only after node success; failures remain retryable.
@@ -237,7 +257,7 @@ Full local result: 967 checks.
 253 workflow structure/export
 ```
 
-`node --check` passed for all 27 JavaScript sources under `n8n/code`, `lib` and `scripts`. Compose config validation and POSIX shell syntax validation also passed. The 54-node repository export is intentionally import-safe with `active: false`; the published source-server version was active at its last verified checkpoint. Repository tests reject placeholder HH credentials, OAuth client fields/tokens, literal Bearer/NVIDIA secrets, Chat ID, email, local user paths and container/runtime secret material. `.gitignore` and `.dockerignore` also block local `.env.*`, entity exports, backups, credential exports, private keys, copied `.n8n` databases, diagnostic JSON/logs and temporary workflow snapshots.
+`node --check` passed for all 27 JavaScript sources under `n8n/code`, `lib` and `scripts`. Compose config validation and POSIX shell syntax validation also passed. The 54-node repository export is intentionally import-safe with `active: false`; the removed source-server version was active at its last verified production checkpoint. Repository tests reject placeholder HH credentials, OAuth client fields/tokens, literal Bearer/NVIDIA secrets, Chat ID, email, local user paths and container/runtime secret material. `.gitignore` and `.dockerignore` also block local `.env.*`, entity exports, backups, credential exports, private keys, copied `.n8n` databases, diagnostic JSON/logs and temporary workflow snapshots.
 
 Official `n8n audit` findings:
 
@@ -256,4 +276,6 @@ Official `n8n audit` findings:
 
 ## Один следующий шаг
 
-После завершения внешней подготовки target server выполнить entity restore и controlled cutover по `docs/DEPLOYMENT.md`.
+Проверить recovery bundle по Main Server M2, затем согласовать target
+paths/private HTTPS/backup/monitoring contract по M3 и только после этого
+выполнить entity restore по `docs/DEPLOYMENT.md`.

@@ -99,4 +99,11 @@ Create `ARCHITECTURE.md`, `DECISIONS.md`, `TESTING.md`, or `PORTFOLIO.md` only w
 
 Do not finish a logical development stage while its documentation is stale. When implementation and documentation disagree, verify the implementation first and update the documentation in the same checkpoint.
 
+For target-server deployment, networking, backups, monitoring, migration, cutover,
+restart, or recovery changes, also synchronize the sibling Main Server control-plane
+when it is available: `../Main Server/docs/MARK_INTEGRATION/STATUS.md`, the relevant
+acceptance checklist/plan sections, and `../Main Server/docs/PLAN.md`. A MARK
+checkpoint is not complete while the application documentation and server
+integration documentation disagree.
+
 Portfolio statements must be evidence-based. Clearly distinguish planned, implemented, tested, and production-proven work. Do not call MARK a from-scratch backend application or attribute Senior/Architect/ML Engineer/Data Scientist experience to the user.

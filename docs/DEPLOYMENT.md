@@ -3,8 +3,14 @@
 ## Статус
 
 Container package подготовлен для целевого Ubuntu 24.04 VPS в Нидерландах.
-Он не содержит secrets и не изменяет сервер автоматически. До завершения
-server provisioning старый MARK остаётся единственным production instance.
+Он не содержит secrets и не изменяет сервер автоматически. Legacy MARK
+остановлен и удалён 25 июля 2026 года после verified final backup; активного
+production instance сейчас нет.
+
+Target VPS прошёл read-only resource, Docker, security и direct
+Telegram/NVIDIA/HH egress audit. Staged deployment ещё не выполнялся. Перед
+restore package должен быть согласован с Main Server contract для external
+secret/migration/backup paths, private HTTPS и monitoring.
 
 Deployment использует:
 
@@ -44,10 +50,14 @@ Credential migration выполняется через `export:entities` / `impo
 тот же** `N8N_ENCRYPTION_KEY`, что и source instance. Передавать его нужно
 отдельным защищённым каналом и записывать только в server `.env`.
 
-## Source export
+## Source export — completed
 
-Финальный entity export выполняется на старом сервере с тем же Unix user и
-environment, что использует `n8n-mark.service`.
+Финальный entity export уже выполнен на остановленном legacy server с тем же
+Unix user и environment, что использовал `n8n-mark.service`. Entity archive и
+SQLite/environment backup сохранены в ACL-protected local storage вне Git и
+OneDrive; source server после проверки удалён.
+
+Ниже сохранён выполненный procedure как recovery evidence:
 
 1. Сначала выяснить фактические `User`, `ExecStart` и `EnvironmentFile`:
 
@@ -65,8 +75,7 @@ environment, что использует `n8n-mark.service`.
 
 5. Передать directory на target по SSH/SCP без промежуточного Git, cloud drive
    или публичной ссылки.
-6. Если cutover отменён, снова запустить source service. Если продолжается,
-   оставить source остановленным до решения о rollback.
+6. Проверить checksum и читаемость archive до удаления source.
 
 `export:entities` переносит database entities между SQLite и PostgreSQL.
 Execution history можно не включать: для MARK важны workflows, credentials,
@@ -74,10 +83,11 @@ ownership и compact durable state.
 
 ## Target preparation
 
-Repository размещается, например, в `/srv/mark`. Далее:
+На target repository размещается в `/srv/projects/mark`. После M3 contract
+alignment подготовительная команда будет запускаться из:
 
 ```bash
-cd /srv/mark/deploy/mark
+cd /srv/projects/mark/deploy/mark
 ./scripts/prepare-runtime.sh
 ```
 
@@ -133,23 +143,29 @@ Restore script:
 `RESTORED`. Это защищает от случайного запуска пустого instance и потери
 dedupe state.
 
-## Reverse proxy
+## Private HTTPS
 
-Host-level Caddy/Nginx, который настраивает server layer, должен proxy HTTPS
-домен MARK на:
+Target server работает в Tailscale-only режиме. Публичные `80/443` и
+Cloudflare Tunnel для n8n не открывать. Базовый cutover использует Tailscale
+Serve с private tailnet hostname и backend:
 
 ```text
 http://127.0.0.1:5678
 ```
 
-Последний proxy должен передавать:
+Private proxy должен передавать:
 
 - `X-Forwarded-For`;
 - `X-Forwarded-Host`;
 - `X-Forwarded-Proto`.
 
-MARK задаёт `WEBHOOK_URL` и `N8N_PROXY_HOPS=1`. В firewall наружу нужны только
-SSH, `80` и `443`; `5432` и `5678` не открывать.
+MARK задаёт `WEBHOOK_URL` и `N8N_PROXY_HOPS=1`. В firewall публично остаётся
+только SSH; `80`, `443`, `5432` и `5678` наружу не открывать.
+
+Собственный поддомен разрешён только как private/split-DNS route с
+browser-trusted DNS-01 certificate и reverse proxy, привязанным к
+Tailscale-интерфейсу. Подробный target runbook и owner gates находятся в
+Main Server `docs/MARK_INTEGRATION/`.
 
 Текущий HH flow использует application OAuth `client_credentials`, поэтому
 runtime search не зависит от browser callback. Redirect URI нужно менять
@@ -189,7 +205,7 @@ Cutover считается завершённым только после:
 4. повторного health/egress check;
 5. наличия свежих files в `runtime/backups/`.
 
-Не запускать старый и новый MARK одновременно.
+Не создавать второй опубликованный MARK во время target verification.
 
 ## Backups and recovery
 
@@ -216,7 +232,9 @@ server infrastructure.
 1. `docker compose exec -T -u node n8n n8n unpublish:workflow --all`;
 2. `docker compose stop n8n backup`;
 3. убедиться, что target не выполняет Schedule Trigger;
-4. запустить старый source service;
-5. проверить его health и один timer tick.
+4. исправить target и повторить restore из сохранённого final entity archive;
+5. при повреждении entity export восстановить legacy SQLite/environment backup
+   в disposable n8n `2.29.10`, повторить `export:entities` и снова удалить
+   disposable environment после проверки.
 
-Rollback не должен оставлять два опубликованных MARK одновременно.
+Legacy VPS rollback больше недоступен и не должен планироваться как fallback.

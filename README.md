@@ -4,7 +4,9 @@ MARK — персональный AI Job Hunter MVP и инженерный port
 
 ## Текущий статус
 
-- 54-node workflow сохранён в `n8n/workflows/ai-job-hunter-main.json` и опубликован в live n8n; nodes/connections совпадают с репозиторным export.
+- 54-node workflow сохранён в `n8n/workflows/ai-job-hunter-main.json` как
+  import-safe `active: false`; его nodes/connections совпадали с последней
+  проверенной published версией legacy n8n.
 - HeadHunter source подключён через application OAuth2: отдельные bounded searches для remote и Tbilisi, safe server-side exclusion категории `moreThan6`, execution dedupe, pre-filter, full-vacancy fetch и normalizer. Isolated OAuth smoke `144` получил HTTP `200`; production `147` сохранил 25 HH records, а scheduled `149` подтвердил zero-refetch dedupe.
 - Любая подтверждённая HH-вакансия с `work_format=REMOTE` проходит географический gate независимо от страны и текстовых ограничений.
 - Manual Trigger, `Dev Limit`, legacy smoke nodes и отдельные NVIDIA connectivity nodes удалены из main pipeline.
@@ -18,30 +20,36 @@ MARK — персональный AI Job Hunter MVP и инженерный port
 - Schedule Trigger запускает polling каждые 10 минут; дополнительного time gate, fast retry или внутреннего scheduler lock нет.
 - Controlled execution `155` подтвердил credential failover для `401`, `429`, timeout и `503`: 4/4 результата завершились через secondary без ping-pong и без Telegram.
 - Scheduled execution `237` подтвердил production HH query `1.1.0`: оба OAuth search вернули HTTP `200`, 52 unique items прошли parse, 4 new items получили full-detail fetch без errors; ни один не прошёл Hard Filter, поэтому NVIDIA/Telegram не вызывались.
-- 23 июля 2026 года workflow перенесён на выделенный VPS и запущен как `n8n-mark.service`: основной workflow активен, test workflows выключены, credentials остались только в зашифрованном n8n store.
+- 23 июля 2026 года workflow был проверен на legacy VPS как `n8n-mark.service`; 25 июля после финального encrypted backup этот instance остановлен и полностью удалён. До target cutover MARK намеренно offline.
 - Server source smoke получил HH OAuth `200/200`, загрузил 21 full vacancy и передал 4 вакансии в NVIDIA; все 4 provider responses были валидны.
 - Контролируемая подходящая вакансия прошла production Hard/Level/Candidate/NVIDIA/Telegram nodes; пользователь подтвердил получение тестовой карточки в Telegram.
 - Три automatic server ticks прошли с интервалами 599.568/599.999 секунды, без active overlap, source/provider errors и Telegram-дублей; второй tick пропустил 92 из 93 source items как уже обработанные.
 - Подготовлен автономный container deployment: n8n `2.29.10`, PostgreSQL 16, persistent volumes, loopback-only port, health checks, daily backups и safe SQLite → PostgreSQL entity migration. Disposable Docker smoke подтвердил реальный export/import entities, сохранение workflow/static state, health и читаемые PostgreSQL/n8n-data backups.
 - Полный локальный regression suite включает workflow и container/security contracts; точный результат последнего запуска зафиксирован в `docs/TESTING.md`.
 
-Live-проверки 16 июля 2026 года:
+Исторические live-проверки 16 июля 2026 года:
 
 - execution `92`: контролируемая Junior vacancy прошла Candidate Profile → NVIDIA Super → strict parser; HTTP `200`, score `85`, `APPLY`, `JUNIOR_PLUS`, `salary_used_in_score: false`;
 - execution `93`: реальный Habr RSS дал 50 items, source gate пропустил 50 новых, pre-filter оставил 1 для полной загрузки, 49 rejects и полный результат были записаны в source state без ошибок;
 - production executions `94–97`: Schedule Trigger и static state сохраняются между runs; повторный RSS snapshot пропустил 49 уже обработанных items и передал только 1 новый;
 - executions `116` и `118`: новый fixed schedule выполнил два automatic runs с интервалом 599.962 секунды; execution `117` подтвердил, что ручной Execute больше не блокируется;
-- временные test workflows заархивированы; основной workflow опубликован в базе.
+- временные test workflows были заархивированы; основной workflow был опубликован
+  в legacy database на момент этой проверки.
 
 Production audit выявил и исправил multi-item mode и branch-safe metrics. После отдельной проверки прежней пары regular/fast-retry расписание упрощено до одного 10-минутного Schedule Trigger: run initializer сохраняет observability, но никогда не блокирует первый или ручной execution.
 
-## Серверный запуск
+## Серверный статус
 
-Основной workflow `RO4i4YmNzEzC2TEV` опубликован на выделенном n8n `2.29.10` и запускается через `systemd` каждые 10 минут. n8n слушает только `127.0.0.1:5678`, production concurrency ограничена одним execution, timezone — `Europe/Moscow`. На сервер перенесены зашифрованные Telegram, HeadHunter OAuth2 и два NVIDIA credentials, Chat ID хранится только в root-owned environment file.
+Legacy VPS больше не запускает MARK. Перед удалением `n8n-mark.service` был остановлен и disabled, SQLite прошла integrity check, а финальные encrypted entity export и database/environment backup были сохранены в закрытом локальном хранилище вне Git и OneDrive. Затем удалены MARK services/timer/relay, environment, state, backups, Unix account и выделенный n8n runtime; повторная SSH-проверка не нашла listener, units или cron references.
 
-У VPS нет прямого сетевого доступа к Telegram API. Для запуска 23 июля используется временный reverse SSH bridge: Telegram credential обращается только к `127.0.0.1:5680` на сервере, а трафик уходит через локальный Windows relay. Это безопаснее случайного публичного proxy, но пока означает, что для Telegram delivery Windows-компьютер и bridge должны быть включены. HH collection, filtering, NVIDIA scoring и durable retry продолжают работать на VPS независимо; недоставленная карточка остаётся retryable.
+Исторический legacy deployment подтвердил HH collection, filtering, NVIDIA scoring, Telegram delivery через временный Windows bridge и durable state. Он больше не является runtime dependency и не может быть запущен как rollback.
 
-Следующий deployment package находится в `deploy/mark/`. Он рассчитан на новый Ubuntu 24.04 VPS в Нидерландах с прямым Telegram egress и не запущен до завершения внешней подготовки сервера. Migration использует `export:entities` / `import:entities`, сохраняет encrypted credentials и bounded state, а до controlled cutover оставляет все workflows unpublished.
+Следующий deployment package находится в `deploy/mark/`. Новый Ubuntu 24.04 VPS
+в Нидерландах прошёл read-only infrastructure/egress audit и готов к staged
+deployment, но package ещё не развёрнут и его target paths/private HTTPS/backup
+contract должны быть согласованы с Main Server. Migration использует сохранённый
+`export:entities`, переносит encrypted credentials и bounded state, а до
+controlled cutover оставляет все workflows unpublished.
 
 ## Pipeline
 
@@ -137,6 +145,6 @@ deploy/mark/                     автономный n8n + PostgreSQL container
 
 ## Ограничение персонального MVP
 
-Durable state использует bounded `getWorkflowStaticData('global')`. В container deployment n8n database переносится в PostgreSQL, но application-level state contract остаётся workflow static data. Коллекции имеют retention/size limits, а server runtime ограничен одним execution, поэтому это принято как контролируемый компромисс персонального запуска. Для масштабирования state нужно перенести в Data Table или отдельные PostgreSQL tables. Временная зависимость Telegram delivery исчезнет только после фактического cutover на новый VPS и проверки с выключенным Windows bridge.
+Durable state использует bounded `getWorkflowStaticData('global')`. В container deployment n8n database переносится в PostgreSQL, но application-level state contract остаётся workflow static data. Коллекции имеют retention/size limits, а server runtime ограничен одним execution, поэтому это принято как контролируемый компромисс персонального запуска. Для масштабирования state нужно перенести в Data Table или отдельные PostgreSQL tables. Автономность Telegram delivery будет подтверждена только после target cutover, controlled smoke с выключенным Windows bridge и reboot recovery.
 
 Подробнее: [CURRENT_STATE](docs/CURRENT_STATE.md), [ARCHITECTURE](docs/ARCHITECTURE.md), [TESTING](docs/TESTING.md) и [ROADMAP](docs/ROADMAP.md).

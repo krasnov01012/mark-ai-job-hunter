@@ -1,6 +1,6 @@
 # MARK — Roadmap MVP
 
-Актуализировано: 23 июля 2026 года по HeadHunter integration и server cutover checkpoint.
+Актуализировано: 25 июля 2026 года после verified decommission legacy VPS и сохранения migration artifacts.
 
 Обозначения:
 
@@ -219,7 +219,7 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Удалить неиспользованные Tor/WARP packages после failed egress probes и вернуть disk usage к 69%.
 - [x] Запустить временный loopback-only reverse SSH bridge для Telegram, не раскрывая bot token.
 
-Operational limitation: Telegram delivery на текущем VPS пока требует включённый Windows-компьютер с bridge. HH, filters, NVIDIA и durable retry работают независимо. Новый container target имеет прямой Telegram egress, но limitation снимается только после фактического cutover.
+Historical limitation: Telegram delivery на legacy VPS требовала включённый Windows-компьютер с bridge. Legacy instance удалён; MARK сейчас offline. Новый container target имеет прямой Telegram egress, который нужно подтвердить controlled smoke после deployment.
 
 ## JH-14 — Autonomous Container Deployment `[~]`
 
@@ -233,7 +233,15 @@ Operational limitation: Telegram delivery на текущем VPS пока тр�
 - [x] Добавить prepare/env/restore/start/verify/publish scripts и rollback contract.
 - [x] Добавить CI и container/security regression contract.
 - [x] Выполнить disposable SQLite → PostgreSQL entity migration smoke, проверить unpublished workflow/static state, health и backup artifacts.
-- [ ] Развернуть package после завершения server provisioning.
+- [x] Остановить legacy MARK, сохранить verified final database/environment + entity export вне Git и удалить старую установку.
+- [x] Выполнить target read-only infrastructure/egress audit и подготовить
+  cross-repository integration runbook.
+- [x] Закрыть Main Server M1 Release Freeze: согласовать документацию после
+  legacy decommission и повторно пройти 27 JS syntax checks, 15 test files /
+  967 checks, 7 shell syntax checks, Compose config и repository secret gate.
+- [ ] Проверить recovery bundle и согласовать target paths, private HTTPS,
+  backup и monitoring contracts.
+- [ ] Развернуть package unpublished на target.
 - [ ] Подтвердить HH, NVIDIA и controlled Telegram smoke на target.
 - [ ] Подтвердить два automatic ticks, bridge-off delivery и reboot recovery.
 
@@ -258,4 +266,7 @@ Operational limitation: Telegram delivery на текущем VPS пока тр�
 
 ## Один текущий шаг
 
-После завершения server provisioning выполнить entity restore и controlled cutover по `docs/DEPLOYMENT.md`; quota scope и продолжительный soak остаются отдельными проверками.
+Проверить recovery bundle и согласовать target deployment contract по Main
+Server M2–M3; затем выполнить unpublished entity restore и controlled cutover
+по `docs/DEPLOYMENT.md`. Quota scope и продолжительный soak остаются отдельными
+проверками.
