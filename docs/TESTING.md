@@ -245,6 +245,27 @@ Unexpected findings that block publication:
 - repository secret contracts подтвердили отсутствие literal OAuth/Bearer/NVIDIA secrets, Telegram bot token/Chat ID, private keys и local user paths;
 - `git diff --check`, conflict-marker scan и локальные ссылки изменённой документации прошли.
 
+## Main Server M2 Recovery Reconstruction — 25 July 2026
+
+- original `entities.zip` и final SQLite/environment archive найдены вне
+  Git/OneDrive; source checksums совпали `2/2`, оба archive читаются;
+- final SQLite повторно дал `integrity=ok`: 3 workflows, 4 credentials,
+  1 user/project; main workflow содержит 54 nodes, empty pin data и
+  364585-byte static state;
+- original source encryption key отсутствует в archive и локальных histories;
+  controlled disposable import с другим ключом дал ожидаемый `bad decrypt`;
+- credential metadata final/local stores совпала 4/4 по ID/name/type;
+- создан protected reconstructed bundle: final workflow/state/users +
+  decryptable credential blobs, новый entity export и verified recovery key;
+- reconstructed checksums совпали `2/2`, ACL допускает только
+  owner/SYSTEM/Administrators, location находится вне Git/OneDrive;
+- clean PostgreSQL import восстановил 3 workflows и расшифровал 4/4 credentials;
+- disposable containers, networks и temporary directories после проверки
+  отсутствуют;
+- фактическая работоспособность HH/NVIDIA/Telegram credentials остаётся
+  controlled target smoke gate, а original entity archive хранится только как
+  immutable evidence.
+
 ## Remaining production tests
 
 - deploy target container and verify direct Telegram egress without a Windows bridge;

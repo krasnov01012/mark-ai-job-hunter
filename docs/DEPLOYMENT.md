@@ -46,9 +46,10 @@ Credential migration выполняется через `export:entities` / `impo
 Этот путь официально поддерживает перенос SQLite → PostgreSQL. Не использовать
 `export:credentials --decrypted`: такой файл содержит открытые secrets.
 
-Для расшифровки перенесённых credentials target n8n должен получить **точно
-тот же** `N8N_ENCRYPTION_KEY`, что и source instance. Передавать его нужно
-отдельным защищённым каналом и записывать только в server `.env`.
+Target n8n получает verified recovery `N8N_ENCRYPTION_KEY` только из
+protected reconstructed bundle через отдельный защищённый канал. Его значение
+записывается только во внешний server env. Original source key отсутствует,
+поэтому original legacy `entities.zip` запрещено использовать для restore.
 
 ## Source export — completed
 
@@ -56,6 +57,14 @@ Credential migration выполняется через `export:entities` / `impo
 Unix user и environment, что использовал `n8n-mark.service`. Entity archive и
 SQLite/environment backup сохранены в ACL-protected local storage вне Git и
 OneDrive; source server после проверки удалён.
+
+M2 установил, что original entity archive имеет корректный checksum, но не
+расшифровывается без утраченного source key. Для target подготовлен и проверен
+reconstructed bundle: final SQLite workflows/user/project/static state +
+credential blobs из локального store с точным совпадением 4/4 ID/name/type.
+Clean PostgreSQL import восстановил 3 workflows и расшифровал 4/4 credentials.
+На target передавать только reconstructed `entities.zip` и verified recovery
+key; original artifacts сохранять неизменными как evidence.
 
 Ниже сохранён выполненный procedure как recovery evidence:
 
@@ -97,7 +106,7 @@ cd /srv/projects/mark/deploy/mark
 Заполнить `.env`:
 
 - сгенерировать новый random `POSTGRES_PASSWORD` длиной не менее 32 символов;
-- скопировать exact source `N8N_ENCRYPTION_KEY`;
+- скопировать verified recovery `N8N_ENCRYPTION_KEY` из reconstructed bundle;
 - указать приватный `MARK_TELEGRAM_CHAT_ID`;
 - заменить `mark.example.com` фактическим доменом;
 - оставить `GENERIC_TIMEZONE=Europe/Moscow`;

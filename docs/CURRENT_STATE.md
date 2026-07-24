@@ -15,6 +15,7 @@ SERVER STATUS: LEGACY VPS REMOVED; MARK OFFLINE UNTIL TARGET CUTOVER
 CONTAINER DEPLOYMENT: IMPLEMENTED + DISPOSABLE DOCKER MIGRATION VERIFIED; TARGET CUTOVER PENDING
 TARGET PREFLIGHT: INFRASTRUCTURE + DIRECT EGRESS PASSED; DEPLOYMENT CONTRACT ALIGNMENT PENDING
 RELEASE FREEZE M1: PASSED; 27 JS + 15 TEST FILES / 967 CHECKS + 7 SH + COMPOSE
+RECOVERY M2: RECONSTRUCTED BUNDLE VERIFIED BY CLEAN POSTGRESQL IMPORT/DECRYPT
 ```
 
 Для нового Ubuntu 24.04 VPS в Нидерландах подготовлен `deploy/mark/`:
@@ -23,11 +24,23 @@ RELEASE FREEZE M1: PASSED; 27 JS + 15 TEST FILES / 967 CHECKS + 7 SH + COMPOSE
 n8n-data backups и безопасный entity migration. Target server имеет прямой
 Telegram/NVIDIA/HH egress и достаточные ресурсы; read-only infrastructure audit
 пройден. Container package туда ещё не развёртывался, а target paths, private
-HTTPS, backup и monitoring contracts согласуются в Main Server M2–M3.
+HTTPS, backup и monitoring contracts согласуются в Main Server M3.
 
 Migration сохраняет users, encrypted credentials, workflow ownership и
-накопленный static state через `export:entities` / `import:entities`. Exact
-source `N8N_ENCRYPTION_KEY` передаётся только в ignored server `.env`.
+накопленный static state через `export:entities` / `import:entities`. Original
+entity archive сохранил source checksums, но original source encryption key не
+вошёл в final backup и не найден в локальных histories, поэтому этот archive не
+используется для target restore.
+
+M2 создал отдельный reconstructed recovery bundle: final SQLite предоставил
+актуальные workflows/user/project/static state, а 4 credential ID/name/type
+точно совпали с локальным decryptable credential store. Credentials были
+заменены только в disposable копии final SQLite, после чего новый
+`export:entities` и verified recovery key сохранены в protected local storage
+вне Git/OneDrive. Clean PostgreSQL import восстановил 3 workflows, main workflow
+с 54 nodes/empty pin data/364585-byte static state и расшифровал 4/4
+credentials. Provider liveness остаётся target M10 gate.
+
 Restore оставляет все workflows unpublished; отдельный script публикует только
 `RO4i4YmNzEzC2TEV` после controlled smoke. До publication никакой Schedule
 Trigger не работает.
@@ -276,6 +289,6 @@ Official `n8n audit` findings:
 
 ## Один следующий шаг
 
-Проверить recovery bundle по Main Server M2, затем согласовать target
-paths/private HTTPS/backup/monitoring contract по M3 и только после этого
-выполнить entity restore по `docs/DEPLOYMENT.md`.
+Согласовать и реализовать target paths/private HTTPS/backup/monitoring contract
+по Main Server M3 и только после этого передавать reconstructed recovery bundle
+на target.

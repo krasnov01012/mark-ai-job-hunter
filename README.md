@@ -47,9 +47,11 @@ Legacy VPS больше не запускает MARK. Перед удалени�
 Следующий deployment package находится в `deploy/mark/`. Новый Ubuntu 24.04 VPS
 в Нидерландах прошёл read-only infrastructure/egress audit и готов к staged
 deployment, но package ещё не развёрнут и его target paths/private HTTPS/backup
-contract должны быть согласованы с Main Server. Migration использует сохранённый
-`export:entities`, переносит encrypted credentials и bounded state, а до
-controlled cutover оставляет все workflows unpublished.
+contract должны быть согласованы с Main Server. M2 восстановил пригодный
+reconstructed `export:entities` из final SQLite state и точно совпадающих
+decryptable credential records; clean PostgreSQL import/decrypt прошёл.
+Migration переносит credentials и bounded state, а до controlled cutover
+оставляет все workflows unpublished.
 
 ## Pipeline
 

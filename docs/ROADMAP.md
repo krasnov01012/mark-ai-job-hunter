@@ -239,8 +239,10 @@ Historical limitation: Telegram delivery на legacy VPS требовала вк
 - [x] Закрыть Main Server M1 Release Freeze: согласовать документацию после
   legacy decommission и повторно пройти 27 JS syntax checks, 15 test files /
   967 checks, 7 shell syntax checks, Compose config и repository secret gate.
-- [ ] Проверить recovery bundle и согласовать target paths, private HTTPS,
-  backup и monitoring contracts.
+- [x] Закрыть Main Server M2: выявить отсутствие original source key, создать
+  protected reconstructed bundle из final state + 4/4 matching decryptable
+  credentials и подтвердить clean PostgreSQL import/decrypt.
+- [ ] Согласовать target paths, private HTTPS, backup и monitoring contracts.
 - [ ] Развернуть package unpublished на target.
 - [ ] Подтвердить HH, NVIDIA и controlled Telegram smoke на target.
 - [ ] Подтвердить два automatic ticks, bridge-off delivery и reboot recovery.
@@ -266,7 +268,7 @@ Historical limitation: Telegram delivery на legacy VPS требовала вк
 
 ## Один текущий шаг
 
-Проверить recovery bundle и согласовать target deployment contract по Main
-Server M2–M3; затем выполнить unpublished entity restore и controlled cutover
+Согласовать target deployment contract по Main Server M3; затем передать
+reconstructed bundle, выполнить unpublished entity restore и controlled cutover
 по `docs/DEPLOYMENT.md`. Quota scope и продолжительный soak остаются отдельными
 проверками.
