@@ -75,7 +75,7 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
       - ../../n8n/workflows/ai-job-hunter-main.json:/opt/mark/workflows/ai-job-hunter-main.json:ro
-      - ./runtime/migration:/opt/mark/migration:ro
+      - ${MARK_MIGRATION_DIR:?MARK_MIGRATION_DIR is required}:/opt/mark/migration:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -113,9 +113,12 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       BACKUP_INTERVAL_SECONDS: ${BACKUP_INTERVAL_SECONDS:-86400}
       BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+      MARK_DEPLOYED_COMMIT: ${MARK_DEPLOYED_COMMIT:?MARK_DEPLOYED_COMMIT is required}
+      MARK_N8N_VERSION: ${N8N_VERSION:-2.29.10}
+      MARK_POSTGRES_VERSION: ${POSTGRES_VERSION:-16-alpine}
     volumes:
       - n8n_data:/n8n-data:ro
-      - ./runtime/backups:/backups
+      - ${MARK_BACKUP_DIR:?MARK_BACKUP_DIR is required}:/backups
       - ./scripts/backup-loop.sh:/opt/mark/backup-loop.sh:ro
     depends_on:
       postgres:
@@ -124,6 +127,8 @@ services:
       - backend
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
 
 volumes:
   postgres_data:

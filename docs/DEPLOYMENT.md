@@ -8,9 +8,10 @@ Container package подготовлен для целевого Ubuntu 24.04 VP
 production instance сейчас нет.
 
 Target VPS прошёл read-only resource, Docker, security и direct
-Telegram/NVIDIA/HH egress audit. Staged deployment ещё не выполнялся. Перед
-restore package должен быть согласован с Main Server contract для external
-secret/migration/backup paths, private HTTPS и monitoring.
+Telegram/NVIDIA/HH egress audit. M3 согласовал package с Main Server contract:
+external secret/migration/backup paths, Tailscale-only HTTPS и hardened backup
+container проверены локальным disposable smoke. Staged deployment ещё не
+выполнялся.
 
 Deployment использует:
 
@@ -32,15 +33,16 @@ Table или отдельные PostgreSQL tables.
 
 Никогда не добавлять в Git:
 
-- `deploy/mark/.env`;
-- `runtime/migration/` и entity exports;
+- `/etc/mark/mark.env` или его копию;
+- `/var/lib/mark/migration/` и entity exports;
 - PostgreSQL dumps и n8n-data archives;
 - decrypted credential exports;
 - `N8N_ENCRYPTION_KEY`, HH secret, NVIDIA keys, Telegram token или Chat ID.
 
 `.gitignore`, `.dockerignore`, `workflow-structure.test.js` и
-`container-deployment.test.js` проверяют эти границы. Серверный `.env` должен
-иметь mode `600`.
+`container-deployment.test.js` проверяют эти границы. Серверный
+`/etc/mark/mark.env` находится вне checkout, принадлежит root и имеет mode
+`600`. Все deployment scripts используют explicit `--env-file`.
 
 Credential migration выполняется через `export:entities` / `import:entities`.
 Этот путь официально поддерживает перенос SQLite → PostgreSQL. Не использовать
@@ -92,52 +94,62 @@ ownership и compact durable state.
 
 ## Target preparation
 
-На target repository размещается в `/srv/projects/mark`. После M3 contract
-alignment подготовительная команда будет запускаться из:
+На target repository размещается в `/srv/projects/mark`. SSH session остаётся
+под `agentops`, а команды, которым нужен root-owned env, запускаются через
+`sudo`:
 
 ```bash
 cd /srv/projects/mark/deploy/mark
-./scripts/prepare-runtime.sh
+sudo ./scripts/prepare-runtime.sh
 ```
 
-Команда создаёт ignored runtime directories и `.env` из безопасного template.
-Она не генерирует и не перезаписывает encryption key.
+Команда создаёт:
 
-Заполнить `.env`:
+- `/etc/mark/mark.env`, root-owned mode `600`;
+- `/var/lib/mark/migration/entities`, `root:mark` mode `750`;
+- `/var/lib/mark/backups`, `root:root` mode `700`.
+
+Никаких runtime files в repository tree она не создаёт. Существующий env не
+перезаписывается.
+
+Заполнить `/etc/mark/mark.env` без вывода values:
 
 - сгенерировать новый random `POSTGRES_PASSWORD` длиной не менее 32 символов;
 - скопировать verified recovery `N8N_ENCRYPTION_KEY` из reconstructed bundle;
 - указать приватный `MARK_TELEGRAM_CHAT_ID`;
-- заменить `mark.example.com` фактическим доменом;
+- задать full `MARK_DEPLOYED_COMMIT`;
+- оставить `MARK_MIGRATION_DIR=/var/lib/mark/migration`;
+- оставить `MARK_BACKUP_DIR=/var/lib/mark/backups`;
+- заменить example tailnet hostname фактическим `*.ts.net`;
 - оставить `GENERIC_TIMEZONE=Europe/Moscow`;
 - оставить `MIGRATION_REQUIRED=true`.
 
 Затем:
 
 ```bash
-chmod 600 .env
-./scripts/check-env.sh
+sudo chmod 600 /etc/mark/mark.env
+sudo ./scripts/check-env.sh
 ```
 
 ## Entity restore
 
-Передать source export в:
+Передать только reconstructed export в:
 
 ```text
-deploy/mark/runtime/migration/entities/
+/var/lib/mark/migration/entities/entities.zip
 ```
 
 После завершения передачи создать marker:
 
 ```bash
-touch runtime/migration/READY
-chmod 600 runtime/migration/READY
+sudo touch /var/lib/mark/migration/READY
+sudo chmod 600 /var/lib/mark/migration/READY
 ```
 
 Выполнить:
 
 ```bash
-./scripts/restore-entities.sh
+sudo ./scripts/restore-entities.sh
 ```
 
 Restore script:
@@ -145,7 +157,7 @@ Restore script:
 1. поднимает только PostgreSQL;
 2. импортирует entities в пустую target database;
 3. принудительно unpublish всех workflows;
-4. создаёт `runtime/migration/RESTORED`;
+4. создаёт `/var/lib/mark/migration/RESTORED`;
 5. запускает n8n и backup service.
 
 По умолчанию `start.sh` откажется запускать мигрируемый MARK без marker
@@ -185,7 +197,7 @@ runtime search не зависит от browser callback. Redirect URI нужн�
 До publication:
 
 ```bash
-./scripts/verify.sh
+sudo ./scripts/verify.sh
 ```
 
 Script проверяет containers, n8n health, egress к Telegram/NVIDIA/HH и
@@ -200,7 +212,7 @@ Script проверяет containers, n8n health, egress к Telegram/NVIDIA/HH �
 После подтверждения:
 
 ```bash
-./scripts/publish-main.sh
+sudo ./scripts/publish-main.sh
 ```
 
 Команда unpublish всех workflows, публикует только
@@ -212,7 +224,7 @@ Cutover считается завершённым только после:
 2. доставки с выключенным Windows bridge;
 3. `docker compose restart` или server reboot;
 4. повторного health/egress check;
-5. наличия свежих files в `runtime/backups/`.
+5. наличия свежей backup pair + manifest в `/var/lib/mark/backups/`.
 
 Не создавать второй опубликованный MARK во время target verification.
 
@@ -221,12 +233,16 @@ Cutover считается завершённым только после:
 `backup` service сразу после старта, затем раз в сутки создаёт:
 
 - `mark-postgres-*.dump`;
-- `mark-n8n-data-*.tgz`.
+- `mark-n8n-data-*.tgz`;
+- `mark-backup-*.manifest` с deployed commit, image versions и checksums пары.
 
-Files находятся в ignored `deploy/mark/runtime/backups/` и удаляются после
-`BACKUP_RETENTION_DAYS`. Для disaster recovery отдельно хранить:
+Files находятся во внешнем `/var/lib/mark/backups/` и удаляются после
+`BACKUP_RETENTION_DAYS`. Backup container не имеет Docker socket/host network,
+работает с `no-new-privileges` и `cap_drop: ALL`. Для disaster recovery отдельно
+хранить:
 
-- копию `.env` в password manager или encrypted offline storage;
+- recovery-копию `/etc/mark/mark.env` в password manager или encrypted offline
+  storage;
 - свежую пару database/n8n-data backup;
 - repository commit, соответствующий deployed workflow.
 
@@ -238,12 +254,13 @@ server infrastructure.
 
 Если target smoke или первые ticks не проходят:
 
-1. `docker compose exec -T -u node n8n n8n unpublish:workflow --all`;
-2. `docker compose stop n8n backup`;
+1. `sudo docker compose --env-file /etc/mark/mark.env -f compose.yaml exec -T -u node n8n n8n unpublish:workflow --all`;
+2. `sudo docker compose --env-file /etc/mark/mark.env -f compose.yaml stop n8n backup`;
 3. убедиться, что target не выполняет Schedule Trigger;
-4. исправить target и повторить restore из сохранённого final entity archive;
-5. при повреждении entity export восстановить legacy SQLite/environment backup
-   в disposable n8n `2.29.10`, повторить `export:entities` и снова удалить
-   disposable environment после проверки.
+4. исправить target и повторить restore из reconstructed entity archive;
+5. при повреждении entity export использовать protected
+   `reconstructed-source.sqlite` с verified recovery key в disposable n8n
+   `2.29.10`, повторить `export:entities` и удалить disposable environment
+   после проверки.
 
 Legacy VPS rollback больше недоступен и не должен планироваться как fallback.

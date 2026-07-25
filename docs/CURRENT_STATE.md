@@ -16,6 +16,7 @@ CONTAINER DEPLOYMENT: IMPLEMENTED + DISPOSABLE DOCKER MIGRATION VERIFIED; TARGET
 TARGET PREFLIGHT: INFRASTRUCTURE + DIRECT EGRESS PASSED; DEPLOYMENT CONTRACT ALIGNMENT PENDING
 RELEASE FREEZE M1: PASSED; 27 JS + 15 TEST FILES / 967 CHECKS + 7 SH + COMPOSE
 RECOVERY M2: RECONSTRUCTED BUNDLE VERIFIED BY CLEAN POSTGRESQL IMPORT/DECRYPT
+DEPLOYMENT CONTRACT M3: EXTERNAL PATHS + HARDENED BACKUP VERIFIED
 ```
 
 Для нового Ubuntu 24.04 VPS в Нидерландах подготовлен `deploy/mark/`:
@@ -24,7 +25,8 @@ RECOVERY M2: RECONSTRUCTED BUNDLE VERIFIED BY CLEAN POSTGRESQL IMPORT/DECRYPT
 n8n-data backups и безопасный entity migration. Target server имеет прямой
 Telegram/NVIDIA/HH egress и достаточные ресурсы; read-only infrastructure audit
 пройден. Container package туда ещё не развёртывался, а target paths, private
-HTTPS, backup и monitoring contracts согласуются в Main Server M3.
+env/migration/backup paths согласованы с Main Server M3. Private HTTPS и
+monitoring остаются последующими target gates.
 
 Migration сохраняет users, encrypted credentials, workflow ownership и
 накопленный static state через `export:entities` / `import:entities`. Original
@@ -250,11 +252,11 @@ n8n documents static data as experimental, small-state only, production-trigger 
 
 ## Verification
 
-Full local result: 967 checks.
+Full local result: 1009 checks.
 
 ```text
 34  candidate-profile
-264 container deployment/security
+306 container deployment/security
 31  durable-source-state
 19  durable-vacancy-state
 20  hard-filter
@@ -289,6 +291,5 @@ Official `n8n audit` findings:
 
 ## Один следующий шаг
 
-Согласовать и реализовать target paths/private HTTPS/backup/monitoring contract
-по Main Server M3 и только после этого передавать reconstructed recovery bundle
-на target.
+Выполнить Main Server M4 private HTTPS gate и повторный M5 target preflight;
+затем передать exact M3 checkpoint и reconstructed recovery bundle на target.

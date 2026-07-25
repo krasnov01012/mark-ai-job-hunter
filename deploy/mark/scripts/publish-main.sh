@@ -4,16 +4,18 @@ set -eu
 deploy_dir="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 cd "$deploy_dir"
 
-./scripts/check-env.sh
+# shellcheck disable=SC1091
+. "$deploy_dir/scripts/common.sh"
+require_environment
 
 workflow_id="RO4i4YmNzEzC2TEV"
 
-docker compose exec -T -u node n8n n8n unpublish:workflow --all
-docker compose exec -T -u node n8n n8n publish:workflow --id="$workflow_id"
-docker compose restart n8n
+compose exec -T -u node n8n n8n unpublish:workflow --all
+compose exec -T -u node n8n n8n publish:workflow --id="$workflow_id"
+compose restart n8n
 
 attempt=0
-until docker compose exec -T n8n node -e \
+until compose exec -T n8n node -e \
   "fetch('http://127.0.0.1:5678/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))" \
   >/dev/null 2>&1; do
   attempt=$((attempt + 1))

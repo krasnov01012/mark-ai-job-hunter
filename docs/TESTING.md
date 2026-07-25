@@ -12,12 +12,15 @@ $sources | Sort-Object FullName | ForEach-Object { node --check $_.FullName }
 Get-ChildItem tests -Filter *.test.js | Sort-Object Name | ForEach-Object { node $_.FullName }
 ```
 
-Проверенный локальный результат 25 июля 2026 года: 967 checks и 27 JavaScript syntax checks. Дополнительно прошли `docker compose config --quiet`, POSIX shell syntax validation и disposable Docker migration/backup smoke.
+Проверенный локальный результат 25 июля 2026 года после M3: 1009 checks и
+27 JavaScript syntax checks. Дополнительно прошли
+`docker compose config --quiet`, 8 POSIX shell syntax checks, PowerShell syntax
+check и disposable Docker migration/backup/runtime smoke.
 
 | Test | Checks | Покрытие |
 |---|---:|---|
 | `candidate-profile.test.js` | 34 | truth policy, global remote preference, evidence, compact snapshot, secret absence |
-| `container-deployment.test.js` | 264 | Compose isolation/persistence/health, migration scripts, ignored runtime data, CI and repository-wide secret patterns |
+| `container-deployment.test.js` | 306 | external env/migration/backup paths, loopback isolation, backup hardening/manifests, restore/publication guards, CI and repository-wide secret patterns |
 | `durable-source-state.test.js` | 31 | Habr/HH namespaces, duplicate/retry/terminal/downstream recovery, per-source aggregation |
 | `durable-state.test.js` | 19 | fixed schedule initialization and score/delivery state transitions |
 | `habr-hard-filter.test.js` | 20 | global remote policy, Tbilisi-only hybrid/office, role and salary policy |
@@ -265,6 +268,28 @@ Unexpected findings that block publication:
 - фактическая работоспособность HH/NVIDIA/Telegram credentials остаётся
   controlled target smoke gate, а original entity archive хранится только как
   immutable evidence.
+
+## Main Server M3 Deployment Contract — 25 July 2026
+
+- Compose использует `/etc/mark/mark.env` только через explicit `--env-file`;
+  secret `.env` внутри checkout не создаётся;
+- migration staging перенесён в `/var/lib/mark/migration`, portable backups —
+  в `/var/lib/mark/backups`, live PostgreSQL/n8n data остаются в named volumes;
+- official n8n/PostgreSQL images не принуждаются к host UID `996`;
+- n8n публикуется только на `127.0.0.1`, PostgreSQL не имеет host port,
+  wildcard bind/host network/Docker socket отсутствуют;
+- backup service работает с `no-new-privileges` и `cap_drop: ALL`, создаёт
+  читаемые PostgreSQL dump, n8n-data archive и manifest с commit/image versions
+  и checksums;
+- restore получает отдельный writable entities-only mount, выполняет
+  `import:entities --truncateTables true`, затем `unpublish:workflow --all`;
+- HH egress probe использует стабильный `/areas`, обязательный
+  `HH-User-Agent` и ожидает однозначный HTTP `200`;
+- 306 container deployment checks, 8 shell syntax checks, Compose validation и
+  PowerShell syntax check прошли;
+- disposable Compose smoke подтвердил healthy n8n, loopback-only bind,
+  отсутствие PostgreSQL host port, hardened backup container и читаемую
+  external backup pair; disposable containers/networks/volumes/temp удалены.
 
 ## Remaining production tests
 

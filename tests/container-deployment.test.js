@@ -52,13 +52,41 @@ check(compose.includes('N8N_BLOCK_FILE_ACCESS_TO_N8N_FILES: "true"'), 'n8n data 
 check(compose.includes('N8N_COMMUNITY_PACKAGES_ENABLED: "false"'), 'community packages must be disabled');
 check(compose.includes('backend:\n    internal: true'), 'database network must be internal');
 check(compose.includes('backup:'), 'automatic backup service must exist');
-check(compose.includes('./runtime/backups:/backups'), 'backups must be stored outside container layers');
+check(
+  compose.includes('${MARK_BACKUP_DIR:?MARK_BACKUP_DIR is required}:/backups'),
+  'backups must use the external Main Server path',
+);
+check(
+  compose.includes('${MARK_MIGRATION_DIR:?MARK_MIGRATION_DIR is required}:/opt/mark/migration:ro'),
+  'migration staging must use the external Main Server path',
+);
+check(!compose.includes('./runtime/'), 'Compose must not store runtime data in the repository');
+check(!compose.includes('0.0.0.0:'), 'Compose must not publish wildcard ports');
+check(!compose.includes('network_mode: host'), 'services must not use the host network');
+check(!compose.includes('/var/run/docker.sock'), 'services must not receive the Docker socket');
+check(!compose.includes('user: "996'), 'official images must not be forced to the host mark UID');
+check(
+  (compose.match(/cap_drop:\n\s+- ALL/g) || []).length >= 2,
+  'n8n and backup services must drop all Linux capabilities',
+);
 
 check(envExample.includes('N8N_VERSION=2.29.10'), 'env template must pin n8n');
 check(envExample.includes('N8N_ENCRYPTION_KEY=CHANGE_ME_'), 'env template must not contain a real encryption key');
 check(envExample.includes('POSTGRES_PASSWORD=CHANGE_ME_'), 'env template must not contain a real database password');
 check(envExample.includes('MARK_TELEGRAM_CHAT_ID=CHANGE_ME_'), 'env template must not contain a real Chat ID');
 check(envExample.includes('MIGRATION_REQUIRED=true'), 'existing MARK state migration must be required by default');
+check(
+  envExample.includes('MARK_MIGRATION_DIR=/var/lib/mark/migration'),
+  'env template must use the external migration path',
+);
+check(
+  envExample.includes('MARK_BACKUP_DIR=/var/lib/mark/backups'),
+  'env template must use the external backup path',
+);
+check(
+  envExample.includes('MARK_DEPLOYED_COMMIT=CHANGE_ME_'),
+  'backup manifests must receive the deployed commit',
+);
 
 check(gitignore.includes('deploy/mark/.env'), 'deployment .env must be ignored');
 check(gitignore.includes('deploy/mark/runtime/'), 'deployment runtime must be ignored');
@@ -72,6 +100,7 @@ check(ci.includes('docker compose'), 'CI must validate Compose');
 const requiredScripts = [
   'backup-loop.sh',
   'check-env.sh',
+  'common.sh',
   'prepare-runtime.sh',
   'publish-main.sh',
   'restore-entities.sh',
@@ -86,9 +115,79 @@ for (const script of requiredScripts) {
 
 const restoreScript = read('deploy/mark/scripts/restore-entities.sh');
 check(
-  restoreScript.includes('-v "$entities_dir:/opt/mark/migration/entities"'),
+  restoreScript.includes('-v "$entities_dir:/opt/mark/import"'),
   'ephemeral entity importer must receive a writable entities-only mount',
 );
+check(
+  restoreScript.includes('import:entities --inputDir=/opt/mark/import --truncateTables true'),
+  'restore must import the external archive into a clean target database',
+);
+check(
+  restoreScript.includes('unpublish:workflow --all'),
+  'restore must unpublish every workflow before n8n starts',
+);
+
+const commonScript = read('deploy/mark/scripts/common.sh');
+check(
+  commonScript.includes('MARK_ENV_FILE:-/etc/mark/mark.env'),
+  'scripts must default to the external root-owned environment file',
+);
+check(
+  commonScript.includes('docker compose --env-file "$env_file"'),
+  'every Compose operation must use the explicit external env file',
+);
+
+const checkEnvScript = read('deploy/mark/scripts/check-env.sh');
+check(
+  checkEnvScript.includes('must stay outside the deployment tree'),
+  'environment validation must reject a secret env inside the checkout',
+);
+check(
+  checkEnvScript.includes('MARK environment file must be owned by root'),
+  'target env must be root-owned',
+);
+check(
+  checkEnvScript.includes('MARK_DEPLOYED_COMMIT must be a full Git commit SHA'),
+  'environment validation must bind backups to an exact commit',
+);
+
+const prepareScript = read('deploy/mark/scripts/prepare-runtime.sh');
+check(
+  prepareScript.includes('/var/lib/mark/migration') &&
+    prepareScript.includes('/var/lib/mark/backups') &&
+    prepareScript.includes('/etc/mark'),
+  'runtime preparation must create only the external Main Server paths',
+);
+check(!prepareScript.includes('runtime/backups'), 'runtime preparation must not create repository data paths');
+check(!prepareScript.includes('cp .env.example .env'), 'runtime preparation must not create a secret env in the checkout');
+
+const verifyScript = read('deploy/mark/scripts/verify.sh');
+check(
+  verifyScript.includes('https://api.hh.ru/areas'),
+  'HH egress must use a stable API request rather than the redirecting root',
+);
+check(
+  verifyScript.includes("'HH-User-Agent': 'MARK/1.0"),
+  'HH egress must send the official HH-User-Agent header',
+);
+check(
+  verifyScript.includes("if (workflow.active !== false)"),
+  'pre-publication verification must reject an active workflow',
+);
+
+for (const script of [
+  'publish-main.sh',
+  'restore-entities.sh',
+  'start.sh',
+  'verify.sh',
+]) {
+  const contents = read(`deploy/mark/scripts/${script}`);
+  check(contents.includes('scripts/common.sh'), `${script} must use the shared external-env wrapper`);
+  check(!contents.includes('. ./.env'), `${script} must not source an env file from the checkout`);
+  check(!contents.includes('docker compose '), `${script} must not bypass the explicit compose wrapper`);
+}
+
+check(!fs.existsSync(path.join(deploymentRoot, '.env')), 'secret .env must not exist in the deployment tree');
 
 const protectedFiles = [
   ...walk(path.join(root, 'config')),
