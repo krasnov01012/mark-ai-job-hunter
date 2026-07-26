@@ -1,6 +1,7 @@
 # MARK — Roadmap MVP
 
-Актуализировано: 25 июля 2026 года после verified decommission legacy VPS и сохранения migration artifacts.
+Актуализировано: 26 июля 2026 года после M12/M13 acceptance и portfolio
+release gate.
 
 Обозначения:
 
@@ -18,7 +19,8 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Telegram выбран каналом доставки.
 - [x] MVP ограничен одним пользователем.
 - [x] Зарплата исключена из hard filtering.
-- [x] Full remote проходит format policy из любой точки мира; ограничения вакансии по стране не являются фильтром.
+- [x] Full remote рассматривается только при подтверждённой доступности из
+  Georgia; unknown/restricted geography не проходит автоматически.
 - [x] Hybrid и office разрешены только в Тбилиси, Грузия.
 - [x] Docker, RAG, multi-agent, UI и автоотклики исключены из MVP.
 
@@ -53,7 +55,8 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] HeadHunter приложение одобрено; реализованы OAuth search, execution dedupe, pre-filter и full-vacancy fetch/normalizer.
 - [x] HH search разделён на `REMOTE` и Tbilisi (`area=2758`), без salary-параметров; query `1.1.0` отсекает только `moreThan6`.
 - [x] Выполнить OAuth recall calibration (`228`): не включать lossy `professional_role`/title-only filters, сохранить `between3And6` для downstream проверки.
-- [x] Для HH подтверждённый `work_format=REMOTE` проходит geography gate независимо от страны; contract хранит `remote_geo_eligibility=not_required`.
+- [x] Нормализовать HH remote availability в explainable
+  `remote_geo_eligibility=confirmed|unknown|restricted`.
 - [x] Создать OAuth2 credential только в n8n store и подтвердить выдачу application token.
 - [x] Выполнить isolated live HH smoke (`144`), сохранить durable state, затем импортировать и опубликовать 53-node main workflow.
 - [x] Подтвердить два последовательных multi-source schedule executions и HH durable dedupe (`147`, `149`).
@@ -79,7 +82,8 @@ Roadmap зафиксирован. Идём по порядку, исправля
 
 - [x] Проверяется целостность нормализованной вакансии.
 - [x] Архивные и скрытые вакансии отклоняются.
-- [x] Full remote допускается из любой точки мира и не требует отдельного country eligibility gate.
+- [x] Full remote проходит только при подтверждении доступности из Georgia;
+  unknown получает `REVIEW`, explicit restriction — `REJECT`.
 - [x] Hybrid/office допускается только в Тбилиси, Грузия.
 - [x] Unknown/conflict получает `REVIEW` и не проходит дальше.
 - [x] Нерелевантные профессии отклоняются.
@@ -123,11 +127,20 @@ Roadmap зафиксирован. Идём по порядку, исправля
 - [x] Добавить восемь repository-verified навыков MARK.
 - [x] Создать компактный `candidate_profile_for_scorer` отдельно от полного audit-профиля.
 - [x] Убрать score thresholds из Candidate Profile и не приписывать MARK prompt engineering до JH-8.
-- [x] Добавить 34 локальные проверки контракта, remote policy, truth policy, размера snapshot и отсутствия очевидных секретов.
+- [x] Добавить 46 локальных проверок контракта, remote policy, truth policy, размера snapshot и отсутствия очевидных секретов.
 - [x] Проверить направление и содержание профиля с пользователем.
 - [x] Добавить и проверить live node `Candidate Profile` после `Keep Level PASS + STRETCH`.
 - [x] Подтвердить live output Candidate Profile `1.1.0`, затем опубликовать policy revision `1.2.0` с exact repository source и локальной regression matrix.
-- [x] Удалить тестовые pinned/mock data и сохранить чистый актуальный workflow export.
+- [x] Перед target smoke обновить профиль до `1.3.0`: добавить только
+  repository-verified навыки ARIADNE, MARK и Main Server, сохранить
+  `commercial=false`/`production_proven=false`, target `staticData` и 4
+  credential references.
+- [x] Для portfolio release обновить policy до Candidate Profile `1.4.0`, HH
+  Normalizer `1.2.0` и Hard Filter `1.3.0`; live deployment остаётся отдельным
+  controlled checkpoint.
+- [x] Удалить тестовые pinned/mock data и production `staticData` из public
+  workflow export; controlled deployment сохраняет state только через явный
+  `--state-source`.
 - [x] Проверить пустой `pinData`, отсутствие literal secrets и совпадение пяти embedded Code node sources с репозиторными файлами.
 - [x] Исключить из стабильного export три отсоединённых legacy smoke/HH nodes с локальными данными.
 
@@ -245,9 +258,40 @@ Historical limitation: Telegram delivery на legacy VPS требовала вк
 - [x] Закрыть Main Server M3: external root-owned env, external
   migration/backup paths, explicit Compose env file, hardened backup container,
   stable HH egress probe и target-specific tests/disposable smoke.
-- [ ] Развернуть package unpublished на target.
-- [ ] Подтвердить HH, NVIDIA и controlled Telegram smoke на target.
-- [ ] Подтвердить два automatic ticks, bridge-off delivery и reboot recovery.
+- [x] Выбрать Main Server M4 baseline: private `*.ts.net` через Tailscale Serve;
+  проверить, что web-consent требует необратимую CT-публикацию.
+- [x] Повторить M5 technical preflight и проверить Hostkey Native Console.
+- [x] Собрать и проверить локальный M6A archive exact `98c549b` без secrets/runtime.
+- [x] Установить exact code-only release на target, проверить Compose/inactive
+  workflow, pull 2 images без создания containers/listeners.
+- [x] Получить owner consent на Tailscale HTTPS CT disclosure и включить
+  HTTPS/Serve route к `127.0.0.1:5678` без Funnel.
+- [x] Подтвердить trusted TLS с iPhone/Admin: certificate valid ещё 3 месяца.
+- [x] Отключить `xray` с root-only rollback; service disabled, UFW public
+  `443` removed, binary/config retained.
+- [x] Зафиксировать отказ владельца от root password rotation как residual
+  risk; раскрытый password automation не использует.
+- [x] Завершить M7: root-only env и reconstructed entities staged; checksum,
+  ZIP, Compose и отсутствие runtime проверены без вывода secrets.
+- [x] После owner continuation выполнить M8 restore и запустить package
+  unpublished на target: 1228 entities, 3 workflows, credentials 4/4,
+  state/backup/runtime verification passed.
+- [x] Выполнить M8.5 Candidate Profile `1.3.0` с pre-change dump,
+  rollback-export и state-preserving import.
+- [x] Выполнить M9 private UI/security audit без publication.
+- [x] Подтвердить HH и NVIDIA provider smoke на target без Telegram delivery.
+- [x] Выполнить controlled Telegram smoke, n8n restart и repeat-block на target.
+- [ ] Получить visual owner confirmation правильного Telegram chat.
+- [x] Установить local health/backup heartbeat timers и проверить оба probes.
+- [x] Установить restic/rclone и disabled offsite service/timer skeleton.
+- [x] Опубликовать только main workflow и подтвердить два automatic target
+  ticks с интервалом `600 s`, overlap `0`, errors `0/0`, bounded state и
+  post-publication backup.
+- [x] Подтвердить direct Telegram path без hosts/proxy/reverse SSH bridge.
+- [ ] Настроить Kuma push URLs, Google OAuth/restic password, snapshot/check и
+  disposable restore.
+- [x] Подтвердить container restart и reboot recovery, private route,
+  automatic post-reboot tick и fresh backup.
 
 ## Filtering checkpoint после JH-6
 
@@ -270,7 +314,7 @@ Historical limitation: Telegram delivery на legacy VPS требовала вк
 
 ## Один текущий шаг
 
-Настроить Main Server M4 private HTTPS и повторить M5 target preflight; затем
-передать exact M3 checkpoint/reconstructed bundle, выполнить unpublished entity
-restore и controlled cutover по `docs/DEPLOYMENT.md`. Quota scope и
-продолжительный soak остаются отдельными проверками.
+Выполнить controlled target update repository policy
+`HH Normalizer 1.2.0 / Hard Filter 1.3.0 / Candidate Profile 1.4.0` с
+pre-change backup, state/credential preservation и positive/negative live
+verification. После этого вернуться к owner-gated M11/M14 closure.

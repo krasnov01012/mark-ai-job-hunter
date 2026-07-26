@@ -1,10 +1,10 @@
 /**
  * MARK — HeadHunter Vacancy Normalizer
- * Version: 1.1.0
+ * Version: 1.2.0
  * n8n Code node mode: Run Once for Each Item
  */
 
-const HH_NORMALIZER_VERSION = '1.1.0';
+const HH_NORMALIZER_VERSION = '1.2.0';
 
 function text(value) {
   return String(value ?? '').trim();
@@ -85,14 +85,53 @@ function workFormat(vacancy) {
   return { value: 'unknown', confidence: 'low', conflict: false, ids: distinct };
 }
 
-function remoteEligibility(format) {
+function remoteEligibility(format, description) {
   if (format !== 'remote') {
     return { value: 'not_applicable', evidence: [] };
   }
 
+  const searchable = text(description)
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[–—−]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const confirmedPatterns = [
+    /\b(?:work|working)\s+from\s+anywhere\b/i,
+    /\bworldwide\b|\banywhere\s+in\s+the\s+world\b/i,
+    /\bremote\s+from\s+any\s+country\b/i,
+    /(?:из\s+любой\s+точки\s+мира|из\s+любой\s+страны|по\s+всему\s+миру)/iu,
+    /(?:работа|работать|удален\p{L}*)[^\n.!?]{0,80}(?:из|в)\s+(?:грузии|georgia)/iu,
+  ];
+  const restrictedPatterns = [
+    /\b(?:remote|work(?:ing)?)\s+(?:only\s+)?within\s+(?:the\s+)?russia\b/i,
+    /\bmust\s+be\s+(?:based|located)\s+in\s+(?:the\s+)?russia\b/i,
+    /\b(?:russian|russia)\s+residents?\s+only\b/i,
+    /(?:работа|работать|удален\p{L}*|оформлен\p{L}*)[^\n.!?]{0,80}только[^\n.!?]{0,40}(?:на\s+территории\s+)?(?:рф|росси\p{L}*)/iu,
+    /только[^\n.!?]{0,50}(?:кандидат\p{L}*|сотрудник\p{L}*)[^\n.!?]{0,50}(?:из|в|на\s+территории)\s+(?:рф|росси\p{L}*)/iu,
+  ];
+  const confirmed = confirmedPatterns.some((pattern) => pattern.test(searchable));
+  const restricted = restrictedPatterns.some((pattern) => pattern.test(searchable));
+
+  if (confirmed && !restricted) {
+    return {
+      value: 'confirmed',
+      evidence: ['description_confirms_work_from_georgia'],
+    };
+  }
+
+  if (restricted && !confirmed) {
+    return {
+      value: 'restricted',
+      evidence: ['description_restricts_work_outside_georgia'],
+    };
+  }
+
   return {
-    value: 'not_required',
-    evidence: ['remote_allowed_from_any_location_by_policy'],
+    value: 'unknown',
+    evidence: confirmed && restricted
+      ? ['conflicting_remote_geography_evidence']
+      : ['work_from_georgia_not_confirmed'],
   };
 }
 
@@ -146,7 +185,7 @@ const addressCity = text(vacancy.address?.city);
 const city = addressCity || area || null;
 const locations = [...new Set([area, addressCity, text(vacancy.address?.raw)].filter(Boolean))];
 const format = workFormat(vacancy);
-const remoteGeo = remoteEligibility(format.value);
+const remoteGeo = remoteEligibility(format.value, description);
 const exp = experienceHint(vacancy.experience?.id || preview.hh_preview_experience_id);
 const normalizationErrors = [];
 

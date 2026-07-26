@@ -26,7 +26,7 @@ function source(fileName) {
 
 const base = readWorkflow(workflowPath);
 const credentialSource = credentialSourcePath ? readWorkflow(credentialSourcePath) : base;
-const stateSource = stateSourcePath ? readWorkflow(stateSourcePath) : base;
+const stateSource = stateSourcePath ? readWorkflow(stateSourcePath) : null;
 const existing = new Map(base.nodes.map((node) => [node.name, node]));
 const credentialNodes = new Map(credentialSource.nodes.map((node) => [node.name, node]));
 
@@ -659,7 +659,12 @@ const workflow = {
   name: 'AI Job Hunter Mark — Main Pipeline',
   nodes,
   connections,
-  staticData: structuredClone(stateSource.staticData ?? base.staticData ?? null),
+  // The checked-in export is a clean import template. Production state is
+  // preserved only when an explicit state source is supplied during a
+  // controlled deployment build.
+  staticData: stateSource
+    ? structuredClone(stateSource.staticData ?? null)
+    : null,
   pinData: {},
   active: false,
   settings: {

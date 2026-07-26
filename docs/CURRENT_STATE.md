@@ -1,6 +1,8 @@
 # MARK — Current State
 
-Актуализировано: 25 июля 2026 года после verified decommission legacy VPS; target server cutover ещё не выполнен.
+Актуализировано: 26 июля 2026 года после M12/M13 production acceptance и
+portfolio release gate. Repository release проверен локально; policy revision
+`1.2.0/1.3.0/1.4.0` ещё не развёрнут на private target.
 
 ## Результат текущего checkpoint
 
@@ -11,12 +13,24 @@ JH-10: DONE + LIVE TELEGRAM DELIVERY VERIFIED
 JH-11: DONE + PRODUCTION VERIFIED
 JH-12: CONTROLLED FAILOVER VERIFIED; QUOTA SCOPE + SOAK REMAIN
 HH API: OAUTH + PRODUCTION POLLING + DURABLE DEDUPE VERIFIED
-SERVER STATUS: LEGACY VPS REMOVED; MARK OFFLINE UNTIL TARGET CUTOVER
-CONTAINER DEPLOYMENT: IMPLEMENTED + DISPOSABLE DOCKER MIGRATION VERIFIED; TARGET CUTOVER PENDING
-TARGET PREFLIGHT: INFRASTRUCTURE + DIRECT EGRESS PASSED; DEPLOYMENT CONTRACT ALIGNMENT PENDING
+SERVER STATUS: LEGACY VPS REMOVED; TARGET RUNTIME HEALTHY + MAIN PUBLISHED
+CONTAINER DEPLOYMENT: TARGET POSTGRESQL RESTORE + BACKUP VERIFIED
+TARGET PREFLIGHT: INFRASTRUCTURE + DIRECT EGRESS + DEPLOYMENT CONTRACT PASSED
 RELEASE FREEZE M1: PASSED; 27 JS + 15 TEST FILES / 967 CHECKS + 7 SH + COMPOSE
 RECOVERY M2: RECONSTRUCTED BUNDLE VERIFIED BY CLEAN POSTGRESQL IMPORT/DECRYPT
 DEPLOYMENT CONTRACT M3: EXTERNAL PATHS + HARDENED BACKUP VERIFIED
+PRIVATE HTTPS M4: COMPLETE; CERTIFICATE VALID; SERVE TAILNET-ONLY
+TARGET PREFLIGHT M5: COMPLETE; XRAY DISABLED; ROOT PASSWORD RISK ACCEPTED
+STAGED PACKAGE M6: EXACT CODE + IMAGES ON TARGET; CONTAINERS NOT CREATED
+SECRETS/MIGRATION M7: STAGED + VERIFIED; TRANSFER COPIES REMOVED
+RESTORE M8: COMPLETE; 1228 ENTITIES; 3 WORKFLOWS UNPUBLISHED; 4/4 CREDENTIALS
+CANDIDATE PROFILE M8.5: VERSION 1.3.0 DEPLOYED; STATE/REFERENCES PRESERVED
+PRIVATE UI/SECURITY M9: OWNER + HTTPS/COOKIE/ORIGINS + ISOLATION VERIFIED
+TARGET M10: HH + NVIDIA + TELEGRAM + RESTART PASSED; OWNER CHAT CONFIRMATION PENDING
+M11 PARTIAL: LOCAL PROBES + RESTIC/RCLONE + DISABLED OFFSITE SKELETON INSTALLED
+M12/M13: MAIN PUBLISHED; AUTOMATIC TICKS + CONTAINER/SERVER RESTART PASSED
+PORTFOLIO RELEASE: 28 JS + 16 TEST FILES / 1109 CHECKS; CLEAN PUBLIC EXPORT
+REPOSITORY POLICY: HH NORMALIZER 1.2.0 + HARD FILTER 1.3.0 + PROFILE 1.4.0
 ```
 
 Для нового Ubuntu 24.04 VPS в Нидерландах подготовлен `deploy/mark/`:
@@ -24,15 +38,85 @@ DEPLOYMENT CONTRACT M3: EXTERNAL PATHS + HARDENED BACKUP VERIFIED
 `5678`, health checks, restart policies, execution pruning, daily database +
 n8n-data backups и безопасный entity migration. Target server имеет прямой
 Telegram/NVIDIA/HH egress и достаточные ресурсы; read-only infrastructure audit
-пройден. Container package туда ещё не развёртывался, а target paths, private
-env/migration/backup paths согласованы с Main Server M3. Private HTTPS и
-monitoring остаются последующими target gates.
+пройден. Code-only container package уже staged на target, а private
+env/migration/backup paths согласованы с Main Server M3. Для M4 выбран
+Tailscale Serve `*.ts.net`: после owner continuation HTTPS Certificates
+включены, route направлен только на `127.0.0.1:5678`, Funnel off. Windows без
+Tailscale получил timeout; iPhone открыл private URL без TLS warning, а
+Tailscale Admin подтвердил certificate valid ещё 3 месяца.
+
+Повторный M5 подтвердил Docker/Tailscale/UFW/fail2ban, свободные MARK/PostgreSQL
+порты, registries, direct provider egress и рабочую Hostkey Native Console.
+Одновременно обнаружен ранее не документированный `xray` VLESS/REALITY listener
+на публичном `0.0.0.0:443`; root password не ротировался после 23 июля.
+По последнему решению владельца `xray` сохранён в root-only rollback и
+отключён: inactive/disabled, UFW public `443` removed, wildcard listener absent.
+Root rotation отклонена владельцем; password не используется automation,
+residual risk документирован. Exact `98c549b` release archive проверен
+локально и на target: 105 archive entries, 84 deployed files,
+`agentops:agentops`, `.git` absent, forbidden runtime/secret files `0`.
+Target Compose и inactive 54-node workflow прошли проверку, оба images pulled.
+M7 установил `/etc/mark/mark.env` как `root:root:600` и verified reconstructed
+entities как `root:mark:600`. Transfer checksums `3/3`, entity checksum, ZIP,
+env contract и Compose прошли без вывода secret values; `READY` присутствует.
+Remote/local transfer-копии удалены, исходные recovery directories сохранены.
+После owner continuation M8 импортировал 1228 entities с
+`truncateTables=true`, создал `RESTORED` и запустил PostgreSQL, n8n и backup.
+Все 3 workflows unpublished; main workflow содержит 54 nodes, пустой `pinData`
+и 364585-byte `staticData`. Credentials расшифровываются 4/4 и все 4 references
+разрешаются. Direct health/Telegram/NVIDIA/HH egress checks прошли. Первая
+backup pair имеет manifest, checksums `2/2`; PostgreSQL dump и n8n-data archive
+читаемы. Backup container сохраняет `cap_drop: ALL` и получает только
+`DAC_READ_SEARCH`, необходимый для чтения root-owned n8n-data mount.
+
+M8.5 обновил Candidate Profile до `1.3.0` доказанными навыками из ARIADNE,
+MARK и Main Server. Коммерческий и production-proven опыт остаются `false`.
+Импорт собран из target export как credential/state source: state ровно
+сохранён, workflows снова принудительно unpublished. Перед изменением созданы
+читаемый PostgreSQL dump и root-protected rollback-export; transfer-копии
+удалены.
 
 Migration сохраняет users, encrypted credentials, workflow ownership и
 накопленный static state через `export:entities` / `import:entities`. Original
 entity archive сохранил source checksums, но original source encryption key не
 вошёл в final backup и не найден в локальных histories, поэтому этот archive не
 используется для target restore.
+
+M9 после owner login подтвердил одного enabled owner с установленным password,
+`userManagement.isInstanceOwnerSetUp=true`, secure HTTPS/cookie/private-origin
+contract, loopback-only `5678`, отсутствие host `5432`, Funnel, community nodes,
+Docker socket, host network и host-root mount. `n8n audit` reviewed:
+credential warnings ожидаемы при трёх unpublished workflows; 86 official
+Code/HTTP locations соответствуют проверенному repository workflow. Версия
+`2.29.10` missing 3 updates; upgrade отложен до отдельного backup/compatibility
+gate.
+
+M11 read-only audit подтвердил одну complete local backup pair: manifest
+checksum lines, `pg_restore --list` и `tar -tzf` passed, `.partial` files `0`.
+Два старых orphan PostgreSQL dump без archive/manifest сохранены и не считаются
+complete backups. Retention configured `14` days, но age-based expiry ещё не
+наступил. Uptime Kuma healthy/private, однако users/monitors/notifications =
+`0/0/0`, а Kuma container не достигает MARK через Tailscale URL. Поэтому
+установлены hardened host health/backup timers без Docker socket; оба local
+probes passed, push пока not configured. Restic/rclone и disabled offsite
+service/timer installed; OAuth config и restic password отсутствуют.
+
+M10 target provider smokes выполнили реальные HH OAuth/search/parse/normalize
+и NVIDIA scoring/strict parser. HH вернул 2 bounded normalized items. Telegram
+nodes в provider workflows отсутствовали, credential values не выводились.
+Временные inactive workflows импортировались, исполнялись по exact ID и
+удалялись; before/after осталось 3 unpublished workflows, main static state
+сохранился ровно `364585` bytes.
+
+Отдельный 6-node Telegram smoke использовал production `Build Telegram Vacancy
+Card`, `Send MARK Vacancy Card` и delivery persistence с одной явно synthetic
+vacancy. Execution подтвердил delivery success и message ID без вывода ID или
+credential values. Root-only sent marker mode `600` установлен как fail-closed
+repeat guard. После n8n-only restart сохранились один owner, owner setup,
+3 unpublished workflows, `364585` bytes main state и zero active executions.
+Контрольный повтор остановился на marker до import/send. Техническая часть M10
+завершена; визуальное подтверждение правильного Telegram chat остаётся owner
+gate.
 
 M2 создал отдельный reconstructed recovery bundle: final SQLite предоставил
 актуальные workflows/user/project/static state, а 4 credential ID/name/type
@@ -41,7 +125,8 @@ M2 создал отдельный reconstructed recovery bundle: final SQLite �
 `export:entities` и verified recovery key сохранены в protected local storage
 вне Git/OneDrive. Clean PostgreSQL import восстановил 3 workflows, main workflow
 с 54 nodes/empty pin data/364585-byte static state и расшифровал 4/4
-credentials. Provider liveness остаётся target M10 gate.
+credentials. HH/NVIDIA liveness теперь подтверждён на target; Telegram delivery
+остаётся отдельным M10 owner gate.
 
 Restore оставляет все workflows unpublished; отдельный script публикует только
 `RO4i4YmNzEzC2TEV` после controlled smoke. До publication никакой Schedule
@@ -92,7 +177,13 @@ Isolated execution `155` проверил полный credential-failover path 
 
 После controlled restart новая published версия запустилась автоматически как execution `156` и завершилась `success`: 50 Habr + 25 HH inputs, оба durable gate вернули 0 new/due, NVIDIA и Telegram не вызывались. State после run занимает 77,196 serialized bytes: 127 source items, 1 vacancy, 33 bounded run summaries, 0 errors.
 
-Global remote policy patch опубликован и активирован без потери state или credential references. Live export содержит exact repository sources: HH Normalizer `1.1.0`, Hard Filter `1.2.0`, Candidate Profile `1.2.0`. Локальная матрица подтверждает `PASS` для HH remote без geography evidence и с explicit Russia-only text; hybrid/office вне Tbilisi остаются `REJECT`. После restart healthz вернул `ok`, workflow активирован с 54 nodes / 53 connection roots. Реальная новая Russia-only vacancy после этого restart пока не попадалась, поэтому именно такой production item ещё не наблюдался end-to-end.
+Historical global remote policy patch был опубликован без потери state или
+credential references: HH Normalizer `1.1.0`, Hard Filter `1.2.0`, Candidate
+Profile `1.2.0`. Он разрешал HH remote без geography evidence и с explicit
+Russia-only text. Repository release 26 июля supersedes эту policy:
+Normalizer `1.2.0`, Hard Filter `1.3.0` и Candidate Profile `1.4.0` требуют
+подтверждение доступности работы из Georgia. Revision проверена локально, но
+ещё не импортирована на private target.
 
 Изолированная OAuth calibration execution `228` сравнила 14 вариантов HH search без NVIDIA, Telegram и production state. Remote baseline содержал 57/57 items; фильтр допустимых experience buckets оставил 47 и исключил только 10 items категории `moreThan6`. `professional_role=96`, tested role set и `search_field=name` сохранили лишь 35–40% baseline IDs и теряли Mid-Level AI Engineer, Data Scientist, AI Automation Engineer и Prompt Engineer. Поэтому live HH query `1.1.0` теперь отсекает только `moreThan6`; `between3And6`, role taxonomy и full-text retrieval остаются для MARK Pre/Hard/Level Filters. Temporary calibration workflow заархивирован.
 
@@ -117,7 +208,10 @@ Initialize Run Metrics
                     → common Hard Filter
 ```
 
-Для HH подтверждённый `REMOTE` проходит geography gate независимо от страны: отсутствие worldwide/Georgia evidence и явное ограничение РФ больше не дают `REVIEW`/`REJECT`. Hybrid и office остаются допустимы только в Tbilisi, Georgia. Salary не входит ни в search query, ни в filtering/scoring.
+В текущей repository policy HH `REMOTE` нормализуется в
+`remote_geo_eligibility`: `confirmed` проходит, `unknown` получает `REVIEW`,
+`restricted` — `REJECT`. Hybrid и office остаются допустимы только в Tbilisi,
+Georgia. Salary не входит ни в search query, ни в filtering/scoring.
 
 Общий live downstream pipeline:
 
@@ -252,14 +346,14 @@ n8n documents static data as experimental, small-state only, production-trigger 
 
 ## Verification
 
-Full local result: 1009 checks.
+Full local result: 1109 checks.
 
 ```text
-34  candidate-profile
-306 container deployment/security
+46  candidate-profile
+307 container deployment/security
 31  durable-source-state
 19  durable-vacancy-state
-20  hard-filter
+23  hard-filter
 20  level-filter
 38  HeadHunter integration
 131 NVIDIA model configs
@@ -269,27 +363,78 @@ Full local result: 1009 checks.
 13  run metrics
 17  scheduler gate
 17  Telegram card
-253 workflow structure/export
+83  target HH/NVIDIA/Telegram smokes
+254 workflow structure/export
 ```
 
-`node --check` passed for all 27 JavaScript sources under `n8n/code`, `lib` and `scripts`. Compose config validation and POSIX shell syntax validation also passed. The 54-node repository export is intentionally import-safe with `active: false`; the removed source-server version was active at its last verified production checkpoint. Repository tests reject placeholder HH credentials, OAuth client fields/tokens, literal Bearer/NVIDIA secrets, Chat ID, email, local user paths and container/runtime secret material. `.gitignore` and `.dockerignore` also block local `.env.*`, entity exports, backups, credential exports, private keys, copied `.n8n` databases, diagnostic JSON/logs and temporary workflow snapshots.
+`node --check` passed for all 28 JavaScript sources under `n8n/code`, `lib` and
+`scripts`. Compose config validation and POSIX shell syntax validation also
+passed. The 54-node repository export is intentionally import-safe with
+`active: false`, empty `pinData` and `staticData=null`; production state is
+accepted only from an explicit `--state-source`. Repository tests reject
+placeholder HH credentials, OAuth client fields/tokens, literal
+Bearer/NVIDIA secrets, Chat ID, email, local user paths and container/runtime
+secret material. `.gitignore` and `.dockerignore` also block local `.env.*`,
+entity exports, backups, credential exports, private keys, copied `.n8n`
+databases, diagnostic JSON/logs and temporary workflow snapshots.
 
 Official `n8n audit` findings:
 
-- Code/HTTP nodes are reported as official risky nodes by design and were reviewed;
-- после publication повторный audit категорий credentials/database/filesystem вернул `No security issues found`;
-- instance `2.29.10` has updates `2.29.11` and `2.30.7`; audit did not mark them as security fixes or breaking changes, so the verified runtime was not upgraded during this checkpoint.
+- target M9 сообщает 86 locations для official risky Code/HTTP nodes; они
+  ожидаемы для проверенного workflow и остаются под repository review;
+- 4 credentials отмечены unused/recently-unused, потому что все workflows
+  намеренно unpublished до M12;
+- community node manifest отсутствует;
+- target `2.29.10` missing 3 updates. Verified runtime не обновлялся внутри
+  cutover; upgrade требует отдельного backup/release-note/compatibility gate.
+
+## Main Server M12 production publication
+
+- active только основной workflow `RO4i4YmNzEzC2TEV`; всего workflows `3`;
+- два automatic ticks: sequence `361/362`, интервал ровно `600 s`;
+- overlap `0`, source/provider errors `0/0`;
+- Telegram send count и durable sent-record delta для acceptance ticks `0/0`,
+  поэтому повторной доставки не было;
+- bounded state: runs `50`, source items `639`, vacancies `23`,
+  serialized size `364454` bytes;
+- direct Telegram DNS/egress подтверждён; hosts override, proxy env и reverse
+  SSH bridge отсутствуют;
+- post-publication backup pair создана и прошла checksums/readability.
+
+При `EXECUTIONS_DATA_SAVE_ON_SUCCESS=none` n8n 2.29 soft-delete’ит успешную
+execution metadata без финального retained `success`. Поэтому target acceptance
+использует durable sequence/run counters совместно с отсутствием live execution.
+
+M13 container restart также пройден: полный Compose restart восстановил
+PostgreSQL/n8n/backup, сохранил единственную main publication и private HTTPS;
+automatic sequence `363` завершился с errors `0/0`, Telegram `0`, state
+`364454` bytes. Pre/post restart backup pairs читаемы.
+
+M13 server reboot пройден: boot ID изменился; SSH/Docker/Tailscale,
+PostgreSQL/n8n/backup/Kuma и private HTTPS восстановились автоматически.
+Исходная main publication пережила reboot без ручного publish, sequence `364`
+прошла с errors `0/0`, Telegram `0`, state `364403` bytes. Final audit после
+cleanup: sequence `365`, workflows `3/1`, live executions `0`, failed units
+`0`, latest backup pair читаема; публичным остался только SSH `22`.
+
+Первый acceptance verifier имел false-negative в проверке пустого списка failed
+units и его fail-closed trap снял publication уже после доказанного reboot
+recovery. Observer исправлен, safe state подтверждён, main republished,
+повторная проверка прошла. Это не было отказом runtime/autostart.
 
 ## Known unverified production behavior
 
 - quota scope of the two NVIDIA keys;
 - prolonged server soak behavior;
-- Telegram delivery without the temporary Windows reverse SSH bridge;
-- end-to-end delivery of a newly discovered HH remote vacancy with explicit country restriction under Hard Filter `1.2.0`.
-- decrypt реальных credentials, provider calls и automatic ticks на target VPS;
-- reboot recovery и полный restore target из созданной backup pair.
+- owner visual confirmation of the target Telegram chat;
+- live target acceptance of HH Normalizer `1.2.0`, Hard Filter `1.3.0` and
+  Candidate Profile `1.4.0`;
+- полный restore target из созданной backup pair.
+- Uptime Kuma push/alert delivery и encrypted offsite snapshot/restore.
 
 ## Один следующий шаг
 
-Выполнить Main Server M4 private HTTPS gate и повторный M5 target preflight;
-затем передать exact M3 checkpoint и reconstructed recovery bundle на target.
+Выполнить controlled target update policy revision
+`HH Normalizer 1.2.0 / Hard Filter 1.3.0 / Candidate Profile 1.4.0` с
+pre-change backup, сохранением state/credentials и live positive/negative
+verification. Затем вернуться к owner-gated M11/M14 closure.

@@ -116,8 +116,8 @@ check('full HH vacancy normalizes successfully', normalizedRemote.normalization_
 check('HH key remains stable through normalization', normalizedRemote.vacancy_key === 'hh:1001');
 check('HH HTML description is converted to plain text', !normalizedRemote.description.includes('<p>'));
 check('missing employer salary remains allowed', normalizedRemote.salary_specified === false);
-check('remote geography is not required by policy', normalizedRemote.remote_geo_eligibility === 'not_required');
-check('remote policy is explicit in normalization evidence', normalizedRemote.remote_geo_evidence.includes('remote_allowed_from_any_location_by_policy'));
+check('worldwide remote is confirmed for work from Georgia', normalizedRemote.remote_geo_eligibility === 'confirmed');
+check('remote policy records deterministic evidence', normalizedRemote.remote_geo_evidence.includes('description_confirms_work_from_georgia'));
 check('HH work format maps to common remote contract', normalizedRemote.work_format === 'remote' && normalizedRemote.work_format_confidence === 'high');
 check('HH experience category maps to entry-level hint', normalizedRemote.experience_min_years_hint === 0);
 
@@ -130,16 +130,16 @@ const unknownRemote = runNormalizer(juniorPreview, {
   description: '<p>Build LLM systems and RAG pipelines.</p>',
 });
 const hardUnknown = hardFilter({ item: { json: unknownRemote } }).json;
-check('remote without geography evidence is accepted', hardUnknown.hard_filter_decision === 'PASS');
-check('remote without geography evidence uses global remote policy', hardUnknown.hard_filter_geo_work_gate.code === 'allow_full_remote');
+check('remote without geography evidence requires review', hardUnknown.hard_filter_decision === 'REVIEW');
+check('remote without geography evidence does not pass automatically', hardUnknown.hard_filter_geo_work_gate.code === 'review_remote_geography_unconfirmed');
 
 const restrictedRemote = runNormalizer(juniorPreview, {
   ...remoteDetail,
   description: '<p>Build LLM systems. Работа только на территории РФ.</p>',
 });
 const hardRestricted = hardFilter({ item: { json: restrictedRemote } }).json;
-check('Russia-only remote vacancy is accepted by policy', hardRestricted.hard_filter_decision === 'PASS');
-check('restricted remote geography still uses global remote policy', hardRestricted.hard_filter_geo_work_gate.code === 'allow_full_remote');
+check('Russia-only remote vacancy is rejected', hardRestricted.hard_filter_decision === 'REJECT');
+check('restricted remote geography is explained', hardRestricted.hard_filter_geo_work_gate.code === 'reject_remote_not_available_from_georgia');
 
 const tbilisiPreview = {
   ...juniorPreview,

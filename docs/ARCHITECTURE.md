@@ -44,8 +44,9 @@ MARK не выгружает 2000 вакансий. Текущая production co
 | Habr pre-filter | `4.0.0-ultimate` | дешёвая RSS-классификация до HTTP fetch |
 | HH search query | `1.1.0` | bounded remote + Tbilisi API searches без salary и `moreThan6` |
 | HH pre-filter | `1.0.0` | explicit Senior+/off-target reject, ambiguous items remain REVIEW |
-| HH normalizer | `1.1.0` | OAuth API response → common vacancy contract |
-| Candidate Profile | `mark.candidate_profile.v1` / `1.2.0` | полный проверяемый профиль без credentials/PII |
+| HH normalizer | `1.2.0` | OAuth API response → common vacancy contract + remote eligibility evidence |
+| Hard Filter | `1.3.0` | deterministic integrity/status/geography/role gates |
+| Candidate Profile | `mark.candidate_profile.v1` / `1.4.0` | полный проверяемый профиль без credentials/PII |
 | Scorer snapshot | `mark.candidate_for_scorer.v1` | компактная часть профиля для NVIDIA |
 | NVIDIA request | `mark.nvidia_scoring_request.v1` | versioned prompt + vacancy + snapshot |
 | AI assessment | `mark.ai_assessment.v1` | strict score/level/decision/reasons/gaps/summary |
@@ -62,7 +63,11 @@ MARK не выгружает 2000 вакансий. Текущая production co
 
 LLM не решает salary policy, географические hard rules или senior rejection заново.
 
-Для HH подтверждённый `work_format=REMOTE` достаточен для географического `PASS`: MARK не отклоняет remote по стране, включая explicit Russia-only text. `remote_geo_eligibility=not_required` сохраняется в common contract как явный маркер этой политики. Hybrid и office по-прежнему требуют Tbilisi, Georgia.
+`work_format=REMOTE` сам по себе не доказывает доступность вакансии из
+Georgia. HH Normalizer и common Hard Filter сохраняют
+`remote_geo_eligibility=confirmed|unknown|restricted` вместе с evidence.
+`confirmed` получает `PASS`, `unknown` — `REVIEW`, а explicit restriction,
+исключающий Georgia, — `REJECT`. Hybrid и office требуют Tbilisi, Georgia.
 
 ## State model
 
@@ -107,6 +112,7 @@ new → scoring pending → completed/no delivery
 - bot token, NVIDIA keys и HH OAuth client secret/tokens находятся только в n8n credential store;
 - Telegram Chat ID находится только в environment;
 - workflow export содержит credential references, но не values;
+- checked-in public export имеет пустой `pinData` и `staticData=null`;
 - NVIDIA prompt не содержит salary, contact data или полный audit profile;
 - state хранит compact operational records, не raw HTML и не полные descriptions.
 
@@ -116,7 +122,8 @@ MARK использует bounded workflow static data с retention limits и pr
 concurrency `1`. Container deployment переносит всю n8n database из SQLite в
 PostgreSQL через `export:entities` / `import:entities`, поэтому workflow,
 credentials, ownership и накопленный compact state переживают restart и
-перенос сервера.
+перенос сервера. Repository builder сохраняет этот state только при явном
+`--state-source`; обычная public build намеренно создаёт clean import template.
 
 Это улучшает database durability, но не меняет application-level state API:
 источником по-прежнему остаётся `getWorkflowStaticData('global')`. Для текущего

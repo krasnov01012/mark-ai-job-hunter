@@ -187,6 +187,7 @@ while (queue.length > 0) {
 assert(reachable.size === nodes.size, `All nodes must be reachable from schedule (${reachable.size}/${nodes.size})`);
 
 const serialized = JSON.stringify(workflow);
+assert(workflow.staticData === null, 'Public workflow export must not contain production static state');
 assert(!/(?:nvapi-|sk-|gh[pousr]_)[A-Za-z0-9_-]{12,}/.test(serialized), 'Workflow must not contain obvious secrets');
 assert(!/Bearer\s+[A-Za-z0-9._-]{12,}/i.test(serialized), 'Workflow must not contain a literal Bearer token');
 assert(!/clientId|client_id/i.test(serialized), 'Workflow must not contain an OAuth client ID field');

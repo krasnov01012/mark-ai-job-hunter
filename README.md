@@ -1,153 +1,185 @@
 # MARK — AI Job Hunter
 
-MARK — персональный AI Job Hunter MVP и инженерный portfolio project. n8n Community Edition оркестрирует Habr Career RSS, HeadHunter API, детерминированные фильтры, NVIDIA scoring, durable state и Telegram delivery.
+[![MARK checks](https://github.com/krasnov01012/mark-ai-job-hunter/actions/workflows/ci.yml/badge.svg)](https://github.com/krasnov01012/mark-ai-job-hunter/actions/workflows/ci.yml)
 
-## Текущий статус
+> Production-verified, AI-assisted job-vacancy monitoring MVP built with n8n and JavaScript.
 
-- 54-node workflow сохранён в `n8n/workflows/ai-job-hunter-main.json` как
-  import-safe `active: false`; его nodes/connections совпадали с последней
-  проверенной published версией legacy n8n.
-- HeadHunter source подключён через application OAuth2: отдельные bounded searches для remote и Tbilisi, safe server-side exclusion категории `moreThan6`, execution dedupe, pre-filter, full-vacancy fetch и normalizer. Isolated OAuth smoke `144` получил HTTP `200`; production `147` сохранил 25 HH records, а scheduled `149` подтвердил zero-refetch dedupe.
-- Любая подтверждённая HH-вакансия с `work_format=REMOTE` проходит географический gate независимо от страны и текстовых ограничений.
-- Manual Trigger, `Dev Limit`, legacy smoke nodes и отдельные NVIDIA connectivity nodes удалены из main pipeline.
-- Межзапусковый source dedupe не загружает уже обработанные RSS items повторно; ошибки fetch/normalization получают максимум три попытки.
-- Candidate Profile `1.2.0` передаёт NVIDIA только компактный `candidate_profile_for_scorer`, а не полный audit-профиль.
-- NVIDIA Scorer `1.1.0` использует guided JSON schema, strict parser, deterministic thresholds и active-passive provider fallback с сохранением attempt/failure diagnostics.
-- Primary model: `nvidia/nemotron-3-super-120b-a12b`; fast fallback: `nvidia/nemotron-3-nano-30b-a3b`.
-- Salary исключена из fit score. Employer salary и Habr `predictedSalary` хранятся и показываются раздельно.
-- Telegram card экранирует HTML, показывает score/reasons/gaps и получает Chat ID только из `MARK_TELEGRAM_CHAT_ID`.
-- Реальная тестовая vacancy card с пометкой `(тестовая вакансия)` доставлена через credential `Mark Jobhunter`; Telegram API вернул `message_id`.
-- Schedule Trigger запускает polling каждые 10 минут; дополнительного time gate, fast retry или внутреннего scheduler lock нет.
-- Controlled execution `155` подтвердил credential failover для `401`, `429`, timeout и `503`: 4/4 результата завершились через secondary без ping-pong и без Telegram.
-- Scheduled execution `237` подтвердил production HH query `1.1.0`: оба OAuth search вернули HTTP `200`, 52 unique items прошли parse, 4 new items получили full-detail fetch без errors; ни один не прошёл Hard Filter, поэтому NVIDIA/Telegram не вызывались.
-- 23 июля 2026 года workflow был проверен на legacy VPS как `n8n-mark.service`; 25 июля после финального encrypted backup этот instance остановлен и полностью удалён. До target cutover MARK намеренно offline.
-- Server source smoke получил HH OAuth `200/200`, загрузил 21 full vacancy и передал 4 вакансии в NVIDIA; все 4 provider responses были валидны.
-- Контролируемая подходящая вакансия прошла production Hard/Level/Candidate/NVIDIA/Telegram nodes; пользователь подтвердил получение тестовой карточки в Telegram.
-- Три automatic server ticks прошли с интервалами 599.568/599.999 секунды, без active overlap, source/provider errors и Telegram-дублей; второй tick пропустил 92 из 93 source items как уже обработанные.
-- Подготовлен автономный container deployment: n8n `2.29.10`, PostgreSQL 16, persistent volumes, loopback-only port, health checks, daily backups и safe SQLite → PostgreSQL entity migration. Disposable Docker smoke подтвердил реальный export/import entities, сохранение workflow/static state, health и читаемые PostgreSQL/n8n-data backups.
-- Полный локальный regression suite включает workflow и container/security contracts; точный результат последнего запуска зафиксирован в `docs/TESTING.md`.
+MARK автоматически собирает вакансии из Habr Career и HeadHunter, применяет
+объяснимые детерминированные фильтры, оценивает смысловое соответствие профилю
+через NVIDIA models и отправляет подходящие варианты в Telegram. Проект
+создавался как персональный рабочий инструмент и как честный engineering case
+study: без автооткликов, без выдуманного коммерческого опыта и без секретов в
+Git.
 
-Исторические live-проверки 16 июля 2026 года:
+MARK уже работает на private server: опубликован только основной workflow,
+10-минутное расписание активно, а восстановление после полного container
+restart и server reboot проверено.
 
-- execution `92`: контролируемая Junior vacancy прошла Candidate Profile → NVIDIA Super → strict parser; HTTP `200`, score `85`, `APPLY`, `JUNIOR_PLUS`, `salary_used_in_score: false`;
-- execution `93`: реальный Habr RSS дал 50 items, source gate пропустил 50 новых, pre-filter оставил 1 для полной загрузки, 49 rejects и полный результат были записаны в source state без ошибок;
-- production executions `94–97`: Schedule Trigger и static state сохраняются между runs; повторный RSS snapshot пропустил 49 уже обработанных items и передал только 1 новый;
-- executions `116` и `118`: новый fixed schedule выполнил два automatic runs с интервалом 599.962 секунды; execution `117` подтвердил, что ручной Execute больше не блокируется;
-- временные test workflows были заархивированы; основной workflow был опубликован
-  в legacy database на момент этой проверки.
+## Что уже работает
 
-Production audit выявил и исправил multi-item mode и branch-safe metrics. После отдельной проверки прежней пары regular/fast-retry расписание упрощено до одного 10-минутного Schedule Trigger: run initializer сохраняет observability, но никогда не блокирует первый или ручной execution.
+- два независимых source-specific path: Habr Career RSS и HeadHunter API с
+  application OAuth2;
+- общий нормализованный vacancy contract после source-specific parsing;
+- durable dedupe, bounded retries и сохранение состояния между запусками;
+- hard filters для формата работы, географии и нерелевантных профессий;
+- отдельный level filter для Senior/Lead/5+ year требований;
+- Candidate Profile без заявлений о commercial или production-proven опыте;
+- NVIDIA scoring с JSON schema, strict parser и active-passive credential/model
+  fallback;
+- Telegram card с HTML escaping, score, reasons и gaps;
+- автономный n8n + PostgreSQL deployment, private access, health checks и
+  проверяемые backups.
 
-## Серверный статус
-
-Legacy VPS больше не запускает MARK. Перед удалением `n8n-mark.service` был остановлен и disabled, SQLite прошла integrity check, а финальные encrypted entity export и database/environment backup были сохранены в закрытом локальном хранилище вне Git и OneDrive. Затем удалены MARK services/timer/relay, environment, state, backups, Unix account и выделенный n8n runtime; повторная SSH-проверка не нашла listener, units или cron references.
-
-Исторический legacy deployment подтвердил HH collection, filtering, NVIDIA scoring, Telegram delivery через временный Windows bridge и durable state. Он больше не является runtime dependency и не может быть запущен как rollback.
-
-Следующий deployment package находится в `deploy/mark/`. Новый Ubuntu 24.04 VPS
-в Нидерландах прошёл read-only infrastructure/egress audit и готов к staged
-deployment, но package ещё не развёрнут и его target paths/private HTTPS/backup
-contract уже согласован с Main Server M3. M2 восстановил пригодный
-reconstructed `export:entities` из final SQLite state и точно совпадающих
-decryptable credential records; clean PostgreSQL import/decrypt прошёл.
-Compose теперь использует external root-owned env, migration/backup paths,
-loopback-only n8n и hardened backup container. До controlled cutover все
-workflows остаются unpublished.
+Salary не используется как фильтр и не уменьшает score при отсутствии.
+Employer salary и Habr `predictedSalary` остаются разными полями. Full remote
+проходит автоматически только при подтверждении, что работа доступна из
+Georgia; неизвестная география получает `REVIEW`, явное ограничение другой
+страной — `REJECT`. Hybrid и office допустимы только в Tbilisi, Georgia.
 
 ## Pipeline
 
 ```text
 Schedule Trigger (10m)
-→ Initialize Run Metrics (always pass)
-├─ Habr RSS → in-snapshot dedupe → Habr pre-filter/normalizer
-└─ HH OAuth search → ID dedupe → HH pre-filter/normalizer
-→ common durable source state
-→ source result persistence
-→ hard filter
+├─ Habr RSS → dedupe → pre-filter → page fetch → normalizer
+└─ HH OAuth search → ID dedupe → pre-filter → detail fetch → normalizer
+→ durable source result
+→ common hard filter
 → level filter
 → candidate profile
 → durable vacancy gate
-→ NVIDIA Super primary/secondary
-→ Nano model fallback
-→ strict parser + compact assessment state
-→ Telegram card + delivery state
+→ NVIDIA primary / secondary / fast-model fallback
+→ strict response parser
+→ Telegram card
+→ durable delivery result
 ```
 
-## Быстрый запуск
+Детерминированные правила принимают решения, которые можно проверить без LLM:
+salary policy, work-format/geography gates, explicit seniority rejection,
+dedupe, retries и delivery state. LLM используется только там, где нужна
+семантика: transferable skills, fit, gaps и краткое объяснение.
 
-Для server container deployment использовать [DEPLOYMENT](docs/DEPLOYMENT.md).
-Ниже остаётся локальный import flow для разработки.
+## Проверенные доказательства
 
-1. Импортировать workflow:
+| Область | Проверенный результат |
+|---|---|
+| Workflow | `54` nodes, `53` connection roots, import-safe `active: false` |
+| Public export | пустой `pinData`, production `staticData` удалён |
+| Local regression | `16` test files, `1109` checks |
+| Syntax/contracts | `28` JavaScript sources, Compose и shell contracts |
+| Real integrations | HH OAuth/search, NVIDIA scoring/parser и controlled Telegram delivery |
+| Autonomous runtime | два automatic ticks, container restart и server reboot recovery |
+| Persistence | PostgreSQL entity restore, bounded state и читаемые backup pairs |
+| CI | GitHub Actions проверяет syntax, все tests и Compose config |
+
+Подробные test cases и ограничения приведены в
+[TESTING](docs/TESTING.md). Исторические live execution IDs и deployment
+acceptance сохранены в [CURRENT_STATE](docs/CURRENT_STATE.md), а устройство
+pipeline — в [ARCHITECTURE](docs/ARCHITECTURE.md).
+
+Production evidence относится к зафиксированным M12/M13 checkpoints. Текущая
+repository-версия дополнительно ужесточает remote-from-Georgia policy и
+проверена локальной regression matrix; на private target она ещё не
+переустанавливалась.
+
+## Быстрая локальная проверка
+
+Требуется Node.js `22`. Команды не обращаются к реальным providers и не требуют
+секретов:
+
+```powershell
+Get-ChildItem n8n\code,lib,scripts -Recurse -Include *.js,*.mjs |
+  ForEach-Object { node --check $_.FullName }
+
+Get-ChildItem tests -Filter *.test.js |
+  Sort-Object Name |
+  ForEach-Object { node $_.FullName }
+
+node scripts\build-main-workflow.mjs --dry-run
+docker compose --env-file deploy\mark\.env.example -f deploy\mark\compose.yaml config --quiet
+```
+
+CI выполняет тот же основной gate на Ubuntu.
+
+## Импорт и запуск
+
+Checked-in workflow — чистый шаблон: он выключен, не содержит production state
+и не запускает Schedule Trigger после импорта.
 
 ```powershell
 n8n import:workflow --input="n8n\workflows\ai-job-hunter-main.json"
 ```
 
-2. Убедиться, что в n8n существуют credentials, на которые ссылается workflow:
+Перед controlled publication в n8n нужно создать:
 
+- HeadHunter OAuth2 API credential;
+- два NVIDIA HTTP Header Auth credentials;
 - Telegram credential;
-- NVIDIA primary HTTP Header Auth;
-- NVIDIA secondary HTTP Header Auth.
-- HeadHunter OAuth2 API credential (`client_credentials`, token URL `https://api.hh.ru/token`).
+- `MARK_TELEGRAM_CHAT_ID` в environment.
 
-3. Задать Chat ID вне Git и перезапустить n8n:
+Safe placeholders находятся в [config/.env.example](config/.env.example) и
+[deploy/mark/.env.example](deploy/mark/.env.example). Container deployment,
+migration, backup и rollback описаны в
+[DEPLOYMENT](docs/DEPLOYMENT.md). Значения credentials, OAuth tokens, bot token,
+Chat ID, databases и entity exports не должны попадать в workflow JSON,
+fixtures, docs или Git.
 
-```powershell
-[Environment]::SetEnvironmentVariable('MARK_TELEGRAM_CHAT_ID', '<chat-id>', 'User')
-[Environment]::SetEnvironmentVariable('GENERIC_TIMEZONE', 'Europe/Moscow', 'User')
-[Environment]::SetEnvironmentVariable('N8N_BLOCK_ENV_ACCESS_IN_NODE', 'false', 'User')
-n8n start
-```
-
-`N8N_BLOCK_ENV_ACCESS_IN_NODE=false` нужен n8n 2.x для expression `={{ $env.MARK_TELEGRAM_CHAT_ID }}`. Используйте эту настройку только для выделенного локального MARK instance, где workflow доверенный.
-
-`config/.env.example` содержит только безопасные placeholders. API keys, OAuth client secret/tokens, bot token и Chat ID не должны попадать в workflow export, fixtures, docs или Git.
-
-`.gitignore` закрывает `.env.*`, credential/secret exports, private keys, локальную `.n8n` database, diagnostic JSON/logs и temporary workflow snapshots; `workflow-structure.test.js` отдельно запрещает literal NVIDIA keys, Bearer tokens и HH OAuth client fields внутри отслеживаемого workflow export.
-
-## Проверка
-
-```powershell
-Get-ChildItem n8n\code -Filter *.js | ForEach-Object { node --check $_.FullName }
-Get-ChildItem tests -Filter *.test.js | Sort-Object Name | ForEach-Object { node $_.FullName }
-node scripts\build-main-workflow.mjs --dry-run
-n8n audit
-```
-
-Подробная матрица: `docs/TESTING.md`.
-
-## Структура
+## Структура репозитория
 
 ```text
-config/                         безопасные model/provider/env contracts
-docs/ARCHITECTURE.md            pipeline, state и failure behavior
-docs/CURRENT_STATE.md           проверенный live status и один следующий шаг
-docs/DEPLOYMENT.md              container migration, cutover, backup и rollback
-docs/NVIDIA_MODELS.md           NVIDIA catalog и benchmark
-docs/PROVIDER_FALLBACK.md       credential/model fallback contract
-docs/ROADMAP.md                 зафиксированный MVP roadmap
-docs/TESTING.md                 regression и live evidence
-lib/                            reusable deterministic provider logic
-n8n/code/                       редактируемые Code node sources
-n8n/workflows/                  стабильный workflow export
-scripts/                        workflow builder и NVIDIA utilities
-tests/                          локальные regression tests
-deploy/mark/                     автономный n8n + PostgreSQL container package
+config/             safe model, provider and environment contracts
+deploy/mark/        n8n + PostgreSQL container package
+docs/               architecture, state, roadmap, deployment and testing
+lib/                reusable deterministic provider fallback
+n8n/code/           editable JavaScript sources for Code nodes
+n8n/workflows/      clean importable workflow export
+scripts/            workflow builders and verification utilities
+tests/              deterministic regression matrices
 ```
 
-## Политика поиска
+Код в `n8n/code/` является source of truth для Code nodes. После изменения
+matching node обновляется через `scripts/build-main-workflow.mjs`, затем
+проверяется exact source equality в `workflow-structure.test.js`.
 
-- Salary не является фильтром; отсутствие salary не штрафуется.
-- Full remote допустим из любой точки мира; ограничения вакансии по стране не используются как фильтр MARK.
-- Hybrid и office допустимы только в Tbilisi, Georgia.
-- Unknown/conflicting work format не считается remote автоматически.
-- Intern, Junior и Middle допускаются; Middle+ и разумные 2–4 года могут быть `STRETCH`.
-- Senior, Lead, Principal, Staff, Head, Architect и подтверждённые 5+ лет обычно отклоняются.
-- EDITH и MARK — personal projects, а не commercial production experience.
+## Security и privacy
 
-## Ограничение персонального MVP
+- `.env`, n8n databases, credentials, backups, private keys и migration
+  artifacts исключены из Git;
+- checked-in workflow не содержит literal keys, Bearer tokens, OAuth secrets,
+  Chat ID, email addresses, local user paths, `pinData` или production
+  `staticData`;
+- credential values хранятся только в encrypted n8n store и external
+  root-owned environment;
+- n8n публикуется через loopback/private network, а не через открытый
+  application port;
+- workflows из repository export остаются inactive до отдельного controlled
+  publication step.
 
-Durable state использует bounded `getWorkflowStaticData('global')`. В container deployment n8n database переносится в PostgreSQL, но application-level state contract остаётся workflow static data. Коллекции имеют retention/size limits, а server runtime ограничен одним execution, поэтому это принято как контролируемый компромисс персонального запуска. Для масштабирования state нужно перенести в Data Table или отдельные PostgreSQL tables. Автономность Telegram delivery будет подтверждена только после target cutover, controlled smoke с выключенным Windows bridge и reboot recovery.
+## Ограничения
 
-Подробнее: [CURRENT_STATE](docs/CURRENT_STATE.md), [ARCHITECTURE](docs/ARCHITECTURE.md), [TESTING](docs/TESTING.md) и [ROADMAP](docs/ROADMAP.md).
+- Это персональный MVP, не SaaS и не система автоматической подачи заявок.
+- Durable application state пока использует bounded
+  `getWorkflowStaticData('global')`; для multi-user scale нужен отдельный
+  PostgreSQL/Data Table contract.
+- Неизвестная доступность remote-вакансии из Georgia не угадывается и остаётся
+  `REVIEW`.
+- Provider credentials и реальная Telegram delivery проверяются только в
+  private environment владельца.
+- Продолжительный soak, quota scope, external alert delivery и offsite restore
+  остаются отдельными operational acceptance gates.
+
+## AI-assisted authorship
+
+Проект разработан с существенной помощью Codex и Claude. Роль владельца:
+постановка задачи, продуктовые ограничения, acceptance criteria, выбор
+trade-offs, live-операции и проверка результатов. Репозиторий не заявляет, что
+весь код написан вручную без AI, и не выдаёт personal projects за коммерческий
+production experience.
+
+## Документация
+
+- [CURRENT_STATE](docs/CURRENT_STATE.md) — проверенный статус и ближайший шаг;
+- [ARCHITECTURE](docs/ARCHITECTURE.md) — contracts, pipeline и failure behavior;
+- [TESTING](docs/TESTING.md) — regression matrix и live evidence;
+- [DEPLOYMENT](docs/DEPLOYMENT.md) — migration, cutover, backup и rollback;
+- [ROADMAP](docs/ROADMAP.md) — завершённые MVP stages и оставшиеся gates;
+- [PROVIDER_FALLBACK](docs/PROVIDER_FALLBACK.md) — NVIDIA fallback contract.

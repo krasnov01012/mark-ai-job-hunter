@@ -1,13 +1,13 @@
 /**
  * MARK — Candidate Profile
- * Version: 1.2.0
+ * Version: 1.4.0
  * n8n Code node mode: Run Once for Each Item
  *
  * Keeps a complete audit profile and produces a compact, readable snapshot
  * for NVIDIA Scorer. Contains no credentials or personal contact data.
  */
 
-const CANDIDATE_PROFILE_VERSION = '1.2.0';
+const CANDIDATE_PROFILE_VERSION = '1.4.0';
 const CANDIDATE_PROFILE_SCHEMA = 'mark.candidate_profile.v1';
 const SCORER_SNAPSHOT_SCHEMA = 'mark.candidate_for_scorer.v1';
 
@@ -242,8 +242,112 @@ const CANDIDATE_PROFILE = {
       category: 'development_tools',
       proficiency: 'project_applied',
       evidence_level: 'repository_verified',
+      evidence: ['MARK', 'ARIADNE', 'Main Server'],
+      scope: ['checkpoints', 'diff review', 'documentation governance', 'runbooks', 'secret checks'],
+    },
+    {
+      name: 'FastAPI REST API development',
+      category: 'backend',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE'],
+      scope: ['FastAPI routers', 'request validation', 'service boundaries', 'health endpoints'],
+    },
+    {
+      name: 'SQLite persistence and Alembic migrations',
+      category: 'data',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE'],
+      scope: ['relational persistence', 'schema migrations', 'compatibility checks', 'idempotent data operations'],
+    },
+    {
+      name: 'Docker Compose and container operations',
+      category: 'devops',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE', 'MARK', 'Main Server'],
+      scope: ['multi-container stacks', 'health checks', 'volumes', 'least-privilege runtime', 'rebuild verification'],
+    },
+    {
+      name: 'PostgreSQL migration, backup and restore',
+      category: 'data',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['MARK', 'Main Server'],
+      scope: ['n8n entity restore', 'database dumps', 'checksum manifests', 'restore verification'],
+    },
+    {
+      name: 'Linux server administration and systemd',
+      category: 'devops',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['Main Server'],
+      scope: ['Ubuntu VPS operations', 'systemd services', 'resource checks', 'operational runbooks'],
+    },
+    {
+      name: 'SSH, firewall and intrusion-prevention hardening',
+      category: 'security',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['Main Server'],
+      scope: ['SSH access policy', 'UFW rules', 'fail2ban', 'least-privilege administration'],
+    },
+    {
+      name: 'Private service networking with Tailscale',
+      category: 'networking',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['Main Server'],
+      scope: ['private HTTPS access', 'loopback-bound services', 'DNS and exposure verification'],
+    },
+    {
+      name: 'Secret management and privacy-safe operations',
+      category: 'security',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE', 'MARK', 'Main Server'],
+      scope: ['secret references', 'protected env files', 'redacted diagnostics', 'privacy regression controls'],
+    },
+    {
+      name: 'Telegram bot and notification integrations',
+      category: 'integration',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE', 'MARK'],
+      scope: ['Telegram Bot API', 'long polling', 'allowlists', 'delivery result handling'],
+    },
+    {
+      name: 'OAuth 2.0 and idempotent external synchronization',
+      category: 'integration',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE', 'MARK'],
+      scope: ['Google Calendar OAuth', 'HeadHunter OAuth', 'token-safe configuration', 'replay-safe synchronization'],
+    },
+    {
+      name: 'Reliability engineering for API workflows',
+      category: 'reliability',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
       evidence: ['MARK'],
-      scope: ['checkpoints', 'diff review', 'private remote', 'documentation sync', 'secret checks'],
+      scope: ['bounded retries', 'credential failover', 'circuit breaking', 'durable deduplication', 'concurrency control'],
+    },
+    {
+      name: 'Automated backend, frontend and workflow testing',
+      category: 'testing',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE', 'MARK'],
+      scope: ['Python tests', 'JavaScript tests', 'frontend tests', 'container verification', 'privacy checks'],
+    },
+    {
+      name: 'Responsive and accessible frontend implementation',
+      category: 'frontend',
+      proficiency: 'project_applied',
+      evidence_level: 'repository_verified',
+      evidence: ['ARIADNE'],
+      scope: ['responsive layouts', 'keyboard focus', 'reduced motion', 'touch targets', 'overflow checks'],
     },
   ],
 
@@ -272,14 +376,52 @@ const CANDIDATE_PROFILE = {
       commercial: false,
       production_proven: false,
       summary:
-        'n8n and JavaScript job-monitoring pipeline with Habr RSS ingestion, normalization, explainable deterministic filters, regression checks, Git, and Telegram integration.',
+        'n8n and JavaScript job-monitoring pipeline with Habr and HeadHunter sources, OAuth, explainable filters, NVIDIA provider failover, durable state, PostgreSQL migration, backups, and Telegram delivery.',
       demonstrates: [
         'workflow orchestration',
         'JavaScript data processing',
-        'RSS and HTTP integration',
+        'RSS, HTTP and OAuth integration',
         'structured normalization',
         'explainable classification',
-        'testing and documentation',
+        'bounded retry and provider failover',
+        'durable state and deduplication',
+        'container deployment and restore testing',
+      ],
+    },
+    {
+      name: 'ARIADNE',
+      kind: 'personal_project',
+      evidence_level: 'repository_verified',
+      commercial: false,
+      production_proven: false,
+      summary:
+        'Local-first single-user command center with FastAPI, SQLite and Alembic, deterministic Core services, Docker, tested Telegram polling, Google Calendar synchronization, SecretStore, and a responsive accessible interface.',
+      demonstrates: [
+        'FastAPI REST API development',
+        'service and Core boundaries',
+        'relational persistence and migrations',
+        'OAuth and idempotent synchronization',
+        'secret-safe integrations',
+        'backend and frontend testing',
+        'responsive and accessible UI',
+      ],
+    },
+    {
+      name: 'Main Server',
+      kind: 'personal_infrastructure_project',
+      evidence_level: 'repository_verified',
+      commercial: false,
+      production_proven: false,
+      summary:
+        'Documented Ubuntu VPS control plane for private AI services with SSH hardening, UFW, fail2ban, systemd, Docker Compose, Tailscale HTTPS, protected secrets, health checks, and verified backup and restore procedures.',
+      demonstrates: [
+        'Linux server administration',
+        'SSH and firewall hardening',
+        'private service networking',
+        'container operations',
+        'secret management',
+        'backup and restore verification',
+        'operational documentation',
       ],
     },
   ],
@@ -287,14 +429,10 @@ const CANDIDATE_PROFILE = {
   known_gaps: [
     { name: 'Commercial AI engineering experience', level: 'none', gap_type: 'experience_barrier', severity: 'high_for_some_vacancies' },
     { name: 'Production deployment experience', level: 'not_proven', gap_type: 'experience_barrier', severity: 'medium' },
-    { name: 'FastAPI', level: 'not_demonstrated', gap_type: 'learnable_technical_gap', severity: 'medium' },
-    { name: 'SQL and PostgreSQL', level: 'not_demonstrated', gap_type: 'learnable_technical_gap', severity: 'medium' },
-    { name: 'Docker', level: 'limited', gap_type: 'learnable_technical_gap', severity: 'medium' },
     { name: 'Production RAG', level: 'none', gap_type: 'learnable_technical_gap', severity: 'high_for_rag_roles' },
     { name: 'Vector databases', level: 'not_demonstrated', gap_type: 'learnable_technical_gap', severity: 'high_for_rag_roles' },
     { name: 'Production LangGraph', level: 'none', gap_type: 'learnable_technical_gap', severity: 'high_for_agent_roles' },
     { name: 'asyncio', level: 'limited', gap_type: 'learnable_technical_gap', severity: 'medium' },
-    { name: 'Python automated testing frameworks', level: 'not_demonstrated', gap_type: 'learnable_technical_gap', severity: 'medium' },
     { name: 'CI/CD', level: 'limited', gap_type: 'learnable_technical_gap', severity: 'medium' },
     { name: 'ML model training', level: 'none', gap_type: 'specialization_gap', severity: 'high_for_ml_roles' },
     { name: 'PyTorch or TensorFlow', level: 'not_demonstrated', gap_type: 'specialization_gap', severity: 'high_for_ml_roles' },
@@ -304,7 +442,7 @@ const CANDIDATE_PROFILE = {
   candidate_unknowns: [
     { name: 'English proficiency', policy: 'do_not_infer', impact: 'international_vacancies' },
     { name: 'Formal education requirements', policy: 'evaluate_only_if_required', impact: 'vacancy_specific' },
-    { name: 'Work authorization outside target geography', policy: 'do_not_use_as_filter', impact: 'manual_verification_only' },
+    { name: 'Work authorization outside target geography', policy: 'verify_for_remote_availability', impact: 'remote_geography_gate' },
   ],
 
   work_preferences: {
@@ -312,8 +450,9 @@ const CANDIDATE_PROFILE = {
     missing_salary_allowed: true,
     remote: {
       allowed: true,
-      allowed_from_any_location: true,
-      location_restrictions_are_not_a_filter: true,
+      allowed_from_any_location: false,
+      requires_work_from_georgia_confirmation: true,
+      location_restrictions_are_a_filter: true,
     },
     hybrid: { allowed: true, only_city: 'Tbilisi', only_country: 'Georgia' },
     office: { allowed: true, only_city: 'Tbilisi', only_country: 'Georgia' },
@@ -459,8 +598,8 @@ function buildScorerSnapshot(profile) {
     work: {
       salary_is_not_a_filter: true,
       missing_salary_allowed: true,
-      remote_from_georgia_requires_confirmation: false,
-      remote_allowed_from_any_location: true,
+      remote_from_georgia_requires_confirmation: true,
+      remote_allowed_from_any_location: false,
       hybrid_or_office_only: 'Tbilisi, Georgia',
     },
     rules: Object.entries(profile.assessment_policy)

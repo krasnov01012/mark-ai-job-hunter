@@ -17,7 +17,7 @@
  *
  * Salary is intentionally ignored.
  * Work-location policy is only hinted here; final enforcement belongs to JH-5:
- * - full remote: allowed anywhere
+ * - full remote: eligible for full-page fetch; Hard Filter confirms Georgia availability
  * - hybrid: allowed only in Tbilisi, Georgia
  * - office: allowed only in Tbilisi, Georgia
  */

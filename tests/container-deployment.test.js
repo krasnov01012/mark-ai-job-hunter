@@ -69,6 +69,10 @@ check(
   (compose.match(/cap_drop:\n\s+- ALL/g) || []).length >= 2,
   'n8n and backup services must drop all Linux capabilities',
 );
+check(
+  (compose.match(/cap_add:\n\s+- DAC_READ_SEARCH/g) || []).length === 1,
+  'backup must add only read/search bypass for node-owned n8n data',
+);
 
 check(envExample.includes('N8N_VERSION=2.29.10'), 'env template must pin n8n');
 check(envExample.includes('N8N_ENCRYPTION_KEY=CHANGE_ME_'), 'env template must not contain a real encryption key');

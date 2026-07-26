@@ -1,6 +1,6 @@
 /**
  * MARK — Full Vacancy Hard Filter
- * Version: 1.2.0
+ * Version: 1.3.0
  *
  * n8n Code node mode: Run Once for Each Item
  *
@@ -9,14 +9,14 @@
  *         PASS / REVIEW / REJECT decision.
  *
  * Fixed policy:
- *   - full remote: allowed from any country/city;
+ *   - full remote: allowed only when work from Georgia is confirmed;
  *   - hybrid/office: allowed only in Tbilisi, Georgia;
  *   - salary is never read and never affects the decision;
  *   - seniority is not filtered here (JH-6 owns it);
  *   - REVIEW is kept for audit but does not continue automatically.
  */
 
-const HARD_FILTER_VERSION = '1.2.0';
+const HARD_FILTER_VERSION = '1.3.0';
 
 function isPresent(value) {
   return value !== null &&
@@ -167,6 +167,67 @@ function geographyFacts(vacancy) {
   };
 }
 
+function remoteEligibility(vacancy) {
+  const declared = normalizedText(vacancy.remote_geo_eligibility);
+  const declaredEvidence = stringArray(vacancy.remote_geo_evidence);
+
+  if (['confirmed', 'restricted', 'unknown'].includes(declared)) {
+    return {
+      value: declared,
+      evidence: declaredEvidence,
+      source: 'normalizer',
+    };
+  }
+
+  const searchable = normalizedText([
+    vacancy.description,
+    vacancy.location,
+    ...(Array.isArray(vacancy.locations) ? vacancy.locations : []),
+  ].filter(Boolean).join(' '));
+
+  const confirmedPatterns = [
+    /\b(?:work|working)\s+from\s+anywhere\b/i,
+    /\bworldwide\b|\banywhere\s+in\s+the\s+world\b/i,
+    /\bremote\s+from\s+any\s+country\b/i,
+    /(?:из\s+любой\s+точки\s+мира|из\s+любой\s+страны|по\s+всему\s+миру)/iu,
+    /(?:работа|работать|удален\p{L}*)[^\n.!?]{0,80}(?:из|в)\s+(?:грузии|georgia)/iu,
+  ];
+  const restrictedPatterns = [
+    /\b(?:remote|work(?:ing)?)\s+(?:only\s+)?within\s+(?:the\s+)?russia\b/i,
+    /\bmust\s+be\s+(?:based|located)\s+in\s+(?:the\s+)?russia\b/i,
+    /\b(?:russian|russia)\s+residents?\s+only\b/i,
+    /(?:работа|работать|удален\p{L}*|оформлен\p{L}*)[^\n.!?]{0,80}только[^\n.!?]{0,40}(?:на\s+территории\s+)?(?:рф|росси\p{L}*)/iu,
+    /только[^\n.!?]{0,50}(?:кандидат\p{L}*|сотрудник\p{L}*)[^\n.!?]{0,50}(?:из|в|на\s+территории)\s+(?:рф|росси\p{L}*)/iu,
+  ];
+
+  const confirmed = confirmedPatterns.some((pattern) => pattern.test(searchable));
+  const restricted = restrictedPatterns.some((pattern) => pattern.test(searchable));
+
+  if (confirmed && !restricted) {
+    return {
+      value: 'confirmed',
+      evidence: ['description_confirms_work_from_georgia'],
+      source: 'hard_filter_fallback',
+    };
+  }
+
+  if (restricted && !confirmed) {
+    return {
+      value: 'restricted',
+      evidence: ['description_restricts_work_outside_georgia'],
+      source: 'hard_filter_fallback',
+    };
+  }
+
+  return {
+    value: 'unknown',
+    evidence: confirmed && restricted
+      ? ['conflicting_remote_geography_evidence']
+      : ['work_from_georgia_not_confirmed'],
+    source: 'hard_filter_fallback',
+  };
+}
+
 function geoWorkGate(vacancy) {
   const workFormat = normalizedText(vacancy.work_format);
   const confidence = normalizedText(vacancy.work_format_confidence);
@@ -185,6 +246,8 @@ function geoWorkGate(vacancy) {
   }
 
   if (workFormat === 'remote') {
+    const eligibility = remoteEligibility(vacancy);
+
     if (vacancy.remote_denied === true) {
       return {
         ...gate(
@@ -193,6 +256,8 @@ function geoWorkGate(vacancy) {
           ['The vacancy explicitly denies remote work'],
         ),
         geography,
+        remote_geo_eligibility: eligibility.value,
+        remote_geo_evidence: eligibility.evidence,
       };
     }
 
@@ -204,16 +269,46 @@ function geoWorkGate(vacancy) {
           ['Remote format has insufficient confidence'],
         ),
         geography,
+        remote_geo_eligibility: eligibility.value,
+        remote_geo_evidence: eligibility.evidence,
+      };
+    }
+
+    if (eligibility.value === 'restricted') {
+      return {
+        ...gate(
+          'REJECT',
+          'reject_remote_not_available_from_georgia',
+          ['Remote work is explicitly unavailable from Georgia'],
+        ),
+        geography,
+        remote_geo_eligibility: eligibility.value,
+        remote_geo_evidence: eligibility.evidence,
+      };
+    }
+
+    if (eligibility.value !== 'confirmed') {
+      return {
+        ...gate(
+          'REVIEW',
+          'review_remote_geography_unconfirmed',
+          ['Remote work is possible, but availability from Georgia is not confirmed'],
+        ),
+        geography,
+        remote_geo_eligibility: eligibility.value,
+        remote_geo_evidence: eligibility.evidence,
       };
     }
 
     return {
       ...gate(
         'PASS',
-        'allow_full_remote',
-        ['Confirmed full remote work is allowed regardless of location restrictions'],
+        'allow_remote_from_georgia',
+        ['Full remote work is confirmed as available from Georgia'],
       ),
       geography,
+      remote_geo_eligibility: eligibility.value,
+      remote_geo_evidence: eligibility.evidence,
     };
   }
 
@@ -572,6 +667,14 @@ return {
     hard_filter_geo_work_gate: gates.geo_work,
     hard_filter_role_gate: gates.role,
 
+    remote_geo_eligibility:
+      gates.geo_work.remote_geo_eligibility ??
+      vacancy.remote_geo_eligibility ??
+      null,
+    remote_geo_evidence:
+      gates.geo_work.remote_geo_evidence ??
+      vacancy.remote_geo_evidence ??
+      [],
     salary_filter_applied: false,
   },
 };
