@@ -36,22 +36,61 @@ Employer salary и Habr `predictedSalary` остаются разными пол
 Georgia; неизвестная география получает `REVIEW`, явное ограничение другой
 страной — `REJECT`. Hybrid и office допустимы только в Tbilisi, Georgia.
 
-## Pipeline
+## Схема работы
 
-```text
-Schedule Trigger (10m)
-├─ Habr RSS → dedupe → pre-filter → page fetch → normalizer
-└─ HH OAuth search → ID dedupe → pre-filter → detail fetch → normalizer
-→ durable source result
-→ common hard filter
-→ level filter
-→ candidate profile
-→ durable vacancy gate
-→ NVIDIA primary / secondary / fast-model fallback
-→ strict response parser
-→ Telegram card
-→ durable delivery result
+```mermaid
+flowchart TB
+    T["Schedule Trigger<br/>каждые 10 минут"]
+
+    subgraph SOURCES["1. Сбор и нормализация"]
+        direction LR
+        H["Habr Career RSS"] --> HD["GUID dedupe"] --> HP["Pre-filter"] --> HF["Full-page fetch"] --> HN["Habr Normalizer"]
+        HH["HeadHunter OAuth API"] --> HHD["ID dedupe"] --> HHP["Search pre-filter"] --> HHDL["Vacancy detail fetch"] --> HHN["HH Normalizer"]
+    end
+
+    T --> H
+    T --> HH
+    HN --> DS["Durable source state"]
+    HHN --> DS
+
+    subgraph RULES["2. Детерминированные gates"]
+        direction LR
+        DS --> HARD{"Hard Filter"}
+        HARD -- "REJECT / REVIEW" --> AUDIT["Explainable audit state"]
+        HARD -- "PASS" --> LEVEL{"Level Filter"}
+        LEVEL -- "REJECT" --> AUDIT
+        LEVEL -- "PASS / STRETCH" --> PROFILE["Candidate Profile"]
+        PROFILE --> VG{"Durable vacancy gate"}
+        VG -- "already complete" --> AUDIT
+    end
+
+    subgraph SCORING["3. NVIDIA semantic scoring"]
+        direction LR
+        VG -- "score" --> BUDGET["Rate budget<br/>до 10 вакансий"]
+        BUDGET --> REQ["Versioned scoring request"]
+        REQ --> PRIMARY["Primary model + credential"]
+        PRIMARY --> PARSE{"Strict response parser"}
+        PRIMARY -. "credential failure" .-> SECONDARY["Secondary credential"]
+        SECONDARY --> PARSE
+        PARSE -. "model / contract failure" .-> NANO["Nano fallback"]
+        NANO --> DECISION{"SKIP / REVIEW / APPLY"}
+        PARSE --> DECISION
+    end
+
+    subgraph DELIVERY["4. Доставка и надёжность"]
+        direction LR
+        DECISION -- "SKIP / REVIEW" --> STATE["Durable vacancy state"]
+        DECISION -- "APPLY" --> CARD["Telegram vacancy card"]
+        VG -- "delivery retry" --> CARD
+        CARD --> TG["Telegram API"]
+        TG -- "success" --> SENT["telegram_sent"]
+        TG -. "failure" .-> RETRY["Retry due"]
+        AUDIT --> STATE
+        RETRY --> VG
+    end
 ```
+
+Сплошные стрелки показывают основной путь, пунктирные — ограниченный fallback или retry. Решения `REJECT` и `REVIEW` сохраняются в durable state для аудита и защиты от повторной обработки.
 
 Детерминированные правила принимают решения, которые можно проверить без LLM:
 salary policy, work-format/geography gates, explicit seniority rejection,
