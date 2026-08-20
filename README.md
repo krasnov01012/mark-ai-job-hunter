@@ -1,19 +1,52 @@
 # MARK — AI Job Hunter
 
 [![MARK checks](https://github.com/krasnov01012/mark-ai-job-hunter/actions/workflows/ci.yml/badge.svg)](https://github.com/krasnov01012/mark-ai-job-hunter/actions/workflows/ci.yml)
+![n8n](https://img.shields.io/badge/n8n-workflow-EA4B71?logo=n8n&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-Code%20nodes-F7DF1E?logo=javascript&logoColor=111)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-durable%20runtime-4169E1?logo=postgresql&logoColor=white)
 
-> Production-verified, AI-assisted job-vacancy monitoring MVP built with n8n and JavaScript.
+> **RU:** Персональный AI-assisted мониторинг вакансий: Habr Career и
+> HeadHunter → объяснимые policy gates → NVIDIA semantic scoring → Telegram.
+>
+> **EN:** A personal AI-assisted vacancy-monitoring pipeline: Habr Career and
+> HeadHunter → explainable policy gates → NVIDIA semantic scoring → Telegram.
 
-MARK автоматически собирает вакансии из Habr Career и HeadHunter, применяет
-объяснимые детерминированные фильтры, оценивает смысловое соответствие профилю
-через NVIDIA models и отправляет подходящие варианты в Telegram. Проект
-создавался как персональный рабочий инструмент и как честный engineering case
-study: без автооткликов, без выдуманного коммерческого опыта и без секретов в
-Git.
+MARK — production-verified на зафиксированных acceptance checkpoints MVP,
+построенный на n8n и JavaScript. Он нормализует вакансии из двух источников,
+применяет детерминированные правила до обращения к LLM и формирует проверяемую
+карточку с оценкой, аргументами и gaps. Проект не отправляет отклики и не выдаёт
+personal-project work за коммерческий опыт.
 
-MARK уже работает на private server: опубликован только основной workflow,
-10-минутное расписание активно, а восстановление после полного container
-restart и server reboot проверено.
+**Review path:** [Architecture](#architecture--архитектура) ·
+[Evidence](#проверенные-доказательства) · [Testing](docs/TESTING.md) ·
+[Limitations](#ограничения) · [AI disclosure](#ai-assisted-authorship)
+
+## Status / Статус
+
+| Signal | Verified state |
+|---|---|
+| Scope | Personal single-user MVP; monitoring and delivery, no automatic applications |
+| Public workflow | `54` nodes, `53` connection roots, inactive/import-safe export |
+| Regression evidence | `16` test files, `1109` checks, `28` JavaScript syntax checks |
+| Runtime checkpoint | Automatic ticks, container restart and server reboot recovery passed during M12/M13 acceptance |
+| Public boundary | Credentials, production state, private data and deployment coordinates are excluded |
+
+Runtime evidence is dated **26 July 2026**. The repository and its CI verify the
+current public export; they do not claim uninterrupted availability of the
+private runtime after that checkpoint.
+
+## Architecture / Архитектура
+
+![MARK architecture: sources, deterministic policy gates, semantic scoring, durable state and Telegram delivery](docs/assets/mark-architecture.svg)
+
+The architecture keeps source-specific parsing before one normalized vacancy
+contract. Deterministic filters own salary, geography, seniority, deduplication
+and retry policy; the LLM is reserved for semantic fit, transferable skills,
+gaps and explanation. Durable state makes every terminal decision auditable and
+prevents repeated processing.
+
+_Original vector prepared for the employer-facing portfolio from this
+repository's documented architecture; no third-party visual assets are used._
 
 ## Что уже работает
 
@@ -36,7 +69,7 @@ Employer salary и Habr `predictedSalary` остаются разными пол
 Georgia; неизвестная география получает `REVIEW`, явное ограничение другой
 страной — `REJECT`. Hybrid и office допустимы только в Tbilisi, Georgia.
 
-## Схема работы
+## Detailed pipeline / Подробная схема
 
 ```mermaid
 flowchart TB
