@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+*.local.*
 config/.env
 config/.env.*
 !config/.env.example
@@ -11,6 +12,10 @@ config/.env.*
 n8n/credentials/
 credentials/
 secrets/
+private/
+inventory/*.local.*
+config/cloudflared/*.json
+rclone.conf
 *credential*.json
 *.secret
 *.secrets
@@ -22,6 +27,9 @@ secrets/
 database.sqlite
 database.sqlite-shm
 database.sqlite-wal
+*.db
+*.sqlite
+*.sqlite3
 
 node_modules/
 *.log
@@ -38,6 +46,11 @@ deploy/mark/.env
 deploy/mark/runtime/
 deploy/mark/backups/
 deploy/mark/migration/
+backups/
+staging/
+*.dump
+*.backup
+*.bak
 *.n8n-backup
 *.n8n-entities
 entities-export/
