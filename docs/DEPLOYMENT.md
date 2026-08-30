@@ -118,6 +118,26 @@ ownership и compact durable state.
 
 ## Target preparation
 
+### Tag-based updates after initial migration
+
+CX-6 adds the repository-local transactional update path:
+
+```bash
+PROJECT_DIR=/srv/projects/mark \
+  /srv/projects/mark/deploy/deploy.sh v1.2.3
+```
+
+It is deliberately separate from the one-time entity migration. Every update
+requires a fresh verified PostgreSQL+n8n backup pair and a clean tagged Git
+checkout. Rollback restores both artifacts instead of attempting a database
+downgrade. The local n8n `/healthz` endpoint is the bounded deploy health gate.
+The script does not publish or mutate workflow entities automatically; the
+existing controlled publication procedure remains authoritative.
+
+This is a verified local repository checkpoint only. The first tags, narrow
+sudoers rules, server pilot and real rollback drill are owned by the Main
+Server R2 rollout and must pass before tag deployment is production-accepted.
+
 На target repository размещается в `/srv/projects/mark`. SSH session остаётся
 под `agentops`, а команды, которым нужен root-owned env, запускаются через
 `sudo`:

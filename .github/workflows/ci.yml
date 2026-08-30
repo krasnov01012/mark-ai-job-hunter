@@ -41,3 +41,7 @@ jobs:
             --env-file deploy/mark/.env.example \
             -f deploy/mark/compose.yaml \
             config --quiet
+
+      - name: Deployment hook contract
+        shell: bash
+        run: bash tests/deploy-hooks.test.sh
