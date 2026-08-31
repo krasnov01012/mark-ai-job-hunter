@@ -55,6 +55,18 @@ if PROJECT_DIR="$project_dir" PATH="$tmp/bin:$PATH" \
     exit 1
 fi
 
+rollback_helper="$project_dir/deploy/mark/scripts/deploy-rollback.sh"
+for capability in CHOWN DAC_OVERRIDE FOWNER; do
+    grep -F -- "--cap-add $capability" "$rollback_helper" >/dev/null || {
+        echo "rollback helper does not restore required $capability capability" >&2
+        exit 1
+    }
+done
+grep -F -- "</dev/null >/dev/null" "$rollback_helper" >/dev/null || {
+    echo "rollback helper may consume the caller script stdin" >&2
+    exit 1
+}
+
 PATH="$tmp/bin:$PATH" "$project_dir/deploy/hooks/alert.sh" \
     test v1.1.0 v1.0.0 success
 echo "MARK_DEPLOY_HOOK_TESTS=passed"

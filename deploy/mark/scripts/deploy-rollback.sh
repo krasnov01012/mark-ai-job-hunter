@@ -64,6 +64,7 @@ compose exec -T -e PGPASSWORD="$POSTGRES_PASSWORD" postgres \
 
 archive_name="$(basename "$archive")"
 compose run --rm --no-deps --user 0:0 \
+    --cap-add CHOWN --cap-add DAC_OVERRIDE --cap-add FOWNER \
     --volume "$MARK_BACKUP_DIR:/restore:ro" \
     --entrypoint /bin/sh n8n -c '
         set -eu
@@ -71,7 +72,7 @@ compose run --rm --no-deps --user 0:0 \
         find /home/node/.n8n -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
         tar -xzf "/restore/$archive_name" -C /home/node/.n8n
         chown -R node:node /home/node/.n8n
-    ' sh "$archive_name" >/dev/null
+    ' sh "$archive_name" </dev/null >/dev/null
 
 "$deploy_dir/scripts/deploy-env-commit.sh" "$deployed_commit"
 "$deploy_dir/scripts/start.sh"
