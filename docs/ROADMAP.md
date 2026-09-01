@@ -292,6 +292,12 @@ Historical limitation: Telegram delivery на legacy VPS требовала вк
   disposable restore.
 - [x] Подтвердить container restart и reboot recovery, private route,
   automatic post-reboot tick и fresh backup.
+- [x] Перевести production checkout на read-only exact-tag delivery.
+- [x] Исправить filesystem capabilities одноразового n8n-data restore и
+  подтвердить forced rollback `v0.1.3 → v0.1.2` с восстановлением PostgreSQL,
+  n8n-data и совпавшим fingerprint 111 таблиц.
+- [x] Установить финальный production tag `v0.1.3`; health и failed units
+  подтвердить после общего server acceptance.
 
 ## Filtering checkpoint после JH-6
 

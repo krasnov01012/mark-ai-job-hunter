@@ -195,6 +195,12 @@ migration, backup и rollback описаны в
 Chat ID, databases и entity exports не должны попадать в workflow JSON,
 fixtures, docs или Git.
 
+Production delivery принят 1 сентября 2026 года: сервер тянет только exact
+semantic tags через отдельный read-only deploy key. Forced drill доказал
+восстановление PostgreSQL+n8n-data `v0.1.3 → v0.1.2`; после него `v0.1.3`
+установлен штатно и прошёл health. Детали и ограничения — в
+[DEPLOYMENT](docs/DEPLOYMENT.md) и [TESTING](docs/TESTING.md).
+
 ## Структура репозитория
 
 ```text

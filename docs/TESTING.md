@@ -455,3 +455,17 @@ M13 server reboot:
   fail-closed trap unpublished main after runtime recovery had already passed.
   The observer was fixed, safe state verified, main republished, and the repeat
   verifier passed. This was an acceptance-observer defect, not reboot failure.
+
+## R2 exact-tag rollback acceptance — 1 September 2026
+
+- GitHub release and repository checks passed for `v0.1.2` and `v0.1.3`;
+- the regression hook contract requires `CHOWN`, `DAC_OVERRIDE`, `FOWNER` and
+  detached stdin for the one-shot restore container;
+- the first post-fix drill was deliberately not counted because rollback from
+  `v0.1.1` still executed the already-installed broken `v0.1.0` hook;
+- after normal installation of the fixed `v0.1.2` baseline, 15/15 intentional
+  health failures on `v0.1.3` triggered automatic rollback;
+- `MARK_DEPLOY_ROLLBACK=passed:v0.1.2`; PostgreSQL and n8n-data were restored;
+- 111 tables and the row-count fingerprint matched before/after;
+- final normal deploy `v0.1.3` passed `/healthz`; server acceptance reported
+  20 running containers, 0 unhealthy and 0 failed units.

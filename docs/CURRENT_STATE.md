@@ -1,8 +1,8 @@
 # MARK — Current State
 
-Актуализировано: 26 июля 2026 года после M12/M13 production acceptance и
-portfolio release gate. Repository release проверен локально; policy revision
-`1.2.0/1.3.0/1.4.0` ещё не развёрнут на private target.
+Актуализировано: 1 сентября 2026 года после live R2 tag-deploy и rollback
+acceptance. Private target — clean exact tag `v0.1.3` (`65aaeeb`); MARK healthy,
+failed units `0`.
 
 ## Результат текущего checkpoint
 
@@ -32,6 +32,14 @@ M12/M13: MAIN PUBLISHED; AUTOMATIC TICKS + CONTAINER/SERVER RESTART PASSED
 PORTFOLIO RELEASE: 28 JS + 16 TEST FILES / 1109 CHECKS; CLEAN PUBLIC EXPORT
 REPOSITORY POLICY: HH NORMALIZER 1.2.0 + HARD FILTER 1.3.0 + PROFILE 1.4.0
 ```
+
+R2 delivery checkpoint доказан на production. Первый forced drill обнаружил,
+что одноразовый n8n restore-контейнер наследовал `cap_drop: ALL` и не мог
+очистить root-owned volume. `v0.1.2` добавил только `CHOWN`, `DAC_OVERRIDE` и
+`FOWNER` этому restore-процессу, не постоянному runtime. После штатной установки
+fixed baseline forced drill `v0.1.3 → v0.1.2` восстановил PostgreSQL и n8n-data;
+до/после совпали 111 таблиц и row-count fingerprint. Затем `v0.1.3` установлен
+штатно. Deploy key подтверждён GitHub API как read-only.
 
 Для нового Ubuntu 24.04 VPS в Нидерландах подготовлен `deploy/mark/`:
 официальный n8n `2.29.10`, PostgreSQL 16, persistent volumes, loopback-only

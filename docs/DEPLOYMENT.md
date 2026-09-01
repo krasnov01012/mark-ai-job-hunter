@@ -134,9 +134,18 @@ downgrade. The local n8n `/healthz` endpoint is the bounded deploy health gate.
 The script does not publish or mutate workflow entities automatically; the
 existing controlled publication procedure remains authoritative.
 
-This is a verified local repository checkpoint only. The first tags, narrow
-sudoers rules, server pilot and real rollback drill are owned by the Main
-Server R2 rollout and must pass before tag deployment is production-accepted.
+Production acceptance completed on 1 September 2026. The target has a separate
+read-only deploy key and a clean exact-tag checkout. The forced drill deployed
+`v0.1.3`, intentionally exhausted the health gate, and automatically restored
+`v0.1.2`, PostgreSQL and n8n-data from the exact pre-deploy pair. The 111-table
+row-count fingerprint matched before and after. `v0.1.3` was then deployed
+normally and passed health.
+
+The rollback hook is supplied by the already installed version, not by the
+failed target. A rollback fix therefore has to be installed as a healthy
+baseline before a later tag can prove it. The one-shot n8n-data restore keeps
+the service-wide `cap_drop: ALL` boundary and adds only `CHOWN`, `DAC_OVERRIDE`
+and `FOWNER` for the restore container.
 
 На target repository размещается в `/srv/projects/mark`. SSH session остаётся
 под `agentops`, а команды, которым нужен root-owned env, запускаются через
